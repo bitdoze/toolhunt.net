@@ -1,0 +1,126 @@
+---
+import SearchBar from './SearchBar.astro';
+
+interface Props {
+  totalTools: number;
+}
+
+const { totalTools } = Astro.props;
+
+const categories = ['Development', 'Design', 'Productivity', 'Security'];
+---
+
+<div class="relative isolate overflow-hidden bg-gradient-to-b from-transparent via-gray-50/30 to-transparent dark:via-gray-900/30">
+  <!-- Animated background patterns -->
+  <div class="absolute inset-0 -z-10 overflow-hidden">
+    <div class="absolute h-full w-full [mask-image:radial-gradient(ellipse_at_center,white,transparent)] bg-grid-gray-900/[0.03] dark:bg-grid-white/[0.03]"></div>
+  </div>
+
+  <!-- Floating orbs background -->
+  <div aria-hidden="true" class="absolute inset-0 -z-10">
+    <div class="absolute left-1/3 top-1/4 h-64 w-64 rounded-full bg-blue-400/30 mix-blend-multiply blur-3xl animate-blob"></div>
+    <div class="absolute right-1/3 top-1/3 h-64 w-64 rounded-full bg-purple-400/30 mix-blend-multiply blur-3xl animate-blob animation-delay-2000"></div>
+    <div class="absolute left-1/2 bottom-1/4 h-64 w-64 rounded-full bg-pink-400/30 mix-blend-multiply blur-3xl animate-blob animation-delay-4000"></div>
+  </div>
+
+  <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
+    <div class="mx-auto max-w-3xl text-center">
+      <!-- Animated badge -->
+      <div class="mb-8 flex items-center justify-center">
+        <div class="relative inline-flex group cursor-pointer">
+          <div class="absolute -inset-px bg-gradient-to-r from-blue-500 via-blue-400 to-blue-500 rounded-full blur opacity-70 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-gradient-x"></div>
+          <span class="relative inline-flex items-center rounded-full bg-white dark:bg-gray-900 px-4 py-1.5 text-sm font-medium text-blue-700 dark:text-blue-300">
+            {totalTools}+ Tools Available
+            <span class="ml-2 h-2 w-2 rounded-full bg-blue-500 animate-ping"></span>
+          </span>
+        </div>
+      </div>
+      
+      <!-- Main heading with animated gradient -->
+      <h1 class="text-5xl font-bold tracking-tight sm:text-7xl">
+        <span class="inline-block animate-gradient-text bg-clip-text text-transparent bg-[linear-gradient(to_right,theme(colors.gray.900),theme(colors.gray.600),theme(colors.blue.600),theme(colors.gray.900))] dark:bg-[linear-gradient(to_right,theme(colors.white),theme(colors.gray.300),theme(colors.blue.400),theme(colors.white))] bg-[length:200%_auto]">
+          Find the Perfect Tools
+        </span>
+        <br />
+        <span class="text-gray-900 dark:text-white">for Your Workflow</span>
+      </h1>
+      
+      <!-- Floating 3D card with search -->
+      <div class="mt-10 perspective-1000">
+        <div class="relative group">
+          <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+          <div class="relative px-6 py-8 bg-white dark:bg-gray-800 ring-1 ring-gray-900/5 dark:ring-white/10 rounded-lg leading-none flex items-center justify-center space-x-6 hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl">
+            <SearchBar />
+          </div>
+        </div>
+      </div>
+      
+      <!-- Action buttons with modern styling -->
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+        <a
+          href="/sh/"
+          class="group relative w-full sm:w-auto inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 hover:bg-blue-500 hover:shadow-blue-500/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all duration-200 overflow-hidden"
+        >
+          <span class="absolute right-0 -mt-12 h-32 w-8 translate-x-12 rotate-12 transform bg-white opacity-10 transition-transform duration-1000 ease-out group-hover:-translate-x-40"></span>
+          <span class="relative">Explore Self-Hosted Apps</span>
+        </a>
+        <a 
+          href="/tools/" 
+          class="group relative w-full sm:w-auto inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold text-gray-900 dark:text-white ring-1 ring-gray-900/10 dark:ring-white/10 hover:ring-gray-900/20 dark:hover:ring-white/20 transition-all duration-200"
+        >
+          Browse Online Tools 
+          <span aria-hidden="true" class="ml-2 inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+        </a>
+      </div>
+      
+      <!-- Stats grid with hover effects -->
+      <div class="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
+        {categories.map((category) => (
+          <div class="group relative rounded-lg bg-white/50 dark:bg-gray-800/50 p-4 hover:bg-white dark:hover:bg-gray-800 transition-colors duration-200 hover:shadow-lg">
+            <dt class="text-sm font-medium text-gray-600 dark:text-gray-400">{category}</dt>
+            <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+              <div class="flex items-baseline text-2xl font-semibold text-blue-600 dark:text-blue-400">
+                {Math.floor(Math.random() * 100)}+
+                <span class="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">tools</span>
+              </div>
+            </dd>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+
+  @keyframes gradient-x {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  .animate-gradient-x {
+    animation: gradient-x 3s linear infinite;
+  }
+
+  .animate-gradient-text {
+    animation: gradient-x 4s linear infinite;
+  }
+</style>

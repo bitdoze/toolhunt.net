@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
 import ToolGrid from '../components/ToolGrid.astro';
 import SearchBar from '../components/SearchBar.astro';
 import Filters from '../components/Filters.astro';
@@ -35,12 +36,16 @@ function sortByDate(entries: any[]) {
 const filteredShEntries = sortByDate(filterByCategories(shEntries, selectedCategories)).slice(0, 5);
 const filteredToolEntries = sortByDate(filterByCategories(toolEntries, selectedCategories)).slice(0, 5);
 const filteredAlternativeEntries = sortByDate(filterByCategories(alternativeEntries, selectedCategories)).slice(0, 5);
+
+// Calculate total tools
+const totalTools = shEntries.length + toolEntries.length + alternativeEntries.length;
 ---
 
 <BaseLayout
-  title="Directory - Tools & Self-hosted Apps"
+  title="ToolHunt - Find the Perfect Tools for Your Workflow"
   description="Discover and compare self-hosted applications, online tools, and their alternatives."
 >
+  <Hero totalTools={totalTools} />
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Hero Section -->
     <div class="text-center mb-12">
@@ -118,13 +123,13 @@ const filteredAlternativeEntries = sortByDate(filterByCategories(alternativeEntr
       </p>
       <div class="mt-8 flex justify-center gap-4">
         <a
-          href="/sh"
+          href="/sh/"
           class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
         >
           Browse Self-hosted Apps
         </a>
         <a
-          href="/tools"
+          href="/tools/"
           class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 dark:text-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800"
         >
           Explore Online Tools
