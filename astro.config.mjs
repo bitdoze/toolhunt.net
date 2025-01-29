@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://directory.example.com',
+  site: 'https://toolhunt.net',
   integrations: [
     tailwind(),
     markdoc(),
