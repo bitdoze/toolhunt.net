@@ -4,6 +4,7 @@ publishedDate: 2025-01-29
 logo: "/images/sh/umami-logo.svg"
 uiImage: "/images/sh/umami-ui.webp"
 description: "Umami is a simple, fast, privacy-focused alternative to Google Analytics. Track your website visitors without compromising their privacy."
+youtubeId: "dWrgbxwIo8M"
 keyFeatures: [
   "Privacy-focused tracking",
   "Real-time analytics dashboard",

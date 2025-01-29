@@ -1,7 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import ToolCard from '../components/ToolCard.astro';
-import { type CollectionEntry } from 'astro:content';
+import { type CollectionEntry, getCollection } from 'astro:content';
 
 type ContentType = CollectionEntry<'sh'> | CollectionEntry<'tools'> | CollectionEntry<'alternatives'>;
 
@@ -11,6 +11,22 @@ interface Props {
 
 const { entry } = Astro.props;
 const { title, description, uiImage, logo, publishedDate, category } = entry.data;
+
+// Get related tools from all collections
+const [shTools, onlineTools, alternativeTools] = await Promise.all([
+  getCollection('sh'),
+  getCollection('tools'),
+  getCollection('alternatives')
+]);
+
+// Combine all tools and filter by same category, excluding current tool
+const relatedTools = [...shTools, ...onlineTools, ...alternativeTools]
+  .filter(tool => 
+    tool.data.category === category && 
+    tool.id !== entry.id
+  )
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 3);
 
 // Determine if entry has checkItUrl (sh and tools collections)
 const hasCheckItUrl = 'checkItUrl' in entry.data;
@@ -60,46 +76,80 @@ const socialImage = uiImage || logo;
   publishedDate={publishedDate}
   jsonLd={jsonLd}
 >
-  <main class="max-w-4xl mx-auto px-4 py-8">
-    <!-- Tool Card -->
-    <div class="mb-8">
-      <ToolCard entry={entry} showFullDetails={true} />
+  <main>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Tool Card -->
+      <div class="mb-8">
+        <ToolCard entry={entry} showFullDetails={true} />
+      </div>
+
+      <!-- UI Preview -->
+      <div class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Interface Preview</h2>
+        <img 
+          src={uiImage} 
+          alt={`${title} user interface`} 
+          class="w-full rounded-lg shadow-lg"
+          width="800"
+          height="400"
+          loading="lazy"
+        />
+      </div>
+
+      <!-- YouTube Video -->
+      {entry.data.youtubeId && (
+        <div class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Video Overview</h2>
+          <div class="relative pb-[56.25%] h-0 rounded-lg overflow-hidden shadow-lg">
+            <iframe
+              src={`https://www.youtube.com/embed/${entry.data.youtubeId}`}
+              title={`${title} video overview`}
+              class="absolute top-0 left-0 w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      )}
+
+      <!-- Content -->
+      <article class="prose dark:prose-invert max-w-none">
+        <slot />
+      </article>
     </div>
 
-    <!-- UI Preview -->
-    <div class="mb-8">
-      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Interface Preview</h2>
-      <img 
-        src={uiImage} 
-        alt={`${title} user interface`} 
-        class="w-full rounded-lg shadow-lg"
-        width="800"
-        height="400"
-        loading="lazy"
-      />
-    </div>
-
-    <!-- Content -->
-    <article class="prose dark:prose-invert max-w-none">
-      <slot />
-    </article>
-
-    <!-- Related Tools -->
-    {alternativeTo && (
-      <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-          More Alternatives to {alternativeTo}
-        </h2>
-        <p class="text-gray-600 dark:text-gray-400 mb-4">
-          Discover more tools similar to {alternativeTo}
-        </p>
-        <a
-          href={`/alternatives?alternativeTo=${encodeURIComponent(alternativeTo)}`}
-          class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
-        >
-          View all alternatives →
-        </a>
+    <!-- More Tools Section - Wider width -->
+    {relatedTools.length > 0 && (
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">More {category} Tools</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {relatedTools.map(tool => (
+              <ToolCard entry={tool} />
+            ))}
+          </div>
+        </section>
       </div>
     )}
+
+    <!-- Related Tools -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      {alternativeTo && (
+        <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+          <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+            More Alternatives to {alternativeTo}
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-4">
+            Discover more tools similar to {alternativeTo}
+          </p>
+          <a
+            href={`/alternatives?alternativeTo=${encodeURIComponent(alternativeTo)}`}
+            class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+          >
+            View all alternatives →
+          </a>
+        </div>
+      )}
+    </div>
   </main>
 </BaseLayout>

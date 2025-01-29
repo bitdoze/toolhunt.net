@@ -4,6 +4,7 @@ publishedDate: 2025-01-29
 logo: "/images/sh/plausible.png"
 uiImage: "/images/sh/plausibleui.webp"
 description: "Plausible Analytics is a simple, open-source web analytics tool that respects your users' privacy. It provides real-time analytics and is fully self-hosted."
+youtubeId: "RNnuXCUhHF4"
 keyFeatures: [
   "Privacy-focused analytics",
   "Real-time data visualization",

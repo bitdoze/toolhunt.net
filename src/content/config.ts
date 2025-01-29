@@ -8,6 +8,7 @@ const baseSchema = z.object({
   description: z.string(),
   keyFeatures: z.array(z.string()),
   category: z.string(),
+  youtubeId: z.string().optional(), // Add this line
 });
 
 // Self-hosted apps schema (includes alternativeTo)
