@@ -9,7 +9,8 @@ import ThemeToggle from './ThemeToggle.astro';
       <!-- Logo and site name -->
       <div class="flex-shrink-0 flex items-center">
         <a href="/" class="flex items-center space-x-2">
-          <span class="text-xl font-bold text-gray-900 dark:text-white">Directory</span>
+          <img src="/images/logo.svg" alt="ToolHunt Logo" class="h-8 w-8" />
+          <span class="text-xl font-bold text-gray-900 dark:text-white">ToolHunt</span>
         </a>
       </div>
 
@@ -24,18 +25,7 @@ import ThemeToggle from './ThemeToggle.astro';
       </div>
     </div>
   </div>
-
-  <!-- Mobile menu container - positioned below header -->
-  <div id="mobile-menu" class="hidden lg:hidden border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-      <!-- Mobile menu content is handled by Navigation component -->
-    </div>
-  </div>
 </header>
 
-<style>
-  /* Add smooth transition for backdrop blur */
-  header {
-    transition: background-color 0.3s ease;
-  }
-</style>
+<!-- Spacer to prevent content from hiding under fixed header -->
+<div class="h-16"></div>

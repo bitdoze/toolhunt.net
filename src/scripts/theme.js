@@ -53,7 +53,8 @@ function initializeTheme() {
 }
 
 // Initialize theme immediately
-initializeTheme();
+document.addEventListener('DOMContentLoaded', initializeTheme);
+initializeTheme(); // Keep this as a fallback
 
 // Re-initialize theme after view transitions
 document.addEventListener('astro:after-swap', initializeTheme);
