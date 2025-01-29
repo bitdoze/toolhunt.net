@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ToolCard from './ToolCard.astro';
+
+type ToolEntry = CollectionEntry<'sh'> | CollectionEntry<'tools'> | CollectionEntry<'alternatives'>;
+
+interface Props {
+  tools: ToolEntry[];
+  showFullDetails?: boolean;
+}
+
+const { tools, showFullDetails = false } = Astro.props;
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {tools.map(tool => (
+    <div class="h-full">
+      <ToolCard entry={tool} showFullDetails={showFullDetails} />
+    </div>
+  ))}
+</div>

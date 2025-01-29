@@ -1,0 +1,101 @@
+---
+interface Props {
+  categories: string[];
+  alternativeTo?: string[];
+  showAlternativeTo?: boolean;
+}
+
+const { categories, alternativeTo = [], showAlternativeTo = false } = Astro.props;
+---
+
+<div class="space-y-6">
+  <!-- Categories Filter -->
+  <div>
+    <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Categories</h3>
+    <div class="space-y-2">
+      {categories.map((category) => (
+        <label class="flex items-center">
+          <input
+            type="checkbox"
+            name="category"
+            value={category}
+            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded"
+          />
+          <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">{category}</span>
+        </label>
+      ))}
+    </div>
+  </div>
+
+  {showAlternativeTo && alternativeTo.length > 0 && (
+    <div>
+      <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Alternative To</h3>
+      <div class="space-y-2">
+        {alternativeTo.map((alt) => (
+          <label class="flex items-center">
+            <input
+              type="checkbox"
+              name="alternativeTo"
+              value={alt}
+              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">{alt}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  )}
+</div>
+
+<script>
+  function initializeFilters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParams = urlParams.getAll('category');
+    const alternativeToParams = urlParams.getAll('alternativeTo');
+
+    // Initialize checkboxes based on URL parameters
+    document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox) => {
+      if (checkbox.name === 'category' && categoryParams.includes(checkbox.value)) {
+        checkbox.checked = true;
+      }
+      if (checkbox.name === 'alternativeTo' && alternativeToParams.includes(checkbox.value)) {
+        checkbox.checked = true;
+      }
+    });
+
+    // Add event listeners to checkboxes
+    document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        const searchParams = new URLSearchParams(window.location.search);
+        
+        // Clear existing parameters for the changed filter type
+        searchParams.delete(checkbox.name);
+        
+        // Add checked values back to URL
+        document.querySelectorAll<HTMLInputElement>(`input[name="${checkbox.name}"]:checked`).forEach((checked) => {
+          searchParams.append(checkbox.name, checked.value);
+        });
+        
+        // Update URL without reloading the page
+        const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+        window.history.pushState({}, '', newUrl);
+        
+        // Dispatch custom event for filter change
+        window.dispatchEvent(new CustomEvent('filter', {
+          detail: {
+            type: checkbox.name,
+            values: Array.from(
+              document.querySelectorAll<HTMLInputElement>(`input[name="${checkbox.name}"]:checked`)
+            ).map(el => el.value)
+          }
+        }));
+      });
+    });
+  }
+
+  // Initialize filters when the script loads
+  initializeFilters();
+
+  // Re-initialize filters when the page transitions
+  document.addEventListener('astro:page-load', initializeFilters);
+</script>

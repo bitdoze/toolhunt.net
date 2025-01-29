@@ -1,0 +1,41 @@
+---
+import Navigation from './Navigation.astro';
+import ThemeToggle from './ThemeToggle.astro';
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo and site name -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href="/" class="flex items-center space-x-2">
+          <span class="text-xl font-bold text-gray-900 dark:text-white">Directory</span>
+        </a>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex-1 flex items-center justify-center lg:justify-end">
+        <Navigation />
+      </div>
+
+      <!-- Theme Toggle -->
+      <div class="flex items-center pl-4 lg:pl-6 border-l border-gray-200 dark:border-gray-700">
+        <ThemeToggle />
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu container - positioned below header -->
+  <div id="mobile-menu" class="hidden lg:hidden border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      <!-- Mobile menu content is handled by Navigation component -->
+    </div>
+  </div>
+</header>
+
+<style>
+  /* Add smooth transition for backdrop blur */
+  header {
+    transition: background-color 0.3s ease;
+  }
+</style>

@@ -1,0 +1,176 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SearchBar from '../components/SearchBar.astro';
+import Filters from '../components/Filters.astro';
+import ToolGrid from '../components/ToolGrid.astro';
+import type { CollectionEntry } from 'astro:content';
+
+type ToolEntry = CollectionEntry<'sh'> | CollectionEntry<'tools'> | CollectionEntry<'alternatives'>;
+
+interface Props {
+  title: string;
+  description: string;
+  tools: ToolEntry[];
+  categories: string[];
+  alternativeTo?: string[];
+  showAlternativeTo?: boolean;
+  currentPage: number;
+  totalPages: number;
+  section: 'sh' | 'tools' | 'alternatives';
+}
+
+const {
+  title,
+  description,
+  tools,
+  categories,
+  alternativeTo = [],
+  showAlternativeTo = false,
+  currentPage,
+  totalPages,
+  section
+} = Astro.props;
+
+// Calculate pagination range
+const MAX_PAGES = 5;
+let startPage = Math.max(1, currentPage - Math.floor(MAX_PAGES / 2));
+let endPage = Math.min(totalPages, startPage + MAX_PAGES - 1);
+
+if (endPage - startPage + 1 < MAX_PAGES) {
+  startPage = Math.max(1, endPage - MAX_PAGES + 1);
+}
+
+const pages = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+
+// Generate pagination URL
+const getPaginationUrl = (page: number) => {
+  const url = new URL(Astro.url);
+  if (page === 1) {
+    url.searchParams.delete('page');
+  } else {
+    url.searchParams.set('page', page.toString());
+  }
+  return url.toString();
+};
+
+// Prepare JSON-LD data for collection page
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: title,
+  description: description,
+  url: Astro.url.toString(),
+  numberOfItems: tools.length,
+  itemListElement: tools.map((tool, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'SoftwareApplication',
+      name: tool.data.title,
+      description: tool.data.description,
+      image: tool.data.logo,
+      applicationCategory: tool.data.category,
+      ...(('checkItUrl' in tool.data) && { downloadUrl: tool.data.checkItUrl }),
+      ...(('alternativeTo' in tool.data) && { 
+        sameAs: [
+          `https://directory.example.com/search?alternativeTo=${encodeURIComponent(tool.data.alternativeTo)}`
+        ]
+      })
+    }
+  }))
+};
+
+// Prepare meta description with category information
+const metaDescription = `${description} Browse ${tools.length} tools across ${categories.length} categories${
+  showAlternativeTo ? ` and find alternatives to popular services` : ''
+}.`;
+---
+
+<BaseLayout 
+  title={title}
+  description={metaDescription}
+  jsonLd={jsonLd}
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex flex-col lg:flex-row lg:space-x-8">
+      <!-- Sidebar with filters -->
+      <div class="lg:w-64 flex-shrink-0 mb-8 lg:mb-0">
+        <div class="sticky top-24 space-y-6">
+          <SearchBar />
+          <Filters
+            categories={categories}
+            alternativeTo={alternativeTo}
+            showAlternativeTo={showAlternativeTo}
+          />
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="flex-1">
+        <div class="mb-6">
+          <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{title}</h1>
+          <p class="mt-2 text-gray-600 dark:text-gray-300">{description}</p>
+        </div>
+
+        <!-- Tools grid -->
+        <div class="mb-8">
+          <ToolGrid tools={tools} />
+        </div>
+
+        <!-- Pagination -->
+        {totalPages > 1 && (
+          <nav class="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 px-4 sm:px-0 mt-6 pt-6" aria-label="Pagination">
+            <!-- Previous page -->
+            <div class="flex-1 flex justify-between sm:justify-start">
+              {currentPage > 1 && (
+                <a
+                  href={getPaginationUrl(currentPage - 1)}
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  rel="prev"
+                >
+                  Previous
+                </a>
+              )}
+            </div>
+
+            <!-- Page numbers -->
+            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
+              <div>
+                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                  {pages.map((page) => (
+                    <a
+                      href={getPaginationUrl(page)}
+                      class:list={[
+                        'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
+                        page === currentPage
+                          ? 'z-10 bg-blue-50 dark:bg-blue-900 border-blue-500 text-blue-600 dark:text-blue-200'
+                          : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      ]}
+                      aria-current={page === currentPage ? 'page' : undefined}
+                      aria-label={`Page ${page}`}
+                    >
+                      {page}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            </div>
+
+            <!-- Next page -->
+            <div class="flex-1 flex justify-between sm:justify-end">
+              {currentPage < totalPages && (
+                <a
+                  href={getPaginationUrl(currentPage + 1)}
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  rel="next"
+                >
+                  Next
+                </a>
+              )}
+            </div>
+          </nav>
+        )}
+      </div>
+    </div>
+  </div>
+</BaseLayout>

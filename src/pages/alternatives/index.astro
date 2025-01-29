@@ -1,0 +1,71 @@
+---
+import { getCollection } from 'astro:content';
+import SectionLayout from '../../layouts/SectionLayout.astro';
+
+// Get all alternatives
+const allTools = await getCollection('alternatives');
+
+// Get URL parameters
+const url = new URL(Astro.request.url);
+const page = parseInt(url.searchParams.get('page') || '1');
+const ITEMS_PER_PAGE = 12;
+
+// Get unique categories
+const categories = [...new Set(allTools.map(tool => tool.data.category))];
+
+// Get unique alternativeTo values
+const alternativeTo = [...new Set(allTools.map(tool => tool.data.alternativeTo))];
+
+// Filter tools based on URL parameters
+const query = url.searchParams.get('q')?.toLowerCase() || '';
+const selectedCategories = url.searchParams.getAll('category');
+const selectedAlternatives = url.searchParams.getAll('alternativeTo');
+
+let filteredTools = allTools;
+
+// Apply search filter
+if (query) {
+  filteredTools = filteredTools.filter(tool => 
+    tool.data.title.toLowerCase().includes(query) ||
+    tool.data.description.toLowerCase().includes(query)
+  );
+}
+
+// Apply category filter
+if (selectedCategories.length > 0) {
+  filteredTools = filteredTools.filter(tool => 
+    selectedCategories.includes(tool.data.category)
+  );
+}
+
+// Apply alternativeTo filter
+if (selectedAlternatives.length > 0) {
+  filteredTools = filteredTools.filter(tool => 
+    selectedAlternatives.includes(tool.data.alternativeTo)
+  );
+}
+
+// Sort tools by publishedDate
+filteredTools = filteredTools.sort((a, b) => 
+  b.data.publishedDate.getTime() - a.data.publishedDate.getTime()
+);
+
+// Calculate pagination
+const totalTools = filteredTools.length;
+const totalPages = Math.ceil(totalTools / ITEMS_PER_PAGE);
+const start = (page - 1) * ITEMS_PER_PAGE;
+const end = start + ITEMS_PER_PAGE;
+const paginatedTools = filteredTools.slice(start, end);
+---
+
+<SectionLayout
+  title="Alternatives"
+  description="Find open-source and free alternatives to popular proprietary software."
+  tools={paginatedTools}
+  categories={categories}
+  alternativeTo={alternativeTo}
+  showAlternativeTo={true}
+  currentPage={page}
+  totalPages={totalPages}
+  section="alternatives"
+/>

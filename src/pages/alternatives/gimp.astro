@@ -1,0 +1,15 @@
+---
+import { getEntry } from 'astro:content';
+import ContentLayout from '../../layouts/ContentLayout.astro';
+
+const entry = await getEntry('alternatives', 'gimp');
+if (!entry) {
+  throw new Error('Entry not found');
+}
+
+const { Content } = await entry.render();
+---
+
+<ContentLayout entry={entry}>
+  <Content />
+</ContentLayout>
