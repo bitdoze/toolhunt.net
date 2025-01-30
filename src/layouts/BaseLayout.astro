@@ -2,15 +2,12 @@
 import { ViewTransitions } from "astro:transitions";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import JsonLd from "../components/JsonLd.astro";
 
 interface Props {
   title: string;
   description: string;
   image?: string;
-  type?: "website" | "article";
-  publishedDate?: Date;
-  jsonLd?: Record<string, any>;
+  type?: "website";
 }
 
 const {
@@ -18,22 +15,10 @@ const {
   description,
   image = "/og-image.png",
   type = "website",
-  publishedDate,
-  jsonLd,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImageURL = new URL(image, Astro.site);
-
-// Default JSON-LD data
-const defaultJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "Directory",
-  description:
-    "Discover and compare self-hosted applications, online tools, and their alternatives.",
-  url: canonicalURL.toString(),
-};
 ---
 
 <!DOCTYPE html>
@@ -53,6 +38,7 @@ const defaultJsonLd = {
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageURL} />
     <meta property="og:site_name" content="ToolHunt" />
 
     <!-- Twitter -->
@@ -60,16 +46,22 @@ const defaultJsonLd = {
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- JSON-LD -->
-    {
-      jsonLd && (
-        <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-      )
-    }
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "ToolHunt",
+        "url": "https://toolhunt.net",
+        "description": "Discover and compare self-hosted applications, online tools, and their alternatives."
+      }
+    </script>
+
     <script
       defer
       data-domain="toolhunt.net"
