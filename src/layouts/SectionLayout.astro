@@ -71,9 +71,9 @@ const jsonLd = {
       image: tool.data.logo,
       applicationCategory: tool.data.category,
       ...(('checkItUrl' in tool.data) && { downloadUrl: tool.data.checkItUrl }),
-      ...(('alternativeTo' in tool.data) && { 
+      ...(('alternativeTo' in tool.data) && {
         sameAs: [
-          `https://directory.example.com/search?alternativeTo=${encodeURIComponent(tool.data.alternativeTo)}`
+          `https://toolhunt.net/search?alternativeTo=${encodeURIComponent(tool.data.alternativeTo)}`
         ]
       })
     }
@@ -86,7 +86,7 @@ const metaDescription = `${description} Browse ${tools.length} tools across ${ca
 }.`;
 ---
 
-<BaseLayout 
+<BaseLayout
   title={title}
   description={metaDescription}
   jsonLd={jsonLd}
