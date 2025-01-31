@@ -1,64 +1,174 @@
+
 ---
+const { placeholder = "Search tools...", tools = [] } = Astro.props;
+const searchQuery = Astro.url.searchParams.get('q') || '';
+
+// Enhanced Fuse options to include more searchable content
+const fuseOptions = {
+  keys: [
+    'data.title',
+    'data.description',
+    'data.category',
+    'data.alternativeTo',
+    'data.keyFeatures',
+    'body', // Markdown content
+    'data.pricing',
+    'data.tags',
+    'data.requirements',
+    'data.features',
+    'slug'
+  ],
+  threshold: 0.3,
+  includeScore: true,
+  useExtendedSearch: true,
+  ignoreLocation: true,
+  fieldNormWeight: 1,
+};
 ---
 
-<div class="relative max-w-lg w-full">
-  <label for="search" class="sr-only">Search</label>
-  <div class="relative">
-    <div class="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-      <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-      </svg>
+<div class="search-container">
+  <form method="get" class="relative max-w-lg w-full" id="searchForm">
+    <label for="search" class="sr-only">Search</label>
+    <div class="relative">
+      <div class="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
+        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <input
+        type="search"
+        name="q"
+        id="search"
+        value={searchQuery}
+        class="block w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 dark:focus:text-white focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        placeholder={placeholder}
+        autocomplete="off"
+      />
     </div>
-    <input
-      type="search"
-      name="search"
-      id="search"
-      class="block w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 dark:focus:text-white focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-      placeholder="Search tools..."
-      autocomplete="off"
-    />
-  </div>
+  </form>
+  <div id="search-results" class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
 </div>
 
-<script>
-  let searchTimeout: number;
-  const searchInput = document.getElementById('search') as HTMLInputElement;
-  
-  if (searchInput) {
-    // Initialize search input with URL parameter if present
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get('q');
-    if (searchQuery) {
-      searchInput.value = searchQuery;
-    }
+<script define:vars={{ tools, fuseOptions }}>
+  // Remove the nested script tag
+  import Fuse from 'fuse.js';
 
-    searchInput.addEventListener('input', (e) => {
-      const target = e.target as HTMLInputElement;
+  function initializeSearch() {
+    const searchForm = document.getElementById('searchForm');
+    const searchInput = document.getElementById('search');
+    const searchResults = document.getElementById('search-results');
+    
+    // Initialize Fuse with the provided options
+    const fuse = new Fuse(tools, fuseOptions);
+    
+    if (!searchForm || !searchInput || !searchResults) return;
+
+    let currentSearchTimeout;
+
+    function performSearch() {
+      const query = searchInput.value;
       
-      // Clear the previous timeout
-      clearTimeout(searchTimeout);
+      if (query) {
+        const results = fuse.search(query);
+        displayResults(results.map(result => result.item));
+      } else {
+        displayResults(tools);
+      }
+  
+      // Update URL
+      const currentUrl = new URL(window.location.href);
+      const params = new URLSearchParams(currentUrl.search);
       
-      // Set a new timeout to update URL and trigger search
-      searchTimeout = window.setTimeout(() => {
-        const searchParams = new URLSearchParams(window.location.search);
+      if (query) {
+        params.set('q', query);
+      } else {
+        params.delete('q');
+      }
+  
+      window.history.replaceState({}, '', `${currentUrl.pathname}${params.toString() ? '?' + params.toString() : ''}`);
+    }
+  
+    // Clear search handler
+    searchInput.addEventListener('search', (e) => {
+      if (searchInput.value === '') {
+        clearTimeout(currentSearchTimeout);
+        searchInput.value = '';
+        searchInput.blur();
+        displayResults(tools);
         
-        if (target.value) {
-          searchParams.set('q', target.value);
-        } else {
-          searchParams.delete('q');
-        }
-        
-        // Update URL without reloading the page
-        const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
-        window.history.pushState({}, '', newUrl);
-        
-        // Dispatch custom event for search
-        window.dispatchEvent(new CustomEvent('search', {
-          detail: {
-            query: target.value
-          }
-        }));
-      }, 300);
+        const currentUrl = new URL(window.location.href);
+        window.location.href = currentUrl.pathname;
+      }
     });
+  
+    function displayResults(results) {
+      searchResults.innerHTML = results.map(tool => `
+        <a href="/${tool.slug}" class="block p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-shadow">
+          <div class="flex items-center space-x-4">
+            <img src="${tool.data.logo}" alt="${tool.data.title}" class="w-12 h-12 object-contain"/>
+            <div class="flex-1">
+              <h3 class="text-lg font-medium text-gray-900 dark:text-white">${tool.data.title}</h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400">${tool.data.description}</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                ${tool.data.category ? `
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                    ${tool.data.category}
+                  </span>
+                ` : ''}
+                ${tool.data.alternativeTo ? `
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                    Alternative to ${tool.data.alternativeTo}
+                  </span>
+                ` : ''}
+              </div>
+            </div>
+          </a>
+        `).join('');
+    }
+  
+    // Handle form submission
+    searchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      performSearch();
+    });
+  
+    // Handle real-time search with debouncing
+    searchInput.addEventListener('input', () => {
+      clearTimeout(currentSearchTimeout);
+      currentSearchTimeout = setTimeout(performSearch, 300);
+    });
+  
+    // Initialize with current URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialQuery = urlParams.get('q');
+    if (initialQuery) {
+      searchInput.value = initialQuery;
+      performSearch();
+    } else {
+      displayResults(tools);
+    }
   }
+
+  // Initialize search on page load
+  initializeSearch();
+
+  // Re-initialize search on page transitions
+  document.addEventListener('astro:page-load', initializeSearch);
+
+  // Clean up event listeners on page transitions
+  document.addEventListener('astro:before-swap', () => {
+    clearTimeout(window.searchTimeout);
+  });
 </script>
+
+<style>
+  .search-container {
+    position: relative;
+    width: 100%;
+  }
+
+  #search-results {
+    width: 100%;
+    z-index: 10;
+  }
+</style>

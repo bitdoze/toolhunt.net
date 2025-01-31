@@ -1,10 +1,11 @@
 ---
-export const prerender = false
+export const prerender = false;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import ToolGrid from '../components/ToolGrid.astro';
 import SearchBar from '../components/SearchBar.astro';
 import Filters from '../components/Filters.astro';
+import CategoryFilters from '../components/CategoryFilters.astro';
 import { getCollection } from 'astro:content';
 
 // Get all collections
@@ -15,9 +16,39 @@ const [shEntries, toolEntries, alternativeEntries, macEntries] = await Promise.a
   getCollection('mac')
 ]);
 
+// Combine all tools for search
+const allTools = [...shEntries, ...toolEntries, ...alternativeEntries, ...macEntries];
+
 // Get URL parameters
 const url = new URL(Astro.request.url);
 const selectedCategories = url.searchParams.getAll('category');
+// Modify the displayedTools logic to use Fuse.js for search
+const searchQuery = url.searchParams.get('q');
+let displayedTools = [];
+
+if (searchQuery) {
+  const Fuse = (await import('fuse.js')).default;
+  const fuse = new Fuse(allTools, {
+    keys: [
+      'data.title',
+      'data.description',
+      'data.category',
+      'data.alternativeTo',
+      'data.keyFeatures',
+      'body',
+      'data.pricing',
+      'data.tags',
+      'data.requirements',
+      'data.features',
+      'slug'
+    ],
+    threshold: 0.3,
+    includeScore: true
+  });
+  
+  const searchResults = fuse.search(searchQuery);
+  displayedTools = searchResults.map(result => result.item);
+}
 
 // Get unique categories for each section
 const shCategories = [...new Set(shEntries.map(entry => entry.data.category))];
@@ -50,109 +81,100 @@ const totalTools = shEntries.length + toolEntries.length + alternativeEntries.le
   title="ToolHunt - Find the Perfect Tools for Your Workflow"
   description="Discover and compare self-hosted applications, online tools, and their alternatives."
 >
-  <Hero totalTools={totalTools} />
+  <Hero 
+    totalTools={totalTools} 
+    shCount={shEntries.length}
+    toolsCount={toolEntries.length}
+    macCount={macEntries.length}
+    alternativesCount={alternativeEntries.length}
+  />
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Hero Section -->
+    <!-- Hero Section with Search -->
     <div class="text-center mb-12">
       <h1 class="text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
-        <span class="block">Find the Right Tools</span>
-        <span class="block text-blue-600 dark:text-blue-400">For Your Needs</span>
+        <span class="block">Search Our</span>
+        <span class="block text-blue-600 dark:text-blue-400">Tools</span>
       </h1>
-      <p class="mt-3 max-w-md mx-auto text-base text-gray-500 dark:text-gray-400 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-        Discover self-hosted applications, online tools, and open-source alternatives to popular software.
-      </p>
+ 
+      <!-- Main Search Bar -->
+      <div class="mt-8 max-w-xl mx-auto">
+        <SearchBar tools={allTools} placeholder="Search across all tools..." />
+      </div>
     </div>
 
-    <!-- Search and Filter Section -->
-    <div class="mb-12">
-      <div class="max-w-xl mx-auto">
-        <SearchBar />
-        <div class="mt-4">
-          <Filters
-            categories={[...new Set([...shCategories, ...toolCategories, ...alternativeCategories])]}
-            showAlternativeTo={false}
+    {searchQuery ? (
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Search Results</h2>
+        <ToolGrid tools={displayedTools} />
+      </div>
+    ) : (
+      <>
+        <div class="mb-12">
+          <CategoryFilters
+            shCategories={shCategories}
+            toolCategories={toolCategories}
+            macCategories={[...new Set(macEntries.map(entry => entry.data.category))]}
+            selectedCategories={selectedCategories}
           />
         </div>
-      </div>
-    </div>
 
-    <!-- Self-hosted Apps Section -->
-    <section class="mb-16">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Self-hosted Apps</h2>
-        <a
-          href="/sh/"
-          class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
-        >
-          View all →
-        </a>
-      </div>
-      <ToolGrid tools={filteredShEntries} />
-    </section>
+        <section class="mb-16">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Self-hosted Apps</h2>
+            <a href="/sh/" class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
+              View all →
+            </a>
+          </div>
+          <ToolGrid tools={filteredShEntries} />
+        </section>
 
-    <!-- Online Tools Section -->
-    <section class="mb-16">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Online Tools</h2>
-        <a
-          href="/tools/"
-          class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
-        >
-          View all →
-        </a>
-      </div>
-      <ToolGrid tools={filteredToolEntries} />
-    </section>
+        <section class="mb-16">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Online Tools</h2>
+            <a href="/tools/" class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
+              View all →
+            </a>
+          </div>
+          <ToolGrid tools={filteredToolEntries} />
+        </section>
 
-    <!-- Alternatives Section -->
-    <section class="mb-16">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Alternatives</h2>
-        <a
-          href="/alternatives/"
-          class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
-        >
-          View all →
-        </a>
-      </div>
-      <ToolGrid tools={filteredAlternativeEntries} />
-    </section>
-    <section class="mb-16">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Mac Apps</h2>
-        <a
-          href="/mac/"
-          class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
-        >
-          View all →
-        </a>
-      </div>
-      <ToolGrid tools={filteredMacEntries} />
-    </section>
-    <!-- Call to Action -->
-    <section class="text-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800 rounded-2xl">
-      <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
-        <span class="block">Ready to find your tools?</span>
-      </h2>
-      <p class="mt-4 text-lg leading-6 text-gray-500 dark:text-gray-400">
-        Explore our complete collection of tools and alternatives.
-      </p>
-      <div class="mt-8 flex justify-center gap-4">
-        <a
-          href="/sh/"
-          class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-        >
-          Browse Self-hosted Apps
-        </a>
-        <a
-          href="/tools/"
-          class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 dark:text-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800"
-        >
-          Explore Online Tools
-        </a>
-      </div>
-    </section>
-    <!-- Mac Apps Section -->
-    
+        <section class="mb-16">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Alternatives</h2>
+            <a href="/alternatives/" class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
+              View all →
+            </a>
+          </div>
+          <ToolGrid tools={filteredAlternativeEntries} />
+        </section>
+
+        <section class="mb-16">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Mac Apps</h2>
+            <a href="/mac/" class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
+              View all →
+            </a>
+          </div>
+          <ToolGrid tools={filteredMacEntries} />
+        </section>
+
+        <section class="text-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800 rounded-2xl">
+          <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
+            <span class="block">Ready to find your tools?</span>
+          </h2>
+          <p class="mt-4 text-lg leading-6 text-gray-500 dark:text-gray-400">
+            Explore our complete collection of tools and alternatives.
+          </p>
+          <div class="mt-8 flex justify-center gap-4">
+            <a href="/sh/" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+              Browse Self-hosted Apps
+            </a>
+            <a href="/tools/" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 dark:text-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800">
+              Explore Online Tools
+            </a>
+          </div>
+        </section>
+      </>
+    )}
   </main>
 </BaseLayout>
