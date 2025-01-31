@@ -27,6 +27,12 @@ const alternativesSchema = baseSchema.extend({
   alternativeTo: z.string(),
 });
 
+// Mac apps schema
+const macSchema = baseSchema.extend({
+  pricing: z.enum(['Free', 'Paid', 'Freemium']),
+  checkItUrl: z.string(),
+});
+
 // Define collections
 export const collections = {
   'sh': defineCollection({
@@ -40,5 +46,9 @@ export const collections = {
   'alternatives': defineCollection({
     type: 'content',
     schema: alternativesSchema,
+  }),
+  'mac': defineCollection({
+    type: 'content',
+    schema: macSchema,
   }),
 };

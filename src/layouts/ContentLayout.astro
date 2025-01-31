@@ -6,68 +6,76 @@ import { type CollectionEntry, getCollection } from "astro:content";
 type ContentType =
   | CollectionEntry<"sh">
   | CollectionEntry<"tools">
-  | CollectionEntry<"alternatives">;
+  | CollectionEntry<"alternatives">
+  | CollectionEntry<"mac">;
 
 interface Props {
   entry: ContentType;
 }
 
 const { entry } = Astro.props;
-const { title, description, uiImage, logo, publishedDate, category } =
-  entry.data;
+const { title, description, uiImage, logo, publishedDate, category } = entry.data;
 
-// Get related tools from all collections
-const [shTools, onlineTools, alternativeTools] = await Promise.all([
-  getCollection("sh"),
-  getCollection("tools"),
-  getCollection("alternatives"),
-]);
-
-// Combine all tools and filter by same category, excluding current tool
-const relatedTools = [...shTools, ...onlineTools, ...alternativeTools]
-  .filter((tool) => tool.data.category === category && tool.id !== entry.id)
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 3);
-
-// Determine if entry has checkItUrl (sh and tools collections)
+// Determine if entry has checkItUrl and alternativeTo
 const hasCheckItUrl = "checkItUrl" in entry.data;
 const checkItUrl = hasCheckItUrl ? (entry.data as any).checkItUrl : null;
 
-// Determine if entry has alternativeTo (sh and alternatives collections)
 const hasAlternativeTo = "alternativeTo" in entry.data;
-const alternativeTo = hasAlternativeTo
-  ? (entry.data as any).alternativeTo
-  : null;
+const alternativeTo = hasAlternativeTo ? (entry.data as any).alternativeTo : null;
 
-// Prepare JSON-LD data
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: title,
-  description: description,
-  image: [logo, uiImage],
-  datePublished: publishedDate.toISOString(),
-  applicationCategory: category,
-  ...(checkItUrl && { downloadUrl: checkItUrl }),
-  ...(alternativeTo && {
-    sameAs: [
-      `https://directory.example.com/search?alternativeTo=${encodeURIComponent(
-        alternativeTo
-      )}`,
-    ],
-  }),
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "USD",
-    availability: "https://schema.org/InStock",
-  },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.5",
-    ratingCount: "100",
-  },
-};
+// Get related tools from all collections
+const [shTools, onlineTools, alternativeTools, macTools] = await Promise.all([
+  getCollection("sh"),
+  getCollection("tools"),
+  getCollection("alternatives"),
+  getCollection("mac"),
+]);
+
+// Helper function to shuffle array
+function shuffleArray(array: any[]) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+// Get related tools with priority
+function getRelatedTools() {
+  const currentCollection = entry.collection;
+  let collectionTools;
+  
+  switch (currentCollection) {
+    case 'sh':
+      collectionTools = shTools;
+      break;
+    case 'tools':
+      collectionTools = onlineTools;
+      break;
+    case 'alternatives':
+      collectionTools = alternativeTools;
+      break;
+    case 'mac':
+      collectionTools = macTools;
+      break;
+    default:
+      return [];
+  }
+
+  // First, get items from same category in same collection
+  const sameCategory = collectionTools.filter(tool => 
+    tool.data.category === category && tool.id !== entry.id
+  );
+
+  // Then, get other items from same collection
+  const otherSameCollection = collectionTools.filter(tool => 
+    tool.data.category !== category && tool.id !== entry.id
+  );
+
+  // Combine and limit to 3 items
+  return [...shuffleArray(sameCategory), ...shuffleArray(otherSameCollection)].slice(0, 3);
+}
+
+const relatedTools = getRelatedTools();
+
+// Add pricing check for Mac apps
+const pricing = 'pricing' in entry.data ? entry.data.pricing : null;
 
 // Prepare social image URL (use UI image if available, fallback to logo)
 const socialImage = uiImage || logo;
@@ -128,7 +136,7 @@ const socialImage = uiImage || logo;
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <section class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-8">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-              More {category} Tools
+              More {entry.collection === 'mac' ? 'Mac' : ''} {category} Tools
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedTools.map((tool) => (

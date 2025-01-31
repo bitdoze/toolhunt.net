@@ -2,8 +2,8 @@
 import { getCollection } from 'astro:content';
 import SectionLayout from '../../layouts/SectionLayout.astro';
 
-// Get all online tools
-const allTools = await getCollection('tools');
+// Get all mac apps
+const allTools = await getCollection('mac');
 
 // Get URL parameters
 const url = new URL(Astro.request.url);
@@ -13,9 +13,13 @@ const ITEMS_PER_PAGE = 12;
 // Get unique categories
 const categories = [...new Set(allTools.map(tool => tool.data.category))];
 
+// Get unique pricing options
+const pricingOptions = ['Free', 'Paid', 'Freemium'];
+
 // Filter tools based on URL parameters
 const query = url.searchParams.get('q')?.toLowerCase() || '';
 const selectedCategories = url.searchParams.getAll('category');
+const selectedPricing = url.searchParams.getAll('pricing');
 
 let filteredTools = allTools;
 
@@ -34,6 +38,13 @@ if (selectedCategories.length > 0) {
   );
 }
 
+// Apply pricing filter
+if (selectedPricing.length > 0) {
+  filteredTools = filteredTools.filter(tool => 
+    selectedPricing.includes(tool.data.pricing)
+  );
+}
+
 // Sort tools by publishedDate
 filteredTools = filteredTools.sort((a, b) => 
   b.data.publishedDate.getTime() - a.data.publishedDate.getTime()
@@ -48,12 +59,13 @@ const paginatedTools = filteredTools.slice(start, end);
 ---
 
 <SectionLayout
-  title="Best Online Tools for You"
-  description="Explore a curated collection of web-based tools and services that can help you and your bussiness."
+  title="Collection with FREE Mac Apps and Tools"
+  description="Discover the best Mac applications for productivity, development, and creativity that will help you with your work"
   tools={paginatedTools}
   categories={categories}
-  showAlternativeTo={false}
+  pricingOptions={pricingOptions}
+  showPricing={true}
   currentPage={page}
   totalPages={totalPages}
-  section="tools"
+  section="mac"
 />

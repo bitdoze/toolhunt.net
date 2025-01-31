@@ -2,10 +2,18 @@
 interface Props {
   categories: string[];
   alternativeTo?: string[];
+  pricingOptions?: string[];
   showAlternativeTo?: boolean;
+  showPricing?: boolean;
 }
 
-const { categories, alternativeTo = [], showAlternativeTo = false } = Astro.props;
+const { 
+  categories, 
+  alternativeTo = [], 
+  pricingOptions = [],
+  showAlternativeTo = false,
+  showPricing = false 
+} = Astro.props;
 ---
 
 <div class="space-y-6">
@@ -26,6 +34,25 @@ const { categories, alternativeTo = [], showAlternativeTo = false } = Astro.prop
       ))}
     </div>
   </div>
+
+  {showPricing && pricingOptions.length > 0 && (
+    <div>
+      <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Pricing</h3>
+      <div class="space-y-2">
+        {pricingOptions.map((price) => (
+          <label class="flex items-center">
+            <input
+              type="checkbox"
+              name="pricing"
+              value={price}
+              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded"
+            />
+            <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">{price}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  )}
 
   {showAlternativeTo && alternativeTo.length > 0 && (
     <div>
@@ -52,6 +79,7 @@ const { categories, alternativeTo = [], showAlternativeTo = false } = Astro.prop
     const urlParams = new URLSearchParams(window.location.search);
     const categoryParams = urlParams.getAll('category');
     const alternativeToParams = urlParams.getAll('alternativeTo');
+    const pricingParams = urlParams.getAll('pricing');
 
     // Initialize checkboxes based on URL parameters
     document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox) => {
@@ -59,6 +87,9 @@ const { categories, alternativeTo = [], showAlternativeTo = false } = Astro.prop
         checkbox.checked = true;
       }
       if (checkbox.name === 'alternativeTo' && alternativeToParams.includes(checkbox.value)) {
+        checkbox.checked = true;
+      }
+      if (checkbox.name === 'pricing' && pricingParams.includes(checkbox.value)) {
         checkbox.checked = true;
       }
     });

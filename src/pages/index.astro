@@ -6,10 +6,13 @@ import SearchBar from '../components/SearchBar.astro';
 import Filters from '../components/Filters.astro';
 import { getCollection } from 'astro:content';
 
-// Get all entries from each collection
-const shEntries = await getCollection('sh');
-const toolEntries = await getCollection('tools');
-const alternativeEntries = await getCollection('alternatives');
+// Get all collections
+const [shEntries, toolEntries, alternativeEntries, macEntries] = await Promise.all([
+  getCollection('sh'),
+  getCollection('tools'),
+  getCollection('alternatives'),
+  getCollection('mac')
+]);
 
 // Get URL parameters
 const url = new URL(Astro.request.url);
@@ -36,9 +39,10 @@ function sortByDate(entries: any[]) {
 const filteredShEntries = sortByDate(filterByCategories(shEntries, selectedCategories)).slice(0, 5);
 const filteredToolEntries = sortByDate(filterByCategories(toolEntries, selectedCategories)).slice(0, 5);
 const filteredAlternativeEntries = sortByDate(filterByCategories(alternativeEntries, selectedCategories)).slice(0, 5);
+const filteredMacEntries = sortByDate(filterByCategories(macEntries, selectedCategories)).slice(0, 5);
 
 // Calculate total tools
-const totalTools = shEntries.length + toolEntries.length + alternativeEntries.length;
+const totalTools = shEntries.length + toolEntries.length + alternativeEntries.length + macEntries.length;
 ---
 
 <BaseLayout
@@ -76,7 +80,7 @@ const totalTools = shEntries.length + toolEntries.length + alternativeEntries.le
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Self-hosted Apps</h2>
         <a
-          href="/sh"
+          href="/sh/"
           class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
         >
           View all →
@@ -90,7 +94,7 @@ const totalTools = shEntries.length + toolEntries.length + alternativeEntries.le
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Online Tools</h2>
         <a
-          href="/tools"
+          href="/tools/"
           class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
         >
           View all →
@@ -104,7 +108,7 @@ const totalTools = shEntries.length + toolEntries.length + alternativeEntries.le
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Alternatives</h2>
         <a
-          href="/alternatives"
+          href="/alternatives/"
           class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
         >
           View all →
@@ -112,7 +116,18 @@ const totalTools = shEntries.length + toolEntries.length + alternativeEntries.le
       </div>
       <ToolGrid tools={filteredAlternativeEntries} />
     </section>
-
+    <section class="mb-16">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Mac Apps</h2>
+        <a
+          href="/mac/"
+          class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+        >
+          View all →
+        </a>
+      </div>
+      <ToolGrid tools={filteredMacEntries} />
+    </section>
     <!-- Call to Action -->
     <section class="text-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800 rounded-2xl">
       <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
@@ -136,5 +151,7 @@ const totalTools = shEntries.length + toolEntries.length + alternativeEntries.le
         </a>
       </div>
     </section>
+    <!-- Mac Apps Section -->
+    
   </main>
 </BaseLayout>
