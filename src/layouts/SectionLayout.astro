@@ -31,27 +31,16 @@ const {
   section
 } = Astro.props;
 
-// Calculate pagination range
-const MAX_PAGES = 5;
-let startPage = Math.max(1, currentPage - Math.floor(MAX_PAGES / 2));
-let endPage = Math.min(totalPages, startPage + MAX_PAGES - 1);
+// Calculate pagination variables
+const indexPageLink = currentPage === 2;
+const hasPrevPage = currentPage > 1;
+const hasNextPage = totalPages > currentPage;
 
-if (endPage - startPage + 1 < MAX_PAGES) {
-  startPage = Math.max(1, endPage - MAX_PAGES + 1);
+// Generate page list
+let pageList = [];
+for (let i = 1; i <= totalPages; i++) {
+  pageList.push(i);
 }
-
-const pages = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
-
-// Generate pagination URL
-const getPaginationUrl = (page: number) => {
-  const url = new URL(Astro.url);
-  if (page === 1) {
-    url.searchParams.delete('page');
-  } else {
-    url.searchParams.set('page', page.toString());
-  }
-  return url.toString();
-};
 
 // Prepare JSON-LD data for collection page
 const jsonLd = {
@@ -89,6 +78,8 @@ const metaDescription = `${description} Browse ${tools.length} tools across ${ca
 <BaseLayout
   title={title}
   description={metaDescription}
+  jsonLd={jsonLd}
+  noindex={currentPage > 1}
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="flex flex-col lg:flex-row lg:space-x-8">
@@ -118,57 +109,109 @@ const metaDescription = `${description} Browse ${tools.length} tools across ${ca
 
         <!-- Pagination -->
         {totalPages > 1 && (
-          <nav class="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 px-4 sm:px-0 mt-6 pt-6" aria-label="Pagination">
-            <!-- Previous page -->
-            <div class="flex-1 flex justify-between sm:justify-start">
-              {currentPage > 1 && (
-                <a
-                  href={getPaginationUrl(currentPage - 1)}
-                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
-                  rel="prev"
+          <nav class="mb-4 flex justify-center space-x-2 text-center" aria-label="Pagination">
+            {/* previous */}
+            {hasPrevPage ? (
+              <a
+                href={indexPageLink ? `/${section}` : `/${section}/page/${currentPage - 1}`}
+                class="border border-primary hover:bg-primary hover:text-white rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center transition duration-200"
+              >
+                <span class="sr-only">Previous</span>
+                <svg
+                  class="h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
                 >
-                  Previous
-                </a>
-              )}
-            </div>
-
-            <!-- Page numbers -->
-            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
-              <div>
-                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                  {pages.map((page) => (
-                    <a
-                      href={getPaginationUrl(page)}
-                      class:list={[
-                        'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
-                        page === currentPage
-                          ? 'z-10 bg-blue-50 dark:bg-blue-900 border-blue-500 text-blue-600 dark:text-blue-200'
-                          : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                      ]}
-                      aria-current={page === currentPage ? 'page' : undefined}
-                      aria-label={`Page ${page}`}
-                    >
-                      {page}
-                    </a>
-                  ))}
-                </nav>
-              </div>
-            </div>
-
-            <!-- Next page -->
-            <div class="flex-1 flex justify-between sm:justify-end">
-              {currentPage < totalPages && (
-                <a
-                  href={getPaginationUrl(currentPage + 1)}
-                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
-                  rel="next"
+                  <path
+                    fill-rule="evenodd"
+                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
+            ) : (
+              <span class="border border-gray-400 opacity-40 rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center pointer-events-none">
+                <span class="sr-only">Previous</span>
+                <svg
+                  class="h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
                 >
-                  Next
+                  <path
+                    fill-rule="evenodd"
+                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </span>
+            )}
+
+            {/* page index */}
+            {pageList.map((pagination, i) =>
+              pagination === currentPage ? (
+                <span
+                  aria-current="page"
+                  class={`border border-primary bg-primary rounded-md h-10 w-10 leading-[35px] font-semibold text-blue-500 dark:text-white`}
+                >
+                  {pagination}
+                </span>
+              ) : (
+                <a
+                  href={i === 0 ? `/${section}` : `/${section}/page/${pagination}`}
+                  aria-current="page"
+                  class={`border border-primary hover:bg-primary hover:text-blue-500 rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center transition duration-200`}
+                >
+                  {pagination}
                 </a>
-              )}
-            </div>
+              )
+            )}
+
+            {/* next page */}
+            {hasNextPage ? (
+              <a
+                href={`/${section}/page/${currentPage + 1}`}
+                class="border border-primary hover:bg-primary hover:text-white rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center transition duration-200"
+              >
+                <span class="sr-only">Next</span>
+                <svg
+                  class="h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
+            ) : (
+              <span class="border border-gray-400 opacity-40 rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center pointer-events-none">
+                <span class="sr-only">Next</span>
+                <svg
+                  class="h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </span>
+            )}
           </nav>
         )}
+
       </div>
     </div>
   </div>

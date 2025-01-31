@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import SectionLayout from '../../../layouts/SectionLayout.astro';
+
+export async function getStaticPaths({ paginate }) {
+  const allTools = await getCollection('alternatives');
+  const sortedTools = allTools.sort((a, b) => 
+    b.data.publishedDate.getTime() - a.data.publishedDate.getTime()
+  );
+  return paginate(sortedTools, { pageSize: 12 });
+}
+
+const { page } = Astro.props;
+const url = new URL(Astro.request.url);
+
+// Get unique categories
+const categories = [...new Set(page.data.map(tool => tool.data.category))];
+
+// Get unique alternativeTo values
+const alternativeTo = [...new Set(page.data.map(tool => tool.data.alternativeTo))];
+
+// Filter tools based on URL parameters
+const query = url.searchParams.get('q')?.toLowerCase() || '';
+const selectedCategories = url.searchParams.getAll('category');
+const selectedAlternatives = url.searchParams.getAll('alternativeTo');
+
+let filteredTools = page.data;
+
+// Apply search filter
+if (query) {
+  filteredTools = filteredTools.filter(tool => 
+    tool.data.title.toLowerCase().includes(query) ||
+    tool.data.description.toLowerCase().includes(query)
+  );
+}
+
+// Apply category filter
+if (selectedCategories.length > 0) {
+  filteredTools = filteredTools.filter(tool => 
+    selectedCategories.includes(tool.data.category)
+  );
+}
+
+// Apply alternativeTo filter
+if (selectedAlternatives.length > 0) {
+  filteredTools = filteredTools.filter(tool => 
+    selectedAlternatives.includes(tool.data.alternativeTo)
+  );
+}
+---
+
+<SectionLayout
+  title="Find Alternatives to Popular Services"
+  description="Discover open-source and commercial alternatives to popular software and services"
+  tools={filteredTools}
+  categories={categories}
+  alternativeTo={alternativeTo}
+  showAlternativeTo={true}
+  currentPage={page.currentPage}
+  totalPages={page.lastPage}
+  section="alternatives"
+/>
