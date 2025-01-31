@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components'
+
+---
+
+<BaseLayout
+  title="About ToolHunt - The Story Behind Our Tool Discovery Platform"
+  description="Learn about ToolHunt, a comprehensive platform for discovering self-hosted applications, online tools, and their alternatives."
+>
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="prose prose-lg dark:prose-invert mx-auto">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-8">About ToolHunt</h1>
+      
+      <div class="mb-12">
+        <p class="text-lg text-gray-700 dark:text-gray-300">
+          Welcome to ToolHunt, your go-to platform for discovering the perfect tools for your workflow. We're dedicated to helping you find, compare, and choose between:
+        </p>
+        <ul class="mt-4 space-y-2 text-gray-700 dark:text-gray-300">
+          <li>🚀 Self-hosted Applications</li>
+          <li>🔧 Online Tools</li>
+          <li>🔄 Alternative Solutions</li>
+          <li>🍎 Mac Applications</li>
+        </ul>
+      </div>
+
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">About the Creator</h2>
+      <div class="mb-8">
+        <p class="text-gray-700 dark:text-gray-300">
+          Hey there! I'm Dragos, an IT professional with over a decade of experience and a DevOps specialist for the past four years. I'm passionate about sharing knowledge and helping others find the right tools for their needs.
+        </p>
+        
+        <p class="mt-4 text-gray-700 dark:text-gray-300">
+          Beyond ToolHunt, I run several other technical platforms:
+        </p>
+        <ul class="mt-2 space-y-2 text-gray-700 dark:text-gray-300">
+          <li><a href="https://wpdoze.com" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">WPDoze</a> - WordPress tutorials and insights</li>
+          <li><a href="https://bitdoze.com" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">BitDoze</a> - Linux, static sites, CMS, VPS, and DevOps resources</li>
+        </ul>
+      </div>
+
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Connect With Me</h2>
+      <div class="flex space-x-6 mb-12">
+        <a href="https://twitter.com/bitdoze" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-300">
+          <Icon name="mdi:twitter" class="w-8 h-8" />
+        </a>
+        <a href="https://bsky.app/profile/bitdoze.com" class="text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-300">
+          <Icon name="mdi:web" class="w-8 h-8" />
+        </a>
+        <a href="https://www.youtube.com/channel/UCGsUtKhXsRrMvYAWm8q0bCg" class="text-gray-600 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-300">
+          <Icon name="mdi:youtube" class="w-8 h-8" />
+        </a>
+        <a href="https://github.com/bitdoze" class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+          <Icon name="mdi:github" class="w-8 h-8" />
+        </a>
+      </div>
+
+      <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 mb-12">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Beyond Tech</h2>
+        <p class="text-gray-700 dark:text-gray-300">
+          When I'm not working on technical projects, you can find me:
+        </p>
+        <ul class="mt-4 space-y-2 text-gray-700 dark:text-gray-300">
+          <li>✈️ Exploring new destinations</li>
+          <li>🎬 Enjoying movies</li>
+          <li>🌐 Managing multiple affiliate sites</li>
+          <li>📚 Sharing knowledge with the community</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

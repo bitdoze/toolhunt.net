@@ -48,22 +48,55 @@
   <!-- Desktop menu -->
   <div class="hidden lg:flex lg:items-center lg:space-x-8">
     <a
-      href="/sh/"
+      href="/"
       class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium"
     >
-      Self-hosted Apps
+      Home
+    </a>
+    
+    <!-- Tools Dropdown -->
+    <div class="relative group">
+      <button class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium inline-flex items-center">
+        Tools
+        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div class="absolute left-0 mt-0 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+        <div class="py-1 relative before:absolute before:top-0 before:left-0 before:w-full before:h-3 before:-translate-y-full">
+          <a href="/sh/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
+            Self-hosted Apps
+          </a>
+          <a href="/tools/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
+            Online Tools
+          </a>
+          <a href="/alternatives/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
+            Alternatives
+          </a>
+          <a href="/mac/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
+            Mac Apps
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <a
+      href="/about/"
+      class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium"
+    >
+      About
     </a>
     <a
-      href="/tools/"
+      href="/submit/"
       class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium"
     >
-      Online Tools
+      Submit App
     </a>
     <a
-      href="/alternatives/"
+      href="/contact/"
       class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 text-sm font-medium"
     >
-      Alternatives
+      Contact
     </a>
   </div>
 
@@ -71,22 +104,56 @@
   <div id="mobile-menu" class="fixed top-16 left-0 right-0 z-40 hidden lg:hidden border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg">
     <div class="px-2 pt-2 pb-3 space-y-1">
       <a
-        href="/sh/"
+        href="/"
         class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
       >
-        Self-hosted Apps
+        Home
+      </a>
+      <!-- Tools Section -->
+      <div class="space-y-1 pl-4">
+        <div class="px-3 py-2 text-base font-medium text-gray-600 dark:text-gray-300">Tools</div>
+        <a
+          href="/sh/"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
+        >
+          Self-hosted Apps
+        </a>
+        <a
+          href="/tools/"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
+        >
+          Online Tools
+        </a>
+        <a
+          href="/alternatives/"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
+        >
+          Alternatives
+        </a>
+        <a
+          href="/mac/"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
+        >
+          Mac Apps
+        </a>
+      </div>
+      <a
+        href="/about/"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
+      >
+        About
       </a>
       <a
-        href="/tools/"
+        href="/submit/"
         class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
       >
-        Online Tools
+        Submit App
       </a>
       <a
-        href="/alternatives/"
+        href="/contact/"
         class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
       >
-        Alternatives
+        Contact
       </a>
     </div>
   </div>
