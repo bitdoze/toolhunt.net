@@ -1,4 +1,6 @@
 ---
+export const prerender = false
+
 import { getCollection } from 'astro:content';
 import SectionLayout from '../../layouts/SectionLayout.astro';
 
@@ -8,7 +10,7 @@ const allTools = await getCollection('sh');
 // Get URL parameters
 const url = new URL(Astro.request.url);
 const page = parseInt(url.searchParams.get('page') || '1');
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 50;
 
 // Get unique categories
 const categories = [...new Set(allTools.map(tool => tool.data.category))];

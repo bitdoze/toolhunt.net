@@ -1,4 +1,5 @@
 ---
+export const prerender = false
 interface Props {
   categories: string[];
   alternativeTo?: string[];
@@ -16,7 +17,7 @@ const {
 } = Astro.props;
 ---
 
-<div class="space-y-6">
+<form method="get" class="space-y-6">
   <!-- Categories Filter -->
   <div>
     <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Categories</h3>
@@ -72,7 +73,11 @@ const {
       </div>
     </div>
   )}
-</div>
+
+  <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+    Apply Filters
+  </button>
+</form>
 
 <script>
   function initializeFilters() {
@@ -92,35 +97,6 @@ const {
       if (checkbox.name === 'pricing' && pricingParams.includes(checkbox.value)) {
         checkbox.checked = true;
       }
-    });
-
-    // Add event listeners to checkboxes
-    document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox) => {
-      checkbox.addEventListener('change', () => {
-        const searchParams = new URLSearchParams(window.location.search);
-        
-        // Clear existing parameters for the changed filter type
-        searchParams.delete(checkbox.name);
-        
-        // Add checked values back to URL
-        document.querySelectorAll<HTMLInputElement>(`input[name="${checkbox.name}"]:checked`).forEach((checked) => {
-          searchParams.append(checkbox.name, checked.value);
-        });
-        
-        // Update URL without reloading the page
-        const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
-        window.history.pushState({}, '', newUrl);
-        
-        // Dispatch custom event for filter change
-        window.dispatchEvent(new CustomEvent('filter', {
-          detail: {
-            type: checkbox.name,
-            values: Array.from(
-              document.querySelectorAll<HTMLInputElement>(`input[name="${checkbox.name}"]:checked`)
-            ).map(el => el.value)
-          }
-        }));
-      });
     });
   }
 
