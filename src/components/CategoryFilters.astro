@@ -6,104 +6,164 @@ interface Props {
   selectedCategories: string[];
 }
 
-const { shCategories, toolCategories, macCategories, selectedCategories } = Astro.props;
+const { shCategories, toolCategories, macCategories, selectedCategories } =
+  Astro.props;
 ---
 
-<div class="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
+<div
+  class="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700"
+>
   <form method="get" class="divide-y divide-gray-100 dark:divide-gray-700">
-    <div class="grid grid-cols-1 md:grid-cols-3 md:divide-x divide-gray-100 dark:divide-gray-700">
+    <div
+      class="grid grid-cols-1 md:grid-cols-3 md:divide-x divide-gray-100 dark:divide-gray-700"
+    >
       <!-- Self-hosted Apps Categories -->
       <div class="p-6">
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-          <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900 mr-3">
-            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/>
+        <h3
+          class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center"
+        >
+          <span
+            class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900 mr-3"
+          >
+            <svg
+              class="w-5 h-5 text-blue-600 dark:text-blue-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 12h14M12 5l7 7-7 7"></path>
             </svg>
           </span>
           Self-hosted Apps
         </h3>
-        <div class="space-y-2">
-          {shCategories.map(category => (
-            <label class="relative flex cursor-pointer items-start p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-              <div class="flex items-center h-5">
-                <input
-                  type="checkbox"
-                  name="category"
-                  value={category}
-                  checked={selectedCategories.includes(category)}
-                  class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                />
-              </div>
-              <div class="ml-3 text-sm">
-                <span class="font-medium text-gray-700 dark:text-gray-300">{category}</span>
-              </div>
-            </label>
-          ))}
+        <div class="space-y-1">
+          {
+            shCategories.map((category) => (
+              <label class="relative flex cursor-pointer items-start p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <div class="flex items-center h-5">
+                  <input
+                    type="checkbox"
+                    name="category"
+                    value={category}
+                    checked={selectedCategories.includes(category)}
+                    class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                </div>
+                <div class="ml-3 text-sm">
+                  <span class="font-medium text-gray-700 dark:text-gray-300">
+                    {category}
+                  </span>
+                </div>
+              </label>
+            ))
+          }
         </div>
       </div>
 
       <!-- Online Tools Categories -->
       <div class="p-6">
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-          <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900 mr-3">
-            <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+        <h3
+          class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center"
+        >
+          <span
+            class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900 mr-3"
+          >
+            <svg
+              class="w-5 h-5 text-green-600 dark:text-green-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+              ></path>
             </svg>
           </span>
           Online Tools
         </h3>
-        <div class="space-y-2">
-          {toolCategories.map(category => (
-            <label class="relative flex cursor-pointer items-start p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-              <div class="flex items-center h-5">
-                <input
-                  type="checkbox"
-                  name="category"
-                  value={category}
-                  checked={selectedCategories.includes(category)}
-                  class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
-                />
-              </div>
-              <div class="ml-3 text-sm">
-                <span class="font-medium text-gray-700 dark:text-gray-300">{category}</span>
-              </div>
-            </label>
-          ))}
+        <div class="space-y-1">
+          {
+            toolCategories.map((category) => (
+              <label class="relative flex cursor-pointer items-start p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <div class="flex items-center h-5">
+                  <input
+                    type="checkbox"
+                    name="category"
+                    value={category}
+                    checked={selectedCategories.includes(category)}
+                    class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                  />
+                </div>
+                <div class="ml-3 text-sm">
+                  <span class="font-medium text-gray-700 dark:text-gray-300">
+                    {category}
+                  </span>
+                </div>
+              </label>
+            ))
+          }
         </div>
       </div>
 
       <!-- Mac Apps Categories -->
       <div class="p-6">
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-          <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900 mr-3">
-            <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        <h3
+          class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center"
+        >
+          <span
+            class="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900 mr-3"
+          >
+            <svg
+              class="w-5 h-5 text-purple-600 dark:text-purple-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              ></path>
             </svg>
           </span>
           Mac Apps
         </h3>
-        <div class="space-y-2">
-          {macCategories.map(category => (
-            <label class="relative flex cursor-pointer items-start p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-              <div class="flex items-center h-5">
-                <input
-                  type="checkbox"
-                  name="category"
-                  value={category}
-                  checked={selectedCategories.includes(category)}
-                  class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-                />
-              </div>
-              <div class="ml-3 text-sm">
-                <span class="font-medium text-gray-700 dark:text-gray-300">{category}</span>
-              </div>
-            </label>
-          ))}
+        <div class="space-y-1">
+          {
+            macCategories.map((category) => (
+              <label class="relative flex cursor-pointer items-start p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <div class="flex items-center h-5">
+                  <input
+                    type="checkbox"
+                    name="category"
+                    value={category}
+                    checked={selectedCategories.includes(category)}
+                    class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                  />
+                </div>
+                <div class="ml-3 text-sm">
+                  <span class="font-medium text-gray-700 dark:text-gray-300">
+                    {category}
+                  </span>
+                </div>
+              </label>
+            ))
+          }
         </div>
       </div>
     </div>
 
-    <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 rounded-b-2xl flex items-center justify-between">
+    <div
+      class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 rounded-b-2xl flex items-center justify-between"
+    >
       <span class="text-sm text-gray-500 dark:text-gray-400">
         Select categories to filter
       </span>
@@ -112,8 +172,18 @@ const { shCategories, toolCategories, macCategories, selectedCategories } = Astr
         class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
       >
         Apply Filters
-        <svg class="ml-2 -mr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+        <svg
+          class="ml-2 -mr-1 w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+          ></path>
         </svg>
       </button>
     </div>
