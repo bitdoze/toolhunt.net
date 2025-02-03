@@ -13,9 +13,10 @@ keyFeatures: [
   "Advanced data handling",
   "Multiple integrations"
 ]
-category: "No-Code DB"
+category: "No-Code"
 alternativeTo: "Airtable"
 checkItUrl: "https://teable.io"
+gitHubUrl: "https://github.com/teableio/teable"
 ---
 
 Teable represents a new generation of database tools that bridges the gap between professional databases and user-friendly spreadsheets. It's designed to provide PostgreSQL's power with the simplicity of a spreadsheet interface, making it perfect for teams that need both ease of use and robust database capabilities.

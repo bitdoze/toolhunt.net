@@ -13,9 +13,10 @@ keyFeatures: [
   "Automations & workflows",
   "Real-time collaboration"
 ]
-category: "No-Code DB"
+category: "No-Code"
 alternativeTo: "Airtable"
 checkItUrl: "https://nocodb.com"
+gitHubUrl: "https://github.com/nocodb/nocodb"
 ---
 
 NocoDB is a powerful open-source database platform that transforms your existing databases into smart spreadsheets. It provides an intuitive, Airtable-like interface while giving you complete control over your data through self-hosting capabilities.

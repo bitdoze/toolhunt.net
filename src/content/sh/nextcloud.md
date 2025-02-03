@@ -14,6 +14,7 @@ keyFeatures: [
 category: "Productivity"
 alternativeTo: "Google Drive"
 checkItUrl: "https://nextcloud.com"
+gitHubUrl: "https://github.com/nextcloud/all-in-one"
 ---
 
 Nextcloud is a powerful self-hosted solution for file storage and collaboration.

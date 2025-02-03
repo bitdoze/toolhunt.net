@@ -13,9 +13,10 @@ keyFeatures: [
   "REST API access",
   "Plugin system"
 ]
-category: "No-Code DB"
+category: "No-Code"
 alternativeTo: "Airtable"
 checkItUrl: "https://baserow.io"
+gitHubUrl: "https://github.com/bram2w/baserow"
 ---
 
 Baserow is a powerful open-source database platform that makes data management accessible to everyone. With its intuitive interface and robust features, it provides a perfect balance between ease of use and advanced functionality, all while keeping your data under your control through self-hosting.

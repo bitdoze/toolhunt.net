@@ -16,6 +16,7 @@ keyFeatures: [
 category: "Documentation"
 alternativeTo: "Notion"
 checkItUrl: "https://usememos.com"
+gitHubUrl: "https://github.com/usememos/memos"
 ---
 
 Memos is an elegant, open-source note-taking solution that puts privacy and speed first. With over 32,000 GitHub stars and 3.9M+ Docker pulls, it's becoming the go-to choice for users who want a simple yet powerful way to manage their thoughts and ideas.

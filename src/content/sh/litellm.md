@@ -16,6 +16,7 @@ keyFeatures: [
 category: "AI Development"
 alternativeTo: "OpenAI API"
 checkItUrl: "https://litellm.ai"
+gitHubUrl: "https://github.com/BerriAI/litellm"
 ---
 
 LiteLLM is a powerful tool that provides a unified interface for interacting with multiple Large Language Models (LLMs) through a standardized API. It supports over 100 different LLMs including those from OpenAI, Anthropic, HuggingFace, and others, making it easier to build and manage AI applications.

@@ -16,6 +16,7 @@ keyFeatures: [
 category: "Analytics"
 alternativeTo: "Google Analytics"
 checkItUrl: "https://umami.is"
+gitHubUrl: "https://github.com/umami-software/umami"
 ---
 
 Umami is a lightweight, open-source web analytics solution designed with privacy at its core. Unlike traditional analytics platforms, Umami collects only the essential metrics you need while respecting your visitors' privacy.
@@ -50,4 +51,3 @@ Umami is a lightweight, open-source web analytics solution designed with privacy
 - Docker support for easy deployment
 - One-click deploy to Vercel, Railway, or Heroku
 - PostgreSQL or MySQL database support
-

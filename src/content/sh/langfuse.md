@@ -16,6 +16,7 @@ keyFeatures: [
 category: "AI Development"
 alternativeTo: "LangSmith"
 checkItUrl: "https://langfuse.com"
+gitHubUrl: "https://github.com/langfuse/langfuse"
 ---
 
 Langfuse is a comprehensive observability platform built specifically for Large Language Model (LLM) applications. It provides developers with powerful tools to monitor, analyze, and optimize their AI models and applications in production environments.

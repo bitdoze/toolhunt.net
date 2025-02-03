@@ -14,8 +14,9 @@ keyFeatures: [
   "Custom agents & assistants"
 ]
 category: "AI Development"
-alternativeTo: "Langflow"
+alternativeTo: "Zapier"
 checkItUrl: "https://flowiseai.com"
+gitHubUrl: "https://github.com/FlowiseAI/Flowise"
 ---
 
 Flowise is a powerful low-code platform that enables users to build AI workflows and applications through an intuitive visual interface. It bridges the gap between complex AI development and practical implementation, making AI accessible to teams without extensive technical expertise.

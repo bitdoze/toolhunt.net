@@ -13,9 +13,10 @@ keyFeatures: [
   "Workflow automation",
   "Extensive integrations"
 ]
-category: "No-Code DB"
+category: "No-Code"
 alternativeTo: "Airtable"
 checkItUrl: "https://aitable.ai"
+gitHubUrl: "https://github.com/apitable/apitable"
 ---
 
 AITable.ai revolutionizes database management by incorporating artificial intelligence into every aspect of data handling. This modern platform combines the simplicity of spreadsheets with the power of AI, making it an advanced yet accessible solution for teams looking to leverage AI in their data management processes.

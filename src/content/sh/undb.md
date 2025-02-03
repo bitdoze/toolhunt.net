@@ -13,9 +13,10 @@ keyFeatures: [
   "Resource-efficient",
   "Quick deployment"
 ]
-category: "No-Code DB"
+category: "No-Code"
 alternativeTo: "Airtable"
 checkItUrl: "https://undb.io"
+gitHubUrl: "https://github.com/undb-io/undb"
 ---
 
 undb stands out in the no-code database space with its focus on simplicity and efficiency. This lightweight platform provides essential database functionality without the complexity of feature-heavy alternatives, making it perfect for users who value speed and simplicity.

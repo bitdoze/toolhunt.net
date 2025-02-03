@@ -13,9 +13,10 @@ keyFeatures: [
   "Access controls",
   "API integration"
 ]
-category: "No-Code DB"
+category: "No-Code"
 alternativeTo: "Airtable"
 checkItUrl: "https://getgrist.com"
+gitHubUrl: "https://github.com/gristlabs/grist-core"
 ---
 
 Grist brings a fresh perspective to data management by combining the intuitive nature of spreadsheets with the power of Python programming. It's designed for users who need advanced data manipulation capabilities while maintaining a familiar spreadsheet-like interface.

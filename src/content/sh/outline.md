@@ -16,6 +16,7 @@ keyFeatures: [
 category: "Documentation"
 alternativeTo: "Notion"
 checkItUrl: "https://www.getoutline.com"
+gitHubUrl: "https://github.com/outline/outline"
 ---
 
 Outline is a modern knowledge base platform designed to help teams organize and share information effectively. With its blazing-fast editor, real-time collaboration features, and powerful search capabilities, it's the perfect solution for teams drowning in scattered documentation.

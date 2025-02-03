@@ -16,6 +16,7 @@ keyFeatures: [
 category: "Documentation"
 alternativeTo: "Notion"
 checkItUrl: "https://docmost.com"
+gitHubUrl: "https://github.com/docmost/docmost"
 ---
 
 Docmost is a modern, open-source documentation platform that makes it simple to create and manage your team's knowledge base. Whether you're documenting your project, building a company wiki, or creating technical documentation, Docmost provides all the tools you need in one place.

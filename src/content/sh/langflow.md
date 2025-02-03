@@ -14,8 +14,9 @@ keyFeatures: [
   "RAG chatbot creation"
 ]
 category: "AI Development"
-alternativeTo: "Flowise"
+alternativeTo: "Zapier"
 checkItUrl: "https://langflow.org"
+gitHubUrl: "https://github.com/langflow-ai/langflow"
 ---
 
 LangFlow is an innovative no-code AI development platform that enables users to build sophisticated AI workflows through a visual interface. It makes AI development accessible to both technical and non-technical users, focusing on Large Language Model (LLM) applications and natural language processing tasks.

@@ -16,6 +16,7 @@ keyFeatures: [
 category: "Analytics"
 alternativeTo: "Google Analytics"
 checkItUrl: "https://plausible.io"
+gitHubUrl: "https://github.com/plausible/analytics"
 ---
 
 Plausible Analytics is a modern, privacy-focused web analytics tool that emphasizes user privacy and ease of use. It offers real-time data visualization and customizable dashboards, making it an excellent choice for both personal and professional websites.
