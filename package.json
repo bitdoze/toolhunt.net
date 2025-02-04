@@ -11,6 +11,7 @@
   "dependencies": {
     "@astrojs/cloudflare": "^12.2.1",
     "@astrojs/markdoc": "^0.12.8",
+    "@astrojs/mdx": "^4.0.8",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^6.0.0",
     "@iconify-json/mdi": "^1.2.3",

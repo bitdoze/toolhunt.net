@@ -9,11 +9,12 @@ import CategoryFilters from '../components/CategoryFilters.astro';
 import { getCollection } from 'astro:content';
 
 // Get all collections
-const [shEntries, toolEntries, alternativeEntries, macEntries] = await Promise.all([
+const [shEntries, toolEntries, alternativeEntries, macEntries, blogEntries] = await Promise.all([
   getCollection('sh'),
   getCollection('tools'),
   getCollection('alternatives'),
-  getCollection('mac')
+  getCollection('mac'),
+  getCollection('blog')
 ]);
 
 // Combine all tools for search
@@ -68,10 +69,11 @@ function sortByDate(entries: any[]) {
 }
 
 // Filter and get latest entries for each section
-const filteredShEntries = sortByDate(filterByCategories(shEntries, selectedCategories)).slice(0, 5);
-const filteredToolEntries = sortByDate(filterByCategories(toolEntries, selectedCategories)).slice(0, 5);
-const filteredAlternativeEntries = sortByDate(filterByCategories(alternativeEntries, selectedCategories)).slice(0, 5);
-const filteredMacEntries = sortByDate(filterByCategories(macEntries, selectedCategories)).slice(0, 5);
+const filteredShEntries = sortByDate(filterByCategories(shEntries, selectedCategories)).slice(0, 6);
+const filteredToolEntries = sortByDate(filterByCategories(toolEntries, selectedCategories)).slice(0, 6);
+const filteredAlternativeEntries = sortByDate(filterByCategories(alternativeEntries, selectedCategories)).slice(0, 6);
+const filteredMacEntries = sortByDate(filterByCategories(macEntries, selectedCategories)).slice(0, 6);
+const latestBlogEntries = sortByDate(blogEntries).slice(0, 3);
 
 // Calculate total tools
 const totalTools = shEntries.length + toolEntries.length + alternativeEntries.length + macEntries.length;
@@ -118,44 +120,79 @@ const totalTools = shEntries.length + toolEntries.length + alternativeEntries.le
           />
         </div>
 
-        <section class="mb-16">
+        <section class="mb-16 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Self-hosted Apps</h2>
-            <a href="/sh/" class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
-              View all →
+            <a href="/sh/" class="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 font-medium">
+              View all <span class="ml-2">→</span>
             </a>
           </div>
           <ToolGrid tools={filteredShEntries} />
         </section>
 
-        <section class="mb-16">
+        <section class="mb-16 p-6 bg-green-50 dark:bg-green-900/20 rounded-xl">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Online Tools</h2>
-            <a href="/tools/" class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
-              View all →
+            <a href="/tools/" class="inline-flex items-center px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors duration-200 font-medium">
+              View all <span class="ml-2">→</span>
             </a>
           </div>
           <ToolGrid tools={filteredToolEntries} />
         </section>
 
-        <section class="mb-16">
+        <section class="mb-16 p-6 bg-purple-50 dark:bg-purple-900/20 rounded-xl">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Alternatives</h2>
-            <a href="/alternatives/" class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
-              View all →
+            <a href="/alternatives/" class="inline-flex items-center px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-colors duration-200 font-medium">
+              View all <span class="ml-2">→</span>
             </a>
           </div>
           <ToolGrid tools={filteredAlternativeEntries} />
         </section>
 
-        <section class="mb-16">
+        <section class="mb-16 p-6 bg-orange-50 dark:bg-orange-900/20 rounded-xl">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Mac Apps</h2>
-            <a href="/mac/" class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
-              View all →
+            <a href="/mac/" class="inline-flex items-center px-4 py-2 rounded-lg bg-orange-600 text-white hover:bg-orange-700 transition-colors duration-200 font-medium">
+              View all <span class="ml-2">→</span>
             </a>
           </div>
           <ToolGrid tools={filteredMacEntries} />
+        </section>
+
+        <section class="mb-16 p-6 bg-rose-50 dark:bg-rose-900/20 rounded-xl">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest from Blog</h2>
+            <a href="/blog/" class="inline-flex items-center px-4 py-2 rounded-lg bg-rose-600 text-white hover:bg-rose-700 transition-colors duration-200 font-medium">
+              View all <span class="ml-2">→</span>
+            </a>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {latestBlogEntries.map((post) => (
+              <article class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                {post.data.image && (
+                  <img
+                    src={post.data.image}
+                    alt={post.data.title}
+                    class="w-full aspect-video object-cover"
+                  />
+                )}
+                <div class="p-6">
+                  <time class="text-sm text-gray-500 dark:text-gray-400">
+                    {post.data.publishedDate.toLocaleDateString()}
+                  </time>
+                  <h3 class="mt-2 text-xl font-semibold text-gray-900 dark:text-white">
+                    <a href={`/blog/${post.slug}/`} class="hover:text-blue-600 dark:hover:text-blue-400">
+                      {post.data.title}
+                    </a>
+                  </h3>
+                  <p class="mt-3 text-gray-600 dark:text-gray-300 line-clamp-3">
+                    {post.data.description}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
         </section>
 
         <section class="text-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800 rounded-2xl">

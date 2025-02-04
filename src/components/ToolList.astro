@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import ToolCard from './ToolCard.astro';
+
+interface Props {
+  toolList: string;
+}
+
+const { toolList = '' } = Astro.props;
+
+// Convert toolList string to array and trim whitespace
+const toolNames = (toolList || '').split(',').map(name => name.trim().toLowerCase()).filter(Boolean);
+
+// Fetch tools from all collections
+const shTools = await getCollection('sh');
+const onlineTools = await getCollection('tools');
+const macTools = await getCollection('mac');
+
+// Combine all tools and filter by name
+const allTools = [...shTools, ...onlineTools, ...macTools]
+  .filter(tool => {
+    const searchTerms = toolNames.map(term => term.toLowerCase());
+    const toolTitle = tool.data.title.toLowerCase();
+    const toolSlug = tool.slug.toLowerCase();
+    return searchTerms.some(term => 
+      toolTitle.includes(term) || 
+      toolSlug === term ||
+      tool.data.tags?.some(tag => tag.toLowerCase().includes(term))
+    );
+  });
+---
+
+<div class="space-y-6 max-w-4xl mx-auto">
+  {allTools.map(tool => (
+    <div class=" rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl border border-gray-100/50 dark:border-gray-700/50 backdrop-blur-sm">
+      <div class="p-8">
+        <ToolCard entry={tool} showFullDetails={true} />
+      </div>
+    </div>
+  ))}
+</div>

@@ -96,8 +96,16 @@ const formattedDate = new Date(publishedDate).toLocaleDateString('en-US', {
   {showFullDetails && (
     <div class="px-6 pb-6">
       <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-        <h4 class="font-medium text-gray-900 dark:text-white mb-2">Key Features</h4>
-        <ul class="space-y-2">
+        <h4 class="font-medium text-gray-900 dark:text-white mb-4">Key Features</h4>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {entry.data.features?.map((feature: string) => (
+            <li class="flex items-start gap-2">
+              <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span class="text-gray-700 dark:text-gray-300 text-sm">{feature}</span>
+            </li>
+          ))}
           {entry.data.keyFeatures.map((feature: string) => (
             <li class="flex items-start text-sm text-gray-600 dark:text-gray-300">
               <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

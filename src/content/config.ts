@@ -1,5 +1,15 @@
 import { defineCollection, z } from 'astro:content';
 
+// Blog post schema
+const blogSchema = z.object({
+  title: z.string(),
+  publishedDate: z.date(),
+  description: z.string(),
+  author: z.string(),
+  tags: z.array(z.string()),
+  image: z.string().optional(),
+});
+
 const baseSchema = z.object({
   title: z.string(),
   publishedDate: z.date(),
@@ -24,7 +34,6 @@ const toolsSchema = baseSchema.extend({
 
 // Alternatives schema
 const alternativesSchema = baseSchema.extend({
-  alternativeTo: z.string(),
 });
 
 // Mac apps schema
@@ -35,6 +44,10 @@ const macSchema = baseSchema.extend({
 
 // Define collections
 export const collections = {
+  'blog': defineCollection({
+    type: 'content',
+    schema: blogSchema,
+  }),
   'sh': defineCollection({
     type: 'content',
     schema: selfHostedSchema,
