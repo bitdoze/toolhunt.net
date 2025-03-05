@@ -14,7 +14,7 @@ keyFeatures: [
   "Tweak icon sizes"
 ]
 category: "Utilities"
-pricing: "Free"
+pricing: "Freemium"
 checkItUrl: "https://apps.apple.com/app/iconize-folder/id6478772538"
 
 ---
