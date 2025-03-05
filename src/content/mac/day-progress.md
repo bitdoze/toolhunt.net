@@ -1,55 +1,51 @@
 ---
-title: "Day Progress"
+title: "Day Progress - Your Daily Time Tracker for Mac"
 publishedDate: 2025-02-08
 logo: "/images/mac/day-progress-logo.webp"
 uiImage: "/images/mac/day-progress.webp"
-description: "A simple menu bar app that shows time remaining in your day as a visual progress indicator to help stay motivated and manage time efficiently."
+description: "A free menu bar app that visually tracks your day’s progress to keep you motivated and on top of your time."
 keyFeatures: [
-  "Customizable day start/end times",
-  "Progress pie or bar display",
-  "Percentage and time remaining",
-  "Midnight+ end time support",
-  "Shortcuts integration",
-  "Clean menu bar interface"
+  "Set custom day times",
+  "Pie or bar progress view",
+  "Shows time left",
+  "Handles past-midnight days",
+  "Works with Shortcuts",
+  "Sleek menu bar design"
 ]
 category: "Productivity"
 pricing: "Free"
 checkItUrl: "https://apps.apple.com/app/id6450280202"
 ---
 
-Day Progress is a focused menu bar utility that provides a visual cue of your remaining daily time to help with motivation and time management. It offers simple but effective customization options while maintaining a minimalist approach.
+Ever feel like the day slips away without you noticing? **Day Progress** is here to change that with a free, minimalist Mac app that lives in your menu bar and keeps you in tune with your time. Picture a tiny progress pie—or bar, your choice—quietly showing how much of your day is left, whether it’s a standard 9-to-5 or a night owl’s 3 PM to 3 AM grind. It’s not about overwhelming you with clocks or timers; it’s about a gentle, visual nudge to stay motivated and manage your hours. Customize your start and end times, peek at the percentage or minutes remaining, and even tie it into Shortcuts for some automation magic—like syncing with sunrise or setting quick presets. Perfect for freelancers, students, or anyone who wants a fresh take on time without the stress, Day Progress turns your Mac into a subtle productivity ally.
 
-## Key Features
+## Why You’ll Love It
+- **See Your Day**: Watch progress with a pie or bar that fills as time ticks by.
+- **Your Schedule**: Set any start and end times—even past midnight for late workers.
+- **Quick Glance**: Check percentage or minutes left right from the menu bar.
+- **Automation Ready**: Link it with Shortcuts to tweak times or follow the sun.
+- **No Clutter**: A clean, tiny design that blends into your Mac’s vibe.
 
-### Time Display Options
-- Progress pie or bar visualization
-- Show percentage remaining
-- Display remaining time
-- Show minutes left
-- Customizable day start/end times
-- Support for end times past midnight
+## What It Offers
+- **Visual Options**: Pick a progress pie or bar, with percentage and time displays.
+- **Flexible Timing**: Supports custom day ranges, including post-midnight schedules.
+- **Shortcuts Power**: Automate with presets, countdowns, or location-based sunrise/sunset.
+- **Subtle Style**: Doubles as an abstract clock without the usual time pressure.
+- **Mac Native**: Lightweight, smooth, and updated regularly for free.
 
-### Shortcuts Integration
-- Create time presets
-- Set custom countdown periods
-- Automate day ranges
-- Location-based sunrise/sunset times
-- Flexible automation options
+## Perfect For
+- **Freelancers**: Track work hours without a fuss.
+- **Students**: Stay on top of study days or late-night projects.
+- **Night Owls**: Visualize unconventional schedules with ease.
+- **Minimalists**: Replace the clock with a calmer progress view.
 
-### Additional Features
-- Clean menu bar interface
-- Can serve as an abstract clock
-- Minimalist time visualization
-- macOS native experience
-- Regular updates
+## Get Started
+1. **Download**: Snag it free from the [App Store](https://apps.apple.com/app/id6450280202).
+2. **Install**: Open it from your Applications folder.
+3. **Customize**: Set your day’s start and end, pick a style, and go.
+4. **Automate (Optional)**: Add Shortcuts for extra flair.
 
-## Why Choose Day Progress
-
-- **Focused Purpose**: Specifically designed for daily time progress visualization
-- **Simplicity**: Intentionally simple and focused functionality
-- **Flexibility**: Customizable to your daily schedule
-- **Integration**: Works with Shortcuts app for automation
-- **Distraction-Free**: Can replace traditional clock for reduced time anxiety
-- **Regular Updates**: Maintained and improved regularly
-
-Day Progress is perfect for users who want a simple but effective way to visualize their day's progression without unnecessary complexity. While maintaining its core purpose of showing daily progress, it provides enough customization options to adapt to different workflows and preferences.
+## System Requirements
+- macOS 12 (Monterey) or higher
+- 4GB RAM minimum
+- Works on Intel and Apple Silicon Macs

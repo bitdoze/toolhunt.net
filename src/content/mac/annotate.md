@@ -3,80 +3,61 @@ title: "Annotate"
 publishedDate: 2025-03-04
 logo: "/images/mac/annotate-logo.webp"
 uiImage: "/images/mac/annotate-ui.gif"
-description: "A lightweight, keyboard-driven screen annotation tool for macOS that allows you to quickly draw, highlight, and annotate anything on your screen with powerful tools and customizable shortcuts."
+description: "A lightweight, keyboard-driven screen annotation tool for macOS that lets you draw, highlight, and mark up anything on your screen with ease."
 youtubeId: ""
 keyFeatures: [
   "Multiple drawing tools",
   "Keyboard-driven workflow",
   "Fade or persist mode",
   "Customizable shortcuts",
-  "Menu bar integration",
-  "Color selector"
+  "Menu bar access",
+  "Quick color picker"
 ]
 category: "Productivity"
 pricing: "Free"
 checkItUrl: "https://github.com/epilande/Annotate"
 ---
 
-Annotate is a lightweight, keyboard-driven screen annotation tool for macOS that empowers you to quickly draw, highlight, and mark up anything on your screen. Perfect for presentations, teaching, or collaborating, Annotate provides powerful yet simple tools to emphasize ideas visually.
+Picture this: you’re in the middle of a presentation, teaching a class, or walking a colleague through a design, and you need to point out something on your screen—fast. Enter **Annotate**, a free, open-source macOS tool that transforms your screen into a canvas for instant markups.
 
-## Key Features
+With a tap of a hotkey, you can draw arrows, highlight text, or drop numbered steps, all without breaking your flow. Built for speed and simplicity, this lightweight app is keyboard-driven, fully customizable, and packed with just the right tools to make your ideas pop.
 
-- **Versatile Drawing Tools**: Access a comprehensive toolkit including pen, arrow, highlighter, rectangle, circle, counter, and text annotations.
-- **Keyboard-Driven Workflow**: Switch between tools and options with intuitive keyboard shortcuts for maximum efficiency.
-- **Dual Operation Modes**: Choose between fade mode (annotations disappear after a few seconds) or persist mode (annotations remain until cleared).
-- **Color Selection**: Quickly change colors to differentiate annotations and highlight important elements.
-- **Menu Bar Integration**: Access all tools and settings directly from your Mac's menu bar.
-- **Global Hotkey Access**: Activate the annotation overlay from anywhere with a customizable system-wide shortcut.
+Whether you’re a teacher circling key points, a designer sketching feedback, or a remote worker guiding a team, Annotate slips seamlessly into your workflow. It’s not bloated software—it’s a nimble, native Mac app that stays out of your way until you need it, then delivers with precision.
 
-## Why Choose Annotate?
+## Why You’ll Love It
+- **Draw Anything, Anywhere**: Grab tools like pens, arrows, or highlighters to mark up your screen in seconds.
+- **Keyboard Magic**: Switch tools with shortcuts (e.g., ‘p’ for pen, ‘h’ for highlight) for a smooth, mouse-free experience.
+- **Fade or Stay**: Pick fade mode to let annotations vanish after a moment, or persist mode to keep them until you’re done.
+- **Your Style, Your Way**: Customize shortcuts and colors to match how you work—red arrows today, blue circles tomorrow.
+- **Always Ready**: Launch it from the menu bar or a global hotkey, no matter what app you’re in.
 
-- **Minimalist Design**: Clean interface that stays out of your way until needed.
-- **Swift Performance**: Built natively for macOS for optimal performance and reliability.
-- **Customizability**: Personalize shortcuts and behaviors to match your workflow.
-- **Lightweight**: Small system footprint that won't slow down your Mac.
-- **Open Source**: Transparent, community-supported development under the MIT License.
+## What It Offers
+- **Toolbox Variety**: Freehand pens, arrows, rectangles, circles, text, numbered counters—everything you need to explain visually.
+- **Smart Modes**: Fade mode for temporary notes (great for live demos) or persist mode for detailed breakdowns.
+- **Light & Fast**: Built natively for macOS, it runs smoothly without hogging resources.
+- **Open-Source Perks**: Free under the MIT License, with a community keeping it fresh and bug-free.
 
-## Use Cases
+## Perfect For
+- **Presentations**: Point out key details during Zoom calls or live demos.
+- **Tutorials**: Add clear, step-by-step visuals to screencasts or lessons.
+- **Feedback**: Sketch notes on designs or UI mockups for your team.
+- **Support**: Guide users by highlighting exactly what to click.
 
-- **Live Presentations**: Highlight important points during screen sharing.
-- **Educational Screencasts**: Create clear, visual explanations in tutorials and walkthroughs.
-- **Design Feedback**: Mark up designs and interfaces to communicate revisions.
-- **Technical Support**: Guide users by highlighting relevant areas of the screen.
-- **Meeting Collaboration**: Visually communicate ideas during virtual meetings.
+## Tools at a Glance
+- **Pen (p)**: Scribble freehand with precision.
+- **Arrow (a)**: Direct attention with clean, bold arrows.
+- **Highlighter (h)**: Emphasize text or areas with a subtle glow.
+- **Rectangle (r) & Circle (o)**: Frame or spotlight key sections.
+- **Text (t)**: Drop editable notes anywhere.
+- **Counter (n)**: Add numbered steps for guides.
 
-## Drawing Tools in Detail
+## Get Started
+1. **Download**: Grab it from [GitHub](https://github.com/epilande/Annotate/releases).
+2. **Install**: Unzip and drag Annotate.app to your Applications folder.
+3. **Set Up**: Open it, pick your global hotkey, and tweak shortcuts if you like.
+4. **Go**: Hit your hotkey and start annotating!
 
-- **Pen Tool (p)**: Create freehand drawings with precise control.
-- **Arrow Tool (a)**: Draw directional arrows to point to important elements.
-- **Highlighter (h)**: Apply semi-transparent highlighting to emphasize content.
-- **Rectangle (r)**: Draw rectangular shapes to frame important areas.
-- **Circle (o)**: Create circular highlights to focus attention.
-- **Counter (n)**: Add sequential numbered circles for step-by-step explanations.
-- **Text (t)**: Add editable text annotations anywhere on screen.
-
-## Getting Started
-
-1. **Download**: Get the latest release from [GitHub](https://github.com/epilande/Annotate/releases)
-2. **Install**: Unzip and move Annotate.app to your Applications folder
-3. **Launch**: Open the app and configure your preferred global hotkey
-4. **Annotate**: Press your global hotkey to start annotating immediately
-
-## Keyboard Shortcuts
-
-| Action | Default Shortcut | Description |
-|--------|-----------------|-------------|
-| Toggle Overlay | Custom (Settings) | Show/hide annotation overlay |
-| Pen Mode | p | Freehand drawing |
-| Arrow Mode | a | Create directional arrows |
-| Highlighter | h | Semi-transparent highlighting |
-| Rectangle | r | Draw rectangular shapes |
-| Circle | o | Draw circular shapes |
-| Text | t | Add text annotations |
-| Counter | n | Add numbered circles |
-| Toggle Fade | Space | Switch between fade/persist modes |
-| Color Picker | c | Open color selection menu |
-| Undo | Command + Z | Undo last action |
-| Clear All | Option + Delete | Remove all annotations |
-
-Annotate represents a new approach to screen annotation on macOS - lightweight, keyboard-driven, and designed specifically for users who need to quickly emphasize information without interrupting their workflow. Whether you're a teacher, presenter, or collaborator, Annotate gives you the tools to communicate visually with speed and clarity.
+## System Requirements
+- macOS 10.15 (Catalina) or higher
+- 4GB RAM minimum
+- Works on Intel and Apple Silicon Macs

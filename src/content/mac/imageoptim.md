@@ -1,57 +1,51 @@
 ---
-title: "ImageOptim"
+title: "ImageOptim - Free Image Slimmer for Mac"
 publishedDate: 2025-02-10
 logo: "/images/mac/imageoptim-logo.webp"
 uiImage: "/images/mac/imageoptim.webp"
-description: "A free and open source image optimization tool that reduces image file sizes by removing unnecessary metadata while preserving quality."
+description: "A free, open-source tool to shrink image sizes without losing quality, with metadata cleanup and drag-and-drop ease."
 keyFeatures: [
-  "Lossless compression",
-  "Metadata removal",
-  "Multiple format support",
-  "Drag and drop interface",
-  "System integration",
-  "Batch processing"
+  "Lossless shrinking",
+  "Strips metadata",
+  "Handles many formats",
+  "Drag and drop",
+  "Works with macOS",
+  "Batch optimize"
 ]
 category: "Utilities"
 pricing: "Free"
 checkItUrl: "https://imageoptim.com/mac"
 ---
 
-ImageOptim is a powerful image optimization tool that makes images load faster by reducing file sizes without compromising quality. It combines multiple optimization tools in an easy-to-use interface while respecting user privacy.
+Got hefty images slowing down your website, clogging your emails, or just taking up too much space? **ImageOptim** is here to save the day—a free, open-source Mac app that trims image file sizes like a pro without touching their quality. Drop a batch of JPEGs, PNGs, or GIFs onto its window, and watch it zap away unnecessary metadata—like GPS tags or camera details—while squeezing files down with top-notch compression tricks. It’s perfect for web devs racing to boost page speed, designers prepping sleek portfolios, or anyone who wants leaner pics without the hassle. Built with privacy in mind and packed with macOS goodies like Finder integration, ImageOptim is your go-to for fast, clean images that still look sharp. No cost, no catch—just drag, drop, and optimize.
 
-## Key Features
+## Why You’ll Love It
+- **Slim & Sharp**: Cuts file sizes without blurring a pixel.
+- **Privacy Boost**: Wipes out EXIF, GPS, and other hidden data.
+- **Format Friendly**: Works with JPEG, PNG, GIF, even SVG.
+- **Drop It**: Drag files in and let it rip—batch-ready.
+- **Mac Mate**: Hooks into Finder and Mail for seamless use.
 
-### Image Optimization
-- Advanced compression algorithms
-- Preserves image quality
-- Supports JPEG, PNG, GIF, SVG
-- Optional lossy compression
-- Batch processing support
-- Progress tracking
+## What It Offers
+- **Compression Power**: Uses tools like MozJPEG and Pngcrush for max efficiency.
+- **Cleanup Crew**: Strips metadata, thumbnails, and profiles—or keeps what you want.
+- **Batch Bliss**: Optimize tons of images at once with progress tracking.
+- **System Smarts**: Ties into Finder, Dock, and command line if you’re geeky.
+- **Free Forever**: Open-source, multi-language, and always improving.
 
-### Privacy & Cleanup
-- Removes EXIF metadata
-- Strips GPS location data
-- Removes camera information
-- Cleans embedded thumbnails
-- Removes unnecessary profiles
-- Optional metadata preservation
+## Perfect For
+- **Web Devs**: Speed up sites with lighter images.
+- **Designers**: Share portfolios without the bulk.
+- **Emailers**: Attach pics that won’t choke inboxes.
+- **Privacy Nuts**: Ditch metadata without a fuss.
 
-### Integration
-- Drag and drop interface
-- Dock icon support
-- Finder Services menu
-- Apple Mail integration
-- Command line support
-- Sketch compatibility
+## Get Started
+1. **Download**: Grab it free from [ImageOptim](https://imageoptim.com/mac).
+2. **Install**: Drag it to Applications and open it up.
+3. **Optimize**: Drop your images and watch the magic happen.
+4. **Enjoy**: Use the slimmed-down files anywhere.
 
-## Why Choose ImageOptim
-
-- **Free & Open Source**: GPL licensed and freely available
-- **Privacy Focused**: Removes sensitive metadata by default
-- **Multiple Tools**: Combines MozJPEG, pngquant, Pngcrush and more
-- **Ease of Use**: Simple drag and drop interface
-- **System Integration**: Works seamlessly with macOS
-- **Multi-language**: Available in 18+ languages
-
-ImageOptim is perfect for web developers, designers, and anyone who needs to optimize images while maintaining quality. Its focus on privacy and open-source nature makes it an ideal choice for both personal and professional use.
+## System Requirements
+- macOS 10.13 (High Sierra) or higher
+- 4GB RAM minimum
+- Works on Intel and Apple Silicon Macs

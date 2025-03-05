@@ -1,60 +1,51 @@
 ---
-title: "OnlySwitch"
+title: "OnlySwitch - All-in-One Menu Bar Toggles for Mac"
 publishedDate: 2025-02-09
 logo: "/images/mac/onlyswitch-logo.webp"
 uiImage: "/images/mac/onlyswitch.webp"
-description: "An all-in-one menu bar app for macOS that provides quick toggles for system settings, including notch hiding, dark mode, AirPods, and custom shortcuts."
+description: "A free Mac app with quick menu bar toggles for system settings, media, and custom shortcuts—all in one spot."
 keyFeatures: [
-  "Multiple system toggles",
-  "Customizable switches",
-  "Keyboard shortcuts",
-  "Apple Widgets support",
-  "Radio player",
-  "Evolution scripts"
+  "Tons of toggles",
+  "Custom switch options",
+  "Keyboard controls",
+  "Widgets for Sonoma+",
+  "Radio streaming",
+  "Scriptable tweaks"
 ]
 category: "Utilities"
 pricing: "Free"
 checkItUrl: "https://github.com/jacklandrin/OnlySwitch"
 ---
 
-OnlySwitch is a powerful menu bar utility that provides a comprehensive set of toggles to simplify your routine work on macOS. With its extensive feature set and customizable options, it brings essential system controls just one click away.
+Tired of digging through System Settings or juggling apps to tweak your Mac? **OnlySwitch** is your new go-to—a free, open-source menu bar app that packs a boatload of handy toggles into one tidy spot. Flip dark mode, hide your MacBook’s notch, connect AirPods, or kick on a screen saver with a single click. It’s not just about basics—stream radio, control Spotify, or even set up custom switches with scripts for your own workflow hacks. Whether you’re a productivity nut hiding desktop icons, a music buff queuing tunes, or a tinkerer crafting shortcuts, OnlySwitch brings it all together with a clean, macOS-native vibe. With widget support for Sonoma and beyond, plus a community keeping it fresh, it’s like a Swiss Army knife for your Mac—free and endlessly tweakable.
 
-## Key Features
+## Why You’ll Love It
+- **Toggle Heaven**: Switch dark mode, notch, Bluetooth, and more in a snap.
+- **Your Way**: Add, remove, or sort switches to fit your style.
+- **Key Speed**: Flip settings with keyboard shortcuts.
+- **Widget Ready**: Quick controls right on your desktop (Sonoma+).
+- **Tunes On**: Play radio or control music from the menu bar.
 
-### System Controls
-- Hide desktop icons
-- Toggle dark mode
-- Hide notch on MacBook Pro
-- Night shift control
-- Bluetooth & AirPods
-- Low power mode
-- Screen saver
-- True Tone
+## What It Offers
+- **System Smarts**: Hide icons, tweak True Tone, or manage power modes.
+- **Media Mix**: Stream radio, handle Spotify/Apple Music, or test audio.
+- **Custom Power**: Build switches with Evolution scripts or shortcuts.
+- **Extras Galore**: Pomodoro timer, screen clean, and multi-language support.
+- **Mac Magic**: Light, open-source, and updated often.
 
-### Media Features
-- Radio station player
-- Spotify controls
-- Apple Music integration
-- Back noises
-- Sound controls
-- Screen test & clean
+## Perfect For
+- **Busy Bees**: Streamline daily Mac tweaks.
+- **Music Fans**: Keep tunes a click away.
+- **Customizers**: Script your own perfect setup.
+- **Minimalists**: Declutter with one app for all.
 
-### Advanced Functions
-- Custom shortcuts support
-- Keyboard shortcuts
-- Apple Widgets (Sonoma+)
-- Evolution scripts
-- Hide menu bar icons
-- Multiple language support
-- Pomodoro timer
+## Get Started
+1. **Download**: Grab it free from [OnlySwitch](https://github.com/jacklandrin/OnlySwitch).
+2. **Install**: Drag it to Applications and launch.
+3. **Toggle**: Pick your switches and start flipping.
+4. **Tweak**: Add widgets or scripts for extra flair.
 
-## Why Choose OnlySwitch
-
-- **All-in-One Solution**: Multiple system toggles in one place
-- **Customizable**: Add/remove switches and sort them
-- **Widget Support**: Desktop widgets for quick access
-- **Evolution System**: Create custom switches with scripts
-- **Regular Updates**: Frequent new features and improvements
-- **Open Source**: Free and community-driven development
-
-OnlySwitch is perfect for users who want quick access to system settings and controls through a clean menu bar interface. Its extensive feature set and customization options make it a powerful tool for streamlining your macOS workflow.
+## System Requirements
+- macOS 13 (Ventura) or higher (Widgets on Sonoma+)
+- 4GB RAM minimum
+- Works on Intel and Apple Silicon Macs

@@ -1,17 +1,17 @@
 ---
-title: "Collate AI"
+title: "Collate AI - Your Offline PDF Assistant for Mac"
 publishedDate: 2025-03-04
 logo: "/images/mac/collate-logo.webp"
 uiImage: "/images/mac/collate-ui.webp"
-description: "Collate is a powerful offline PDF reader and AI assistant for Mac that lets you read, highlight, summarize, and chat with your documents without needing an internet connection."
+description: "A free, offline PDF reader and AI assistant for Mac that lets you read, highlight, summarize, and chat with your documents—all with total privacy."
 youtubeId: ""
 keyFeatures: [
-  "Offline PDF reading",
-  "AI document summarization",
-  "Chat with PDF content",
-  "Complete privacy protection",
-  "Intuitive file organization",
-  "Free unlimited use"
+  "Offline PDF reader",
+  "AI-powered summaries",
+  "Chat with your PDFs",
+  "100% private processing",
+  "Smart file organization",
+  "Unlimited free use"
 ]
 category: "Productivity"
 pricing: "Free"
@@ -19,36 +19,40 @@ alternativeTo: "Adobe Acrobat"
 checkItUrl: "https://collate.one"
 ---
 
-Collate is the ultimate PDF companion for Mac users who value privacy, efficiency, and simplicity. This powerful app processes all your documents locally on your machine, providing AI-powered features without sending your sensitive data to the cloud.
+Imagine a PDF tool that doesn’t just open your files but actually understands them—summarizing long reports, answering your questions, and keeping everything neatly organized—all without ever touching the internet.
 
-## Key Features
+That’s **Collate AI**, a free Mac app that redefines how you work with PDFs. Built from the ground up for privacy, it runs entirely offline, using local AI to process your documents right on your machine. Whether you’re a student tackling research papers, a professional reviewing contracts, or just someone who loves a good e-book, Collate turns your Mac into a distraction-free hub for reading, highlighting, and digging into content.
 
-- **Intuitive PDF Reader**: Read and highlight PDFs with a clean, distraction-free interface designed specifically for Mac.
-- **AI Document Summarization**: Get instant summaries of long documents to quickly grasp key points and save time.
-- **Interactive PDF Chat**: Ask questions about your documents and receive targeted answers based on the content.
-- **100% Offline Processing**: All AI features work without an internet connection, ensuring complete privacy.
-- **Smart Organization**: Keep all your PDFs in one place with intelligent file management.
-- **Unlimited Usage**: No subscription fees or usage limits - process as many documents as you need.
+No subscriptions, no cloud uploads—just a sleek, Apple Silicon-optimized app that puts you in control of your files. It’s the PDF companion you didn’t know you needed, blending smart tech with old-school privacy in a way that feels refreshingly simple.
 
-## Why Mac Users Love Collate
+## Why You’ll Love It
+- **Read Your Way**: Enjoy PDFs in a clean, highlight-friendly interface made for Mac.
+- **Instant Summaries**: Get the gist of any document with AI that sums up key points fast.
+- **Chat with Content**: Ask “What’s this about?” or “Find me that stat” and get spot-on answers.
+- **Total Privacy**: Everything stays on your Mac—no internet, no data leaks, just you and your files.
+- **Stay Organized**: Sort and manage PDFs effortlessly in one intuitive library.
 
-- **Privacy-First Design**: Runs entirely on your Mac with no data sent to external servers.
-- **Native macOS Experience**: Built specifically for macOS with intuitive controls and smooth performance.
-- **Resource Efficient**: Optimized for Apple Silicon with minimal battery impact.
-- **Universal PDF Solution**: Replaces multiple apps with a single, comprehensive tool.
-- **No Subscription Required**: Pay once and own it forever - no recurring costs.
+## What It Offers
+- **PDF Power**: Read, annotate, and navigate with a smooth, distraction-free reader.
+- **AI Smarts**: Summarize pages or chat about details, all powered by offline AI.
+- **File Hub**: Keep your documents tidy with smart, searchable organization.
+- **Light & Fast**: Optimized for Apple Silicon, it’s easy on your battery and system.
+- **Free Forever**: No limits, no fees—just download and use as much as you want.
 
-## Use Cases
+## Perfect For
+- **Students**: Breeze through papers and pull out key ideas.
+- **Professionals**: Master contracts or reports without the slog.
+- **Researchers**: Chat with technical docs to find what matters.
+- **Readers**: Build a private library of PDFs, e-books, or manuals.
 
-- **Academic Research**: Quickly digest research papers and extract key information.
-- **Business Documents**: Review contracts and reports with intelligent assistance.
-- **Legal Documents**: Search through and summarize complex legal texts.
-- **Technical Manuals**: Find specific information in lengthy technical documentation.
-- **Personal Knowledge Management**: Build a personal library of documents with powerful search capabilities.
+## Get Started
+1. **Download**: Grab it free from [Collate](https://collate.one).
+2. **Install**: Drag the app to your Applications folder and open it.
+3. **Load Up**: Add your PDFs and start reading, summarizing, or chatting.
+4. **Enjoy**: No internet needed—dive in anytime, anywhere.
 
-
-## What Sets Collate Apart
-
-Unlike cloud-based PDF tools, Collate respects your privacy by keeping all your documents and processing on your local machine. It combines the power of advanced AI with the security of offline computing, giving you the best of both worlds without compromises.
-
-Collate represents a new generation of Mac productivity tools that harness the power of local AI to provide sophisticated features without sacrificing privacy or requiring internet connectivity. It's the PDF companion that Mac users have been waiting for.
+## System Requirements
+- macOS 11 (Big Sur) or higher
+- 8GB RAM minimum (16GB recommended for large PDFs)
+- Works on Intel and Apple Silicon Macs
+- No internet required
