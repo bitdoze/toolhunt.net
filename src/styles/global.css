@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Color templates: update these values to retheme globally */
+:root {
+  --th-color-brand-blue: #2563eb;
+  --th-color-brand-green: #16a34a;
+  --th-color-brand-purple: #9333ea;
+  --th-color-brand-indigo: #4f46e5;
+  --th-color-brand-pink: #ec4899;
+}
+
+/* Tailwind v4 theme tokens (usable as text-brand-*, bg-brand-*, border-brand-*) */
+@theme {
+  --color-brand-blue: var(--th-color-brand-blue);
+  --color-brand-green: var(--th-color-brand-green);
+  --color-brand-purple: var(--th-color-brand-purple);
+  --color-brand-indigo: var(--th-color-brand-indigo);
+  --color-brand-pink: var(--th-color-brand-pink);
+}

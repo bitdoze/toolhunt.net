@@ -5,7 +5,11 @@ import Filters from '../components/Filters.astro';
 import ToolGrid from '../components/ToolGrid.astro';
 import type { CollectionEntry } from 'astro:content';
 
-type ToolEntry = CollectionEntry<'sh'> | CollectionEntry<'tools'> | CollectionEntry<'alternatives'>;
+type ToolEntry =
+  | CollectionEntry<'sh'>
+  | CollectionEntry<'tools'>
+  | CollectionEntry<'alternatives'>
+  | CollectionEntry<'mac'>;
 
 interface Props {
   title: string;
@@ -14,9 +18,11 @@ interface Props {
   categories: string[];
   alternativeTo?: string[];
   showAlternativeTo?: boolean;
+  pricingOptions?: string[];
+  showPricing?: boolean;
   currentPage: number;
   totalPages: number;
-  section: 'sh' | 'tools' | 'alternatives';
+  section: 'sh' | 'tools' | 'alternatives' | 'mac';
 }
 
 const {
@@ -26,20 +32,30 @@ const {
   categories,
   alternativeTo = [],
   showAlternativeTo = false,
+  pricingOptions = [],
+  showPricing = false,
   currentPage,
   totalPages,
   section
 } = Astro.props;
 
 // Calculate pagination variables
-const indexPageLink = currentPage === 2;
 const hasPrevPage = currentPage > 1;
 const hasNextPage = totalPages > currentPage;
 
 // Generate page list
-let pageList = [];
-for (let i = 1; i <= totalPages; i++) {
-  pageList.push(i);
+const pageList = Array.from({ length: totalPages }, (_, index) => index + 1);
+
+function buildPageHref(targetPage: number) {
+  const params = new URLSearchParams(Astro.url.search);
+  if (targetPage <= 1) {
+    params.delete('page');
+  } else {
+    params.set('page', String(targetPage));
+  }
+
+  const query = params.toString();
+  return query ? `${Astro.url.pathname}?${query}` : Astro.url.pathname;
 }
 
 // Prepare JSON-LD data for collection page
@@ -90,7 +106,9 @@ const metaDescription = `${description} Browse ${tools.length} tools across ${ca
           <Filters
             categories={categories}
             alternativeTo={alternativeTo}
+            pricingOptions={pricingOptions}
             showAlternativeTo={showAlternativeTo}
+            showPricing={showPricing}
           />
         </div>
       </div>
@@ -113,7 +131,7 @@ const metaDescription = `${description} Browse ${tools.length} tools across ${ca
             {/* previous */}
             {hasPrevPage ? (
               <a
-                href={indexPageLink ? `/${section}` : `/${section}/page/${currentPage - 1}`}
+                href={buildPageHref(currentPage - 1)}
                 class="border border-primary hover:bg-primary hover:text-white rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center transition duration-200"
               >
                 <span class="sr-only">Previous</span>
@@ -151,7 +169,7 @@ const metaDescription = `${description} Browse ${tools.length} tools across ${ca
             )}
 
             {/* page index */}
-            {pageList.map((pagination, i) =>
+            {pageList.map((pagination) =>
               pagination === currentPage ? (
                 <span
                   aria-current="page"
@@ -161,7 +179,7 @@ const metaDescription = `${description} Browse ${tools.length} tools across ${ca
                 </span>
               ) : (
                 <a
-                  href={i === 0 ? `/${section}` : `/${section}/page/${pagination}`}
+                  href={buildPageHref(pagination)}
                   aria-current="page"
                   class={`border border-primary hover:bg-primary hover:text-blue-500 rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center transition duration-200`}
                 >
@@ -173,7 +191,7 @@ const metaDescription = `${description} Browse ${tools.length} tools across ${ca
             {/* next page */}
             {hasNextPage ? (
               <a
-                href={`/${section}/page/${currentPage + 1}`}
+                href={buildPageHref(currentPage + 1)}
                 class="border border-primary hover:bg-primary hover:text-white rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center transition duration-200"
               >
                 <span class="sr-only">Next</span>

@@ -33,16 +33,8 @@ const { Content } = await post.render();
     <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">
       {post.data.title}
     </h1>
-    <div class="flex items-center gap-4 text-gray-600 dark:text-gray-400 mb-8">
+    <div class="flex items-center text-gray-600 dark:text-gray-400 mb-8">
       <span>{post.data.author}</span>
-      <span>•</span>
-      <time datetime={post.data.publishedDate.toISOString()}>
-        {new Date(post.data.publishedDate).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        })}
-      </time>
     </div>
     <div class="prose prose-lg dark:prose-invert max-w-none">
       <Content />
@@ -88,12 +80,8 @@ const { Content } = await post.render();
                   <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                     {relatedPost.data.title}
                   </h3>
-                  <p class="text-gray-600 dark:text-gray-400 text-sm">
-                    {new Date(relatedPost.data.publishedDate).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
+                  <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
+                    {relatedPost.data.description}
                   </p>
                 </div>
               </article>

@@ -3,14 +3,14 @@ import Navigation from './Navigation.astro';
 import ThemeToggle from './ThemeToggle.astro';
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+<header class="fixed top-0 left-0 right-0 z-50 cursor-default bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 transition-shadow duration-300 hover:shadow-lg hover:shadow-blue-500/5">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
       <!-- Logo and site name -->
       <div class="flex-shrink-0 flex items-center">
-        <a href="/" class="flex items-center space-x-2">
-          <img src="/images/logo.svg" alt="ToolHunt Logo" class="h-8 w-8" />
-          <span class="text-xl font-bold text-gray-900 dark:text-white">ToolHunt</span>
+        <a href="/" class="group flex items-center space-x-2">
+          <img src="/images/logo.svg" alt="ToolHunt Logo" class="h-8 w-8 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3" />
+          <span class="text-xl font-bold text-gray-900 dark:text-white transition-colors duration-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">ToolHunt</span>
         </a>
       </div>
 

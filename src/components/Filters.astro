@@ -17,13 +17,13 @@ const {
 } = Astro.props;
 ---
 
-<form method="get" class="space-y-6">
+<form method="get" class="space-y-6 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white/70 dark:bg-gray-800/60 p-4 backdrop-blur-sm shadow-sm transition-all duration-300 hover:shadow-lg">
   <!-- Categories Filter -->
   <div>
     <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Categories</h3>
     <div class="space-y-2">
       {categories.map((category) => (
-        <label class="flex items-center">
+        <label class="flex items-center rounded-md px-1 py-0.5 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700/40 hover:translate-x-0.5">
           <input
             type="checkbox"
             name="category"
@@ -41,7 +41,7 @@ const {
       <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Pricing</h3>
       <div class="space-y-2">
         {pricingOptions.map((price) => (
-          <label class="flex items-center">
+          <label class="flex items-center rounded-md px-1 py-0.5 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700/40 hover:translate-x-0.5">
             <input
               type="checkbox"
               name="pricing"
@@ -60,7 +60,7 @@ const {
       <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Alternative To</h3>
       <div class="space-y-2">
         {alternativeTo.map((alt) => (
-          <label class="flex items-center">
+          <label class="flex items-center rounded-md px-1 py-0.5 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700/40 hover:translate-x-0.5">
             <input
               type="checkbox"
               name="alternativeTo"
@@ -74,7 +74,7 @@ const {
     </div>
   )}
 
-  <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+  <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-200 hover:scale-[1.01] hover:shadow-md">
     Apply Filters
   </button>
 </form>

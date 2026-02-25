@@ -1,12 +1,15 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import "../styles/global.css";
 
 interface Props {
   title: string;
   description: string;
   image?: string;
   type?: "website";
+  jsonLd?: Record<string, unknown>;
+  noindex?: boolean;
 }
 
 const {
@@ -14,10 +17,19 @@ const {
   description,
   image = "/og-image.png",
   type = "website",
+  jsonLd,
+  noindex = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImageURL = new URL(image, Astro.site);
+const pageJsonLd = jsonLd ?? {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "ToolHunt",
+  "url": "https://toolhunt.net",
+  "description": "Discover and compare self-hosted applications, online tools, and their alternatives."
+};
 ---
 
 <!DOCTYPE html>
@@ -25,8 +37,20 @@ const socialImageURL = new URL(image, Astro.site);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem("color-theme");
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const isDark = stored ? stored === "dark" : prefersDark;
+          document.documentElement.classList.toggle("dark", isDark);
+          document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+        } catch {}
+      })();
+    </script>
     <title>{title} | toolhunt.net</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,follow" />}
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
@@ -53,16 +77,7 @@ const socialImageURL = new URL(image, Astro.site);
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" href="/favicon120.ico" />
 
-    <!-- JSON-LD -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "ToolHunt",
-        "url": "https://toolhunt.net",
-        "description": "Discover and compare self-hosted applications, online tools, and their alternatives."
-      }
-    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(pageJsonLd)} />
 
     <script
       defer

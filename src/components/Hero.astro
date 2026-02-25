@@ -12,10 +12,34 @@ interface Props {
 const { totalTools, shCount, toolsCount, macCount, alternativesCount } = Astro.props;
 
 const categories = [
-  { name: 'Self-hosted Apps', count: shCount, color: 'blue' },
-  { name: 'Online Tools', count: toolsCount, color: 'green' },
-  { name: 'Mac Apps', count: macCount, color: 'purple' },
-  { name: 'Alternatives', count: alternativesCount, color: 'indigo' }
+  {
+    name: 'Self-hosted Apps',
+    count: shCount,
+    borderClass: 'border-blue-100 dark:border-blue-900',
+    gradientClass: 'from-blue-500/10',
+    textClass: 'text-blue-600 dark:text-blue-400'
+  },
+  {
+    name: 'Online Tools',
+    count: toolsCount,
+    borderClass: 'border-green-100 dark:border-green-900',
+    gradientClass: 'from-green-500/10',
+    textClass: 'text-green-600 dark:text-green-400'
+  },
+  {
+    name: 'Mac Apps',
+    count: macCount,
+    borderClass: 'border-purple-100 dark:border-purple-900',
+    gradientClass: 'from-purple-500/10',
+    textClass: 'text-purple-600 dark:text-purple-400'
+  },
+  {
+    name: 'Alternatives',
+    count: alternativesCount,
+    borderClass: 'border-indigo-100 dark:border-indigo-900',
+    gradientClass: 'from-indigo-500/10',
+    textClass: 'text-indigo-600 dark:text-indigo-400'
+  }
 ];
 ---
 
@@ -51,12 +75,12 @@ const categories = [
       </h1>
 
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mt-12">
-        {categories.map(({ name, count, color }) => (
-          <div class={`group relative overflow-hidden rounded-xl bg-white/90 dark:bg-gray-800/90 p-4 backdrop-blur-sm hover:shadow-lg transition duration-300 border border-${color}-100 dark:border-${color}-900`}>
-            <div class={`absolute inset-0 bg-gradient-to-br from-${color}-500/10 to-transparent opacity-50`}></div>
+        {categories.map(({ name, count, borderClass, gradientClass, textClass }) => (
+          <div class={`group relative overflow-hidden rounded-xl bg-white/90 dark:bg-gray-800/90 p-4 backdrop-blur-sm hover:shadow-lg transition duration-300 border ${borderClass}`}>
+            <div class={`absolute inset-0 bg-gradient-to-br ${gradientClass} to-transparent opacity-50`}></div>
             <dt class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">{name}</dt>
             <dd class="flex items-baseline">
-              <div class={`text-2xl font-bold text-${color}-600 dark:text-${color}-400`}>
+              <div class={`text-2xl font-bold ${textClass}`}>
                 {count}
                 <span class="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">tools</span>
               </div>
