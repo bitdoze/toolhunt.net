@@ -75,3 +75,7 @@ docker-compose up -d
 5. Deploy to production
 
 n8n transforms how teams approach automation by combining the simplicity of no-code tools with the power of custom development. Whether you're automating IT operations, marketing tasks, or building complex data pipelines, n8n provides the flexibility and control you need to succeed.
+
+## Full Setup Guide
+
+For a full self-hosting walkthrough, read: [How to Self-Host n8n: Complete Guide to Workflow Automation](https://www.bitdoze.com/n8n-self-host-workflow-automation/).
