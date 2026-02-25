@@ -17,18 +17,18 @@ const {
 } = Astro.props;
 ---
 
-<form method="get" class="space-y-6 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white/70 dark:bg-gray-800/60 p-4 backdrop-blur-sm shadow-sm transition-all duration-300 hover:shadow-lg">
+<form method="get" class="space-y-6 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white/70 dark:bg-gray-800/60 p-4 backdrop-blur-sm shadow-sm">
   <!-- Categories Filter -->
   <div>
     <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Categories</h3>
     <div class="space-y-2">
       {categories.map((category) => (
-        <label class="flex items-center rounded-md px-1 py-0.5 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700/40 hover:translate-x-0.5">
+        <label class="flex items-center rounded-md px-1 py-0.5 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/40">
           <input
             type="checkbox"
             name="category"
             value={category}
-            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded"
+            class="h-4 w-4 text-brand-blue-600 focus:ring-brand-blue-500 border-gray-300 dark:border-gray-600 rounded"
           />
           <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">{category}</span>
         </label>
@@ -41,12 +41,12 @@ const {
       <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Pricing</h3>
       <div class="space-y-2">
         {pricingOptions.map((price) => (
-          <label class="flex items-center rounded-md px-1 py-0.5 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700/40 hover:translate-x-0.5">
+          <label class="flex items-center rounded-md px-1 py-0.5 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/40">
             <input
               type="checkbox"
               name="pricing"
               value={price}
-              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded"
+              class="h-4 w-4 text-brand-blue-600 focus:ring-brand-blue-500 border-gray-300 dark:border-gray-600 rounded"
             />
             <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">{price}</span>
           </label>
@@ -60,12 +60,12 @@ const {
       <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Alternative To</h3>
       <div class="space-y-2">
         {alternativeTo.map((alt) => (
-          <label class="flex items-center rounded-md px-1 py-0.5 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-700/40 hover:translate-x-0.5">
+          <label class="flex items-center rounded-md px-1 py-0.5 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/40">
             <input
               type="checkbox"
               name="alternativeTo"
               value={alt}
-              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded"
+              class="h-4 w-4 text-brand-blue-600 focus:ring-brand-blue-500 border-gray-300 dark:border-gray-600 rounded"
             />
             <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">{alt}</span>
           </label>
@@ -74,7 +74,7 @@ const {
     </div>
   )}
 
-  <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-200 hover:scale-[1.01] hover:shadow-md">
+  <button type="submit" class="w-full px-4 py-2 bg-brand-blue-600 text-white rounded-md hover:bg-brand-blue-700 transition-all duration-200 hover:scale-[1.01] hover:shadow-md">
     Apply Filters
   </button>
 </form>

@@ -23,12 +23,12 @@ const checkItUrl = isShApp || isTool ? (entry.data as any).checkItUrl : null;
 
 ---
 
-<article class={`group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-transparent transition-all duration-300 ${showFullDetails ? '' : 'hover:shadow-2xl hover:-translate-y-1 hover:border-blue-200/70 dark:hover:border-blue-700/60'}`}>
+<article class={`group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-transparent transition-all duration-300 ${showFullDetails ? '' : 'hover:shadow-2xl hover:-translate-y-1 hover:border-brand-blue-200/70 dark:hover:border-brand-blue-700/60'}`}>
   {pricing && (
     <div class="absolute top-2 right-2 px-3 py-1.5 text-xs font-medium rounded-full shadow-sm backdrop-blur-sm transition-all duration-300
       {pricing === 'Free' ? 'bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-800 dark:from-emerald-900/90 dark:to-emerald-800/90 dark:text-emerald-100' :
-       pricing === 'Paid' ? 'bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 dark:from-blue-900/90 dark:to-blue-800/90 dark:text-blue-100' :
-       'bg-gradient-to-r from-purple-100 to-purple-200 text-purple-800 dark:from-purple-900/90 dark:to-purple-800/90 dark:text-purple-100'}
+       pricing === 'Paid' ? 'bg-gradient-to-r from-brand-blue-100 to-brand-blue-200 text-brand-blue-800 dark:from-brand-blue-900/90 dark:to-brand-blue-800/90 dark:text-brand-blue-100' :
+       'bg-gradient-to-r from-brand-purple-100 to-brand-purple-200 text-brand-purple-800 dark:from-brand-purple-900/90 dark:to-brand-purple-800/90 dark:text-brand-purple-100'}
       z-10">
       {pricing}
     </div>
@@ -44,16 +44,16 @@ const checkItUrl = isShApp || isTool ? (entry.data as any).checkItUrl : null;
         />
       <div class="flex-1 min-w-0">
         <h3 class="text-xl font-semibold truncate">
-          <a href={`/${entry.collection}/${entry.slug}/`} class="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+          <a href={`/${entry.collection}/${entry.slug}/`} class="text-gray-900 dark:text-white hover:text-brand-blue-600 dark:hover:text-brand-blue-400 transition-colors duration-200">
             {title}
           </a>
         </h3>
         <div class="flex flex-wrap gap-2 mt-2">
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-blue-100 text-brand-blue-800 dark:bg-brand-blue-900 dark:text-brand-blue-100">
             {category}
           </span>
           {alternativeTo && (
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-purple-100 text-brand-purple-800 dark:bg-brand-purple-900 dark:text-brand-purple-100">
               Alternative to {alternativeTo}
             </span>
           )}
@@ -73,7 +73,7 @@ const checkItUrl = isShApp || isTool ? (entry.data as any).checkItUrl : null;
           href={`${checkItUrl}`}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-200 hover:scale-[1.03] hover:shadow-md"
+          class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-brand-blue-600 hover:bg-brand-blue-700 rounded-lg transition-all duration-200 hover:scale-[1.03] hover:shadow-md"
         >
           Check it
           <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,7 +91,7 @@ const checkItUrl = isShApp || isTool ? (entry.data as any).checkItUrl : null;
         <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
           {entry.data.features?.map((feature: string) => (
             <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-brand-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
               <span class="text-gray-700 dark:text-gray-300 text-sm">{feature}</span>
@@ -99,7 +99,7 @@ const checkItUrl = isShApp || isTool ? (entry.data as any).checkItUrl : null;
           ))}
           {entry.data.keyFeatures.map((feature: string) => (
             <li class="flex items-start text-sm text-gray-600 dark:text-gray-300">
-              <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-brand-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
               {feature}

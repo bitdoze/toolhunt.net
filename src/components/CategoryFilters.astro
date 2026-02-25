@@ -11,7 +11,7 @@ const { shCategories, toolCategories, macCategories, selectedCategories } =
 ---
 
 <div
-  class="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5"
+  class="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700"
 >
   <form method="get" class="divide-y divide-gray-100 dark:divide-gray-700">
     <div
@@ -23,10 +23,10 @@ const { shCategories, toolCategories, macCategories, selectedCategories } =
           class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center"
         >
           <span
-            class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900 mr-3"
+            class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-blue-100 dark:bg-brand-blue-900 mr-3"
           >
             <svg
-              class="w-5 h-5 text-blue-600 dark:text-blue-400"
+              class="w-5 h-5 text-brand-blue-600 dark:text-brand-blue-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -43,14 +43,14 @@ const { shCategories, toolCategories, macCategories, selectedCategories } =
         <div class="space-y-1">
           {
             shCategories.map((category) => (
-              <label class="relative flex items-start p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200 hover:translate-x-0.5">
+              <label class="relative flex items-start p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150">
                 <div class="flex items-center h-5">
                   <input
                     type="checkbox"
                     name="category"
                     value={category}
                     checked={selectedCategories.includes(category)}
-                    class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    class="h-4 w-4 rounded border-gray-300 text-brand-blue-600 focus:ring-brand-blue-500"
                   />
                 </div>
                 <div class="ml-3 text-sm">
@@ -70,10 +70,10 @@ const { shCategories, toolCategories, macCategories, selectedCategories } =
           class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center"
         >
           <span
-            class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900 mr-3"
+            class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-green-100 dark:bg-brand-green-900 mr-3"
           >
             <svg
-              class="w-5 h-5 text-green-600 dark:text-green-400"
+              class="w-5 h-5 text-brand-green-600 dark:text-brand-green-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -91,14 +91,14 @@ const { shCategories, toolCategories, macCategories, selectedCategories } =
         <div class="space-y-1">
           {
             toolCategories.map((category) => (
-              <label class="relative flex items-start p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200 hover:translate-x-0.5">
+              <label class="relative flex items-start p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150">
                 <div class="flex items-center h-5">
                   <input
                     type="checkbox"
                     name="category"
                     value={category}
                     checked={selectedCategories.includes(category)}
-                    class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                    class="h-4 w-4 rounded border-gray-300 text-brand-green-600 focus:ring-brand-green-500"
                   />
                 </div>
                 <div class="ml-3 text-sm">
@@ -118,10 +118,10 @@ const { shCategories, toolCategories, macCategories, selectedCategories } =
           class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center"
         >
           <span
-            class="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900 mr-3"
+            class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-purple-100 dark:bg-brand-purple-900 mr-3"
           >
             <svg
-              class="w-5 h-5 text-purple-600 dark:text-purple-400"
+              class="w-5 h-5 text-brand-purple-600 dark:text-brand-purple-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -139,14 +139,14 @@ const { shCategories, toolCategories, macCategories, selectedCategories } =
         <div class="space-y-1">
           {
             macCategories.map((category) => (
-              <label class="relative flex items-start p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200 hover:translate-x-0.5">
+              <label class="relative flex items-start p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150">
                 <div class="flex items-center h-5">
                   <input
                     type="checkbox"
                     name="category"
                     value={category}
                     checked={selectedCategories.includes(category)}
-                    class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                    class="h-4 w-4 rounded border-gray-300 text-brand-purple-600 focus:ring-brand-purple-500"
                   />
                 </div>
                 <div class="ml-3 text-sm">
@@ -169,7 +169,7 @@ const { shCategories, toolCategories, macCategories, selectedCategories } =
       </span>
       <button
         type="submit"
-        class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
+        class="inline-flex items-center px-4 py-2 bg-brand-blue-600 text-white text-sm font-medium rounded-lg hover:bg-brand-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue-500 transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
       >
         Apply Filters
         <svg

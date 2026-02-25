@@ -95,7 +95,7 @@ const totalTools = shEntries.length + toolEntries.length + alternativeEntries.le
     <div class="text-center mb-12">
       <h1 class="text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
         <span class="block">Search Our</span>
-        <span class="block text-blue-600 dark:text-blue-400">Tools</span>
+        <span class="block text-brand-blue">Tools</span>
       </h1>
  
       <!-- Main Search Bar -->
@@ -120,30 +120,30 @@ const totalTools = shEntries.length + toolEntries.length + alternativeEntries.le
           />
         </div>
 
-        <section class="mb-16 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <section class="mb-16 p-6 bg-brand-blue/10 dark:bg-brand-blue/20 rounded-xl">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Self-hosted Apps</h2>
-            <a href="/sh/" class="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 font-medium">
+            <a href="/sh/" class="inline-flex items-center px-4 py-2 rounded-lg bg-brand-blue text-white hover:bg-brand-blue/90 transition-colors duration-200 font-medium">
               View all <span class="ml-2">→</span>
             </a>
           </div>
           <ToolGrid tools={filteredShEntries} />
         </section>
 
-        <section class="mb-16 p-6 bg-green-50 dark:bg-green-900/20 rounded-xl">
+        <section class="mb-16 p-6 bg-brand-green/10 dark:bg-brand-green/20 rounded-xl">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Online Tools</h2>
-            <a href="/tools/" class="inline-flex items-center px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors duration-200 font-medium">
+            <a href="/tools/" class="inline-flex items-center px-4 py-2 rounded-lg bg-brand-green text-white hover:bg-brand-green/90 transition-colors duration-200 font-medium">
               View all <span class="ml-2">→</span>
             </a>
           </div>
           <ToolGrid tools={filteredToolEntries} />
         </section>
 
-        <section class="mb-16 p-6 bg-purple-50 dark:bg-purple-900/20 rounded-xl">
+        <section class="mb-16 p-6 bg-brand-purple/10 dark:bg-brand-purple/20 rounded-xl">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Latest Alternatives</h2>
-            <a href="/alternatives/" class="inline-flex items-center px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-colors duration-200 font-medium">
+            <a href="/alternatives/" class="inline-flex items-center px-4 py-2 rounded-lg bg-brand-purple text-white hover:bg-brand-purple/90 transition-colors duration-200 font-medium">
               View all <span class="ml-2">→</span>
             </a>
           </div>
@@ -179,7 +179,7 @@ const totalTools = shEntries.length + toolEntries.length + alternativeEntries.le
                 )}
                 <div class="p-6">
                   <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    <a href={`/blog/${post.slug}/`} class="hover:text-blue-600 dark:hover:text-blue-400">
+                    <a href={`/blog/${post.slug}/`} class="hover:text-brand-blue">
                       {post.data.title}
                     </a>
                   </h3>
@@ -200,10 +200,10 @@ const totalTools = shEntries.length + toolEntries.length + alternativeEntries.le
             Explore our complete collection of tools and alternatives.
           </p>
           <div class="mt-8 flex justify-center gap-4">
-            <a href="/sh/" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+            <a href="/sh/" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-brand-blue hover:bg-brand-blue/90">
               Browse Self-hosted Apps
             </a>
-            <a href="/tools/" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 dark:text-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800">
+            <a href="/tools/" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-brand-blue bg-brand-blue/10 hover:bg-brand-blue/20 dark:text-brand-blue dark:bg-brand-blue/20 dark:hover:bg-brand-blue/30">
               Explore Online Tools
             </a>
           </div>

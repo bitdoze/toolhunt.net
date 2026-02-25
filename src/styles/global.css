@@ -4,6 +4,8 @@
 
 /* Color templates: update these values to retheme globally */
 :root {
+  --th-color-primary: #2563eb;
+  --th-color-dark: #111827;
   --th-color-brand-blue: #2563eb;
   --th-color-brand-green: #16a34a;
   --th-color-brand-purple: #9333ea;
@@ -13,9 +15,66 @@
 
 /* Tailwind v4 theme tokens (usable as text-brand-*, bg-brand-*, border-brand-*) */
 @theme {
+  --color-primary: var(--th-color-primary);
+  --color-dark: var(--th-color-dark);
+
   --color-brand-blue: var(--th-color-brand-blue);
+  --color-brand-blue-50: #eff6ff;
+  --color-brand-blue-100: #dbeafe;
+  --color-brand-blue-200: #bfdbfe;
+  --color-brand-blue-300: #93c5fd;
+  --color-brand-blue-400: #60a5fa;
+  --color-brand-blue-500: #3b82f6;
+  --color-brand-blue-600: var(--th-color-brand-blue);
+  --color-brand-blue-700: #1d4ed8;
+  --color-brand-blue-800: #1e40af;
+  --color-brand-blue-900: #1e3a8a;
+
   --color-brand-green: var(--th-color-brand-green);
+  --color-brand-green-50: #f0fdf4;
+  --color-brand-green-100: #dcfce7;
+  --color-brand-green-200: #bbf7d0;
+  --color-brand-green-300: #86efac;
+  --color-brand-green-400: #4ade80;
+  --color-brand-green-500: #22c55e;
+  --color-brand-green-600: var(--th-color-brand-green);
+  --color-brand-green-700: #15803d;
+  --color-brand-green-800: #166534;
+  --color-brand-green-900: #14532d;
+
   --color-brand-purple: var(--th-color-brand-purple);
+  --color-brand-purple-50: #faf5ff;
+  --color-brand-purple-100: #f3e8ff;
+  --color-brand-purple-200: #e9d5ff;
+  --color-brand-purple-300: #d8b4fe;
+  --color-brand-purple-400: #c084fc;
+  --color-brand-purple-500: #a855f7;
+  --color-brand-purple-600: var(--th-color-brand-purple);
+  --color-brand-purple-700: #7e22ce;
+  --color-brand-purple-800: #6b21a8;
+  --color-brand-purple-900: #581c87;
+
   --color-brand-indigo: var(--th-color-brand-indigo);
+  --color-brand-indigo-50: #eef2ff;
+  --color-brand-indigo-100: #e0e7ff;
+  --color-brand-indigo-200: #c7d2fe;
+  --color-brand-indigo-300: #a5b4fc;
+  --color-brand-indigo-400: #818cf8;
+  --color-brand-indigo-500: #6366f1;
+  --color-brand-indigo-600: var(--th-color-brand-indigo);
+  --color-brand-indigo-700: #4338ca;
+  --color-brand-indigo-800: #3730a3;
+  --color-brand-indigo-900: #312e81;
+
   --color-brand-pink: var(--th-color-brand-pink);
+  --color-brand-pink-50: #fdf2f8;
+  --color-brand-pink-100: #fce7f3;
+  --color-brand-pink-200: #fbcfe8;
+  --color-brand-pink-300: #f9a8d4;
+  --color-brand-pink-400: #f472b6;
+  --color-brand-pink-500: var(--th-color-brand-pink);
+  --color-brand-pink-600: #db2777;
+  --color-brand-pink-700: #be185d;
+  --color-brand-pink-800: #9d174d;
+  --color-brand-pink-900: #831843;
 }

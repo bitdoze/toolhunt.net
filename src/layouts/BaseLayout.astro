@@ -4,97 +4,125 @@ import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 
 interface Props {
-  title: string;
-  description: string;
-  image?: string;
-  type?: "website";
-  jsonLd?: Record<string, unknown>;
-  noindex?: boolean;
+    title: string;
+    description: string;
+    image?: string;
+    type?: "website";
+    jsonLd?: Record<string, unknown>;
+    noindex?: boolean;
 }
 
 const {
-  title,
-  description,
-  image = "/og-image.png",
-  type = "website",
-  jsonLd,
-  noindex = false,
+    title,
+    description,
+    image = "/og-image.png",
+    type = "website",
+    jsonLd,
+    noindex = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImageURL = new URL(image, Astro.site);
 const pageJsonLd = jsonLd ?? {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "ToolHunt",
-  "url": "https://toolhunt.net",
-  "description": "Discover and compare self-hosted applications, online tools, and their alternatives."
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "ToolHunt",
+    url: "https://toolhunt.net",
+    description:
+        "Discover and compare self-hosted applications, online tools, and their alternatives.",
 };
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="scroll-smooth">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script is:inline>
-      (() => {
-        try {
-          const stored = localStorage.getItem("color-theme");
-          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          const isDark = stored ? stored === "dark" : prefersDark;
-          document.documentElement.classList.toggle("dark", isDark);
-          document.documentElement.style.colorScheme = isDark ? "dark" : "light";
-        } catch {}
-      })();
-    </script>
-    <title>{title} | toolhunt.net</title>
-    <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex,follow" />}
-    <meta name="generator" content={Astro.generator} />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script is:inline>
+            (() => {
+                try {
+                    const stored = localStorage.getItem("color-theme");
+                    const prefersDark = window.matchMedia(
+                        "(prefers-color-scheme: dark)",
+                    ).matches;
+                    const isDark = stored ? stored === "dark" : prefersDark;
+                    document.documentElement.classList.toggle("dark", isDark);
+                    document.documentElement.style.colorScheme = isDark
+                        ? "dark"
+                        : "light";
+                } catch {}
+            })();
+        </script>
+        <title>{title} | toolhunt.net</title>
+        <meta name="description" content={description} />
+        {noindex && <meta name="robots" content="noindex,follow" />}
+        <meta name="generator" content={Astro.generator} />
+        <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <!-- Canonical URL -->
-    <link rel="canonical" href={canonicalURL} />
+        <!-- Canonical URL -->
+        <link rel="canonical" href={canonicalURL} />
 
-    <!-- OpenGraph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={socialImageURL} />
-    <meta property="og:site_name" content="ToolHunt" />
+        <!-- OpenGraph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={socialImageURL} />
+        <meta property="og:site_name" content="ToolHunt" />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content={canonicalURL} />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={socialImageURL} />
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={canonicalURL} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={socialImageURL} />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="apple-touch-icon" href="/favicon120.ico" />
+        <!-- Favicon -->
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.ico" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/favicon120.ico" />
 
-    <script type="application/ld+json" set:html={JSON.stringify(pageJsonLd)} />
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(pageJsonLd)}
+        />
 
-    <script
-      defer
-      data-domain="toolhunt.net"
-      src="https://an.bitdoze.com/js/script.js"></script>
-<script defer data-project="67af683e97d306c7138ac9bb" src="https://cdn.jsdelivr.net/gh/litlyx/litlyx-js/browser/litlyx.js"></script>
-  </head>
-  <body
-    class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col"
-  >
-    <Header />
+        <!-- Privacy-friendly analytics by Plausible -->
+        <script
+            defer
+            async
+            src="https://an3.bitdoze.com/js/pa-63QdBSP2tN2M0MZAQbrQ9.js"
+        ></script>
+        <script defer>
+            ((window.plausible =
+                window.plausible ||
+                function () {
+                    (plausible.q = plausible.q || []).push(arguments);
+                }),
+                (plausible.init =
+                    plausible.init ||
+                    function (i) {
+                        plausible.o = i || {};
+                    }));
+            plausible.init();
+        </script>
 
-    <!-- Main content with padding for fixed header -->
-    <main class="flex-grow pt-16">
-      <slot />
-    </main>
+        <script
+            defer
+            data-project="67af683e97d306c7138ac9bb"
+            src="https://cdn.jsdelivr.net/gh/litlyx/litlyx-js/browser/litlyx.js"
+        ></script>
+    </head>
+    <body
+        class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col"
+    >
+        <Header />
 
-    <Footer />
-  </body>
+        <!-- Main content with padding for fixed header -->
+        <main class="grow pt-16">
+            <slot />
+        </main>
+
+        <Footer />
+    </body>
 </html>

@@ -39,7 +39,7 @@ const fuseOptions = {
         name="q"
         id="search"
         value={searchQuery}
-        class="block w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 dark:focus:text-white focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        class="block w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 dark:focus:text-white focus:placeholder-gray-400 focus:ring-1 focus:ring-brand-blue-500 focus:border-brand-blue-500 sm:text-sm"
         placeholder={placeholder}
         autocomplete="off"
       />
@@ -118,7 +118,7 @@ const fuseOptions = {
         badges.appendChild(
           createBadge(
             tool.data.category,
-            'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+            'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-blue-100 text-brand-blue-800 dark:bg-brand-blue-900 dark:text-brand-blue-200'
           )
         );
       }
@@ -127,7 +127,7 @@ const fuseOptions = {
         badges.appendChild(
           createBadge(
             `Alternative to ${tool.data.alternativeTo}`,
-            'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+            'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-green-100 text-brand-green-800 dark:bg-brand-green-900 dark:text-brand-green-200'
           )
         );
       }
