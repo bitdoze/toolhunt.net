@@ -10,68 +10,45 @@ const { shCategories, toolCategories, macCategories } = Astro.props;
 
 const sections = [
   {
-    title: 'Self-hosted Apps',
+    title: 'Self-hosted',
     href: '/sh/',
     categories: shCategories,
-    iconBg: 'bg-brand-blue-100 dark:bg-brand-blue-900',
-    iconColor: 'text-brand-blue-600 dark:text-brand-blue-400',
+    accent: 'bg-brand-blue-500',
     chip:
-      'bg-brand-blue-50 text-brand-blue-800 hover:bg-brand-blue-100 dark:bg-brand-blue-900/40 dark:text-brand-blue-100 dark:hover:bg-brand-blue-900/70',
-    path: 'M5 12h14M12 5l7 7-7 7',
+      'bg-slate-100 text-slate-700 hover:bg-brand-blue-50 hover:text-brand-blue-800 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-brand-blue-900/40 dark:hover:text-brand-blue-100',
   },
   {
-    title: 'Online Tools',
+    title: 'Online tools',
     href: '/tools/',
     categories: toolCategories,
-    iconBg: 'bg-brand-green-100 dark:bg-brand-green-900',
-    iconColor: 'text-brand-green-600 dark:text-brand-green-400',
+    accent: 'bg-brand-green-500',
     chip:
-      'bg-brand-green-50 text-brand-green-800 hover:bg-brand-green-100 dark:bg-brand-green-900/40 dark:text-brand-green-100 dark:hover:bg-brand-green-900/70',
-    path: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9',
+      'bg-slate-100 text-slate-700 hover:bg-brand-green-50 hover:text-brand-green-800 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-brand-green-900/40 dark:hover:text-brand-green-100',
   },
   {
-    title: 'Mac Apps',
+    title: 'Mac apps',
     href: '/mac/',
     categories: macCategories,
-    iconBg: 'bg-brand-purple-100 dark:bg-brand-purple-900',
-    iconColor: 'text-brand-purple-600 dark:text-brand-purple-400',
+    accent: 'bg-brand-purple-500',
     chip:
-      'bg-brand-purple-50 text-brand-purple-800 hover:bg-brand-purple-100 dark:bg-brand-purple-900/40 dark:text-brand-purple-100 dark:hover:bg-brand-purple-900/70',
-    path: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+      'bg-slate-100 text-slate-700 hover:bg-brand-purple-50 hover:text-brand-purple-800 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-brand-purple-900/40 dark:hover:text-brand-purple-100',
   },
 ] as const;
 ---
 
-<div class="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
-  <div class="grid grid-cols-1 md:grid-cols-3 md:divide-x divide-gray-100 dark:divide-gray-700">
+<div class="th-card overflow-hidden">
+  <div class="grid grid-cols-1 md:grid-cols-3 md:divide-x md:divide-slate-200 dark:md:divide-slate-800">
     {
       sections.map((section) => (
-        <div class="p-6">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-              <span
-                class={`flex h-8 w-8 items-center justify-center rounded-lg ${section.iconBg} mr-3`}
-              >
-                <svg
-                  class={`w-5 h-5 ${section.iconColor}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d={section.path}
-                  />
-                </svg>
-              </span>
+        <div class="p-5 sm:p-6">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <h3 class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-200">
+              <span class:list={['h-2 w-2 rounded-full', section.accent]}></span>
               {section.title}
             </h3>
             <a
               href={section.href}
-              class="text-sm font-medium text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
+              class="text-sm font-medium text-slate-500 transition-colors hover:text-brand-blue-600 dark:text-slate-400 dark:hover:text-brand-blue-400"
             >
               View all
             </a>
@@ -80,7 +57,10 @@ const sections = [
             {section.categories.slice(0, 8).map((category) => (
               <a
                 href={`${section.href}?category=${encodeURIComponent(category)}`}
-                class={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500 ${section.chip}`}
+                class:list={[
+                  'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500',
+                  section.chip,
+                ]}
               >
                 {category}
               </a>

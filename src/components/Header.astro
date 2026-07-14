@@ -3,29 +3,27 @@ import Navigation from './Navigation.astro';
 import ThemeToggle from './ThemeToggle.astro';
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 cursor-default bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-16">
-      <!-- Logo and site name -->
-      <div class="flex-shrink-0 flex items-center">
-        <a href="/" class="group flex items-center space-x-2">
-          <img src="/images/logo.svg" alt="ToolHunt Logo" class="h-8 w-8 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3" />
-          <span class="text-xl font-bold text-gray-900 dark:text-white transition-colors duration-300 group-hover:text-brand-blue-600 dark:group-hover:text-brand-blue-400">ToolHunt</span>
-        </a>
-      </div>
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-slate-200/80 bg-white/85 backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/80">
+  <div class="th-container">
+    <div class="flex h-16 items-center justify-between gap-4">
+      <a href="/" class="group flex shrink-0 items-center gap-2.5">
+        <img
+          src="/images/logo.svg"
+          alt="ToolHunt Logo"
+          class="h-8 w-8 transition-transform duration-200 group-hover:scale-105"
+          width="32"
+          height="32"
+        />
+        <span class="text-lg font-semibold tracking-tight text-slate-900 transition-colors group-hover:text-brand-blue-600 dark:text-white dark:group-hover:text-brand-blue-400">
+          ToolHunt
+        </span>
+      </a>
 
-      <!-- Navigation -->
-      <div class="flex-1 flex items-center justify-center lg:justify-end">
+      <div class="flex min-w-0 flex-1 items-center justify-end gap-2 sm:gap-3">
         <Navigation />
-      </div>
-
-      <!-- Theme Toggle -->
-      <div class="flex items-center pl-4 lg:pl-6 border-l border-gray-200 dark:border-gray-700">
+        <div class="hidden h-6 w-px bg-slate-200 dark:bg-slate-700 sm:block"></div>
         <ThemeToggle />
       </div>
     </div>
   </div>
 </header>
-
-<!-- Spacer to prevent content from hiding under fixed header -->
-<div class="h-16"></div>

@@ -2,7 +2,6 @@
 @plugin "@tailwindcss/typography";
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Color templates: update these values to retheme globally */
 :root {
   --th-color-primary: #2563eb;
   --th-color-dark: #111827;
@@ -11,9 +10,26 @@
   --th-color-brand-purple: #9333ea;
   --th-color-brand-indigo: #4f46e5;
   --th-color-brand-pink: #ec4899;
+
+  --th-radius: 1rem;
+  --th-radius-sm: 0.75rem;
+  --th-shadow: 0 1px 2px rgb(15 23 42 / 0.05), 0 8px 24px rgb(15 23 42 / 0.04);
+  --th-shadow-hover: 0 1px 2px rgb(15 23 42 / 0.06), 0 14px 32px rgb(15 23 42 / 0.08);
+  --th-border: rgb(226 232 240);
+  --th-surface: #ffffff;
+  --th-muted: #64748b;
+  --th-page: #f8fafc;
 }
 
-/* Tailwind v4 theme tokens (usable as text-brand-*, bg-brand-*, border-brand-*) */
+.dark {
+  --th-border: rgb(51 65 85);
+  --th-surface: #0f172a;
+  --th-muted: #94a3b8;
+  --th-page: #020617;
+  --th-shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 8px 24px rgb(0 0 0 / 0.25);
+  --th-shadow-hover: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 36px rgb(0 0 0 / 0.35);
+}
+
 @theme {
   --color-primary: var(--th-color-primary);
   --color-dark: var(--th-color-dark);
@@ -79,20 +95,155 @@
   --color-brand-pink-900: #831843;
 }
 
-/* Accessibility helpers */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--th-page);
+  color: #0f172a;
+  text-rendering: optimizeLegibility;
+}
+
+.dark body,
+body.dark,
+html.dark body {
+  color: #e2e8f0;
+}
+
 :focus-visible {
   outline: 2px solid var(--th-color-brand-blue);
   outline-offset: 2px;
 }
 
-/* Reduce layout work for long catalogs */
+/* Shared UI primitives */
+.th-container {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+.th-card {
+  border: 1px solid var(--th-border);
+  border-radius: var(--th-radius);
+  background: var(--th-surface);
+  box-shadow: var(--th-shadow);
+}
+
+.th-card-hover {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.th-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--th-shadow-hover);
+  border-color: rgb(147 197 253 / 0.8);
+}
+
+.dark .th-card-hover:hover {
+  border-color: rgb(59 130 246 / 0.45);
+}
+
+.th-btn {
+  @apply inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500 focus-visible:ring-offset-2;
+}
+
+.th-btn-primary {
+  @apply bg-brand-blue-600 text-white hover:bg-brand-blue-700;
+}
+
+.th-btn-secondary {
+  @apply border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800;
+}
+
+.th-btn-ghost {
+  @apply text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white;
+}
+
+.th-badge {
+  @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+}
+
+.th-badge-neutral {
+  @apply bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200;
+}
+
+.th-badge-blue {
+  @apply bg-brand-blue-50 text-brand-blue-800 dark:bg-brand-blue-900/50 dark:text-brand-blue-100;
+}
+
+.th-badge-purple {
+  @apply bg-brand-purple-50 text-brand-purple-800 dark:bg-brand-purple-900/40 dark:text-brand-purple-100;
+}
+
+.th-badge-green {
+  @apply bg-emerald-50 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-100;
+}
+
+.th-section-title {
+  @apply text-2xl font-semibold tracking-tight text-slate-900 dark:text-white;
+}
+
+.th-muted {
+  color: var(--th-muted);
+}
+
+.th-accent-bar {
+  @apply absolute inset-y-3 left-0 w-1 rounded-full bg-brand-blue-500;
+}
+
+/* Blog article reading styles */
+.blog-prose {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+.blog-prose :where(h2) {
+  margin-top: 2.25rem;
+  margin-bottom: 0.85rem;
+}
+
+.blog-prose :where(h3) {
+  margin-top: 1.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.blog-prose :where(p, ul, ol) {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.blog-prose :where(li) {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.blog-prose :where(blockquote) {
+  border-left: 3px solid var(--th-color-brand-blue);
+  background: rgb(239 246 255 / 0.65);
+  border-radius: 0 0.75rem 0.75rem 0;
+  padding: 0.9rem 1rem;
+  font-style: normal;
+  color: #334155;
+}
+
+.dark .blog-prose :where(blockquote) {
+  background: rgb(30 58 138 / 0.2);
+  color: #cbd5e1;
+}
+
+.blog-prose :where(hr) {
+  border-color: var(--th-border);
+  margin: 2rem 0;
+}
+
 [data-tool-item],
 [data-tool-grid-item] {
   content-visibility: auto;
-  contain-intrinsic-size: 300px;
+  contain-intrinsic-size: 280px;
 }
 
-/* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

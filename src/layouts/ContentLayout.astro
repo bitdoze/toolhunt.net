@@ -1,27 +1,30 @@
 ---
-import BaseLayout from "./BaseLayout.astro";
-import ToolCard from "../components/ToolCard.astro";
-import ToolImage from "../components/ToolImage.astro";
+import BaseLayout from './BaseLayout.astro';
+import ToolCard from '../components/ToolCard.astro';
+import ToolImage from '../components/ToolImage.astro';
 import {
   alternativeToUrl,
   buildSoftwareApplicationJsonLd,
+  collectionLabel,
   getAllTools,
   getAlternativeTo,
   getCheckItUrl,
   getCollectionTools,
+  getPricing,
   getRelatedTools,
   ogImageUrl,
   type ToolEntry,
-} from "../lib/content";
+} from '../lib/content';
 
 interface Props {
   entry: ToolEntry;
 }
 
 const { entry } = Astro.props;
-const { title, description, uiImage, category } = entry.data;
+const { title, description, uiImage, logo, category } = entry.data;
 const checkItUrl = getCheckItUrl(entry);
 const alternativeTo = getAlternativeTo(entry);
+const pricing = getPricing(entry);
 const [pool, allTools] = await Promise.all([
   getCollectionTools(entry.collection),
   getAllTools(),
@@ -31,16 +34,15 @@ const sameAlternativeTools = alternativeTo
   ? relatedTools.filter((tool) => getAlternativeTo(tool) === alternativeTo)
   : [];
 const categoryRelated = relatedTools.filter(
-  (tool) => !sameAlternativeTools.some((alt) => alt.id === tool.id && alt.collection === tool.collection)
+  (tool) =>
+    !sameAlternativeTools.some(
+      (alt) => alt.id === tool.id && alt.collection === tool.collection
+    )
 );
 const socialImage = ogImageUrl(entry);
 const jsonLd = buildSoftwareApplicationJsonLd(entry);
-const collectionOgDefaults: Record<string, string> = {
-  sh: "Self-hosted Apps",
-  tools: "Online Tools",
-  mac: "Mac Apps",
-  alternatives: "Alternatives",
-};
+const sectionLabel = collectionLabel(entry.collection);
+const sectionHref = `/${entry.collection}/`;
 ---
 
 <BaseLayout
@@ -50,102 +52,126 @@ const collectionOgDefaults: Record<string, string> = {
   type="article"
   jsonLd={jsonLd}
   publishedTime={entry.data.publishedDate.toISOString()}
-  section={collectionOgDefaults[entry.collection] || entry.collection}
+  section={sectionLabel}
 >
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="mb-8">
-      <ToolCard entry={entry} showFullDetails={true} />
-    </div>
+  <div class="th-container py-8 sm:py-10">
+    <nav class="mb-6 text-sm text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href="/" class="hover:text-brand-blue-600">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <a href={sectionHref} class="hover:text-brand-blue-600">{sectionLabel}</a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li class="text-slate-900 dark:text-white">{title}</li>
+      </ol>
+    </nav>
 
-    {
-      alternativeTo && (
-        <div class="mb-8 rounded-xl border border-brand-purple-200 dark:border-brand-purple-800 bg-brand-purple-50/70 dark:bg-brand-purple-900/20 px-4 py-3">
-          <p class="text-sm text-gray-700 dark:text-gray-200">
-            Looking for more options like this?{' '}
-            <a
-              href={alternativeToUrl(alternativeTo)}
-              class="font-semibold text-brand-purple-700 dark:text-brand-purple-300 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple-500 rounded"
-            >
-              Browse all alternatives to {alternativeTo}
-            </a>
-          </p>
+    <header class="th-card mb-8 p-6 sm:p-8">
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-start">
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/80">
+          <ToolImage
+            src={logo}
+            alt={`${title} logo`}
+            width={72}
+            height={72}
+            class="h-16 w-16 object-contain sm:h-[72px] sm:w-[72px]"
+            loading="eager"
+            fetchpriority="high"
+          />
         </div>
-      )
-    }
-
-    <div class="mb-8">
-      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-        Interface Preview
-      </h2>
-      <ToolImage
-        src={uiImage}
-        alt={`${title} user interface`}
-        class="w-full rounded-lg shadow-lg"
-        width={1200}
-        height={675}
-        loading="lazy"
-      />
-    </div>
-
-    {
-      entry.data.youtubeId && (
-        <div class="mb-8">
-          <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-            Video Overview
-          </h2>
-          <div class="relative pb-[56.25%] h-0 rounded-lg overflow-hidden shadow-lg">
-            <iframe
-              src={`https://www.youtube.com/embed/${entry.data.youtubeId}`}
-              title={`${title} video overview`}
-              class="absolute top-0 left-0 w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              loading="lazy"
-            />
+        <div class="min-w-0 flex-1">
+          <div class="mb-3 flex flex-wrap gap-2">
+            <span class="th-badge th-badge-neutral">{sectionLabel}</span>
+            <span class="th-badge th-badge-blue">{category}</span>
+            {pricing && <span class="th-badge th-badge-green">{pricing}</span>}
+            {alternativeTo && (
+              <a href={alternativeToUrl(alternativeTo)} class="th-badge th-badge-purple hover:opacity-90">
+                Alt to {alternativeTo}
+              </a>
+            )}
+          </div>
+          <h1 class="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
+            {title}
+          </h1>
+          <p class="mt-3 max-w-3xl text-base leading-relaxed text-slate-600 dark:text-slate-300">
+            {description}
+          </p>
+          <div class="mt-5 flex flex-wrap gap-2">
+            {checkItUrl && (
+              <a
+                href={checkItUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="th-btn th-btn-primary"
+              >
+                Visit official site
+              </a>
+            )}
+            {alternativeTo && (
+              <a href={alternativeToUrl(alternativeTo)} class="th-btn th-btn-secondary">
+                More alternatives to {alternativeTo}
+              </a>
+            )}
           </div>
         </div>
-      )
-    }
+      </div>
+    </header>
 
-    <article class="prose dark:prose-invert max-w-none">
-      <slot />
-    </article>
-
-    {
-      checkItUrl && (
-        <div class="mt-10">
-          <a
-            href={checkItUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center px-5 py-3 rounded-xl bg-brand-blue-600 text-white font-medium hover:bg-brand-blue-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-blue-500"
-          >
-            Visit official site
-            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </a>
+    <div class="mx-auto max-w-4xl">
+      <section class="mb-10">
+        <h2 class="th-section-title mb-4">Interface preview</h2>
+        <div class="th-card overflow-hidden p-2 sm:p-3">
+          <ToolImage
+            src={uiImage}
+            alt={`${title} user interface`}
+            class="w-full rounded-xl"
+            width={1200}
+            height={675}
+            loading="lazy"
+          />
         </div>
-      )
-    }
+      </section>
+
+      {
+        entry.data.youtubeId && (
+          <section class="mb-10">
+            <h2 class="th-section-title mb-4">Video overview</h2>
+            <div class="th-card relative h-0 overflow-hidden pb-[56.25%]">
+              <iframe
+                src={`https://www.youtube.com/embed/${entry.data.youtubeId}`}
+                title={`${title} video overview`}
+                class="absolute inset-0 h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+              />
+            </div>
+          </section>
+        )
+      }
+
+      <article class="prose prose-slate max-w-none dark:prose-invert prose-headings:tracking-tight prose-a:text-brand-blue-600">
+        <slot />
+      </article>
+
+      <div class="mt-8">
+        <ToolCard entry={entry} showFullDetails={true} />
+      </div>
+    </div>
   </div>
 
   {
     sameAlternativeTools.length > 0 && alternativeTo && (
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <section class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-8">
-          <div class="flex items-end justify-between gap-4 mb-6">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-              More alternatives to {alternativeTo}
-            </h2>
-            <a
-              href={alternativeToUrl(alternativeTo)}
-              class="text-sm font-medium text-brand-blue-600 hover:text-brand-blue-700 dark:text-brand-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500 rounded"
-            >
+      <div class="th-container">
+        <section class="mt-12 border-t border-slate-200 pt-8 dark:border-slate-800">
+          <div class="mb-5 flex items-end justify-between gap-4">
+            <h2 class="th-section-title">More alternatives to {alternativeTo}</h2>
+            <a href={alternativeToUrl(alternativeTo)} class="th-btn th-btn-secondary">
               View all
             </a>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {sameAlternativeTools.slice(0, 3).map((tool) => (
               <ToolCard entry={tool} />
             ))}
@@ -157,12 +183,13 @@ const collectionOgDefaults: Record<string, string> = {
 
   {
     categoryRelated.length > 0 && (
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <section class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-8 mb-12">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-            More {entry.collection === "mac" ? "Mac" : ""} {category} Tools
+      <div class="th-container">
+        <section class="mt-12 border-t border-slate-200 pt-8 pb-12 dark:border-slate-800">
+          <h2 class="th-section-title mb-5">
+            More {entry.collection === 'mac' ? 'Mac ' : ''}
+            {category} tools
           </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {categoryRelated.slice(0, 3).map((tool) => (
               <ToolCard entry={tool} />
             ))}

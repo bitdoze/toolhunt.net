@@ -22,19 +22,12 @@ const {
 } = Astro.props;
 ---
 
-<form
-  data-catalog-filters
-  class="space-y-5 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white/80 dark:bg-gray-800/70 p-4 backdrop-blur-sm shadow-sm"
->
+<form data-catalog-filters class="th-card space-y-5 p-4">
   <div class="flex items-center justify-between gap-2">
-    <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+    <h2 class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
       Filters
     </h2>
-    <button
-      type="button"
-      data-clear-filters
-      class="text-xs font-medium text-brand-blue-600 hover:text-brand-blue-700 dark:text-brand-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500 rounded"
-    >
+    <button type="button" data-clear-filters class="th-btn th-btn-ghost px-2 py-1 text-xs">
       Clear all
     </button>
   </div>
@@ -42,22 +35,22 @@ const {
   <div data-active-filters class="hidden flex-wrap gap-2"></div>
 
   <div>
-    <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Categories</h3>
-    <div class="max-h-56 overflow-y-auto space-y-1 pr-1">
+    <h3 class="mb-2.5 text-sm font-medium text-slate-800 dark:text-slate-200">Categories</h3>
+    <div class="max-h-56 space-y-1 overflow-y-auto pr-1">
       {
         categories.map((category) => (
-          <label class="flex items-center justify-between gap-2 rounded-md px-1.5 py-1 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/40 cursor-pointer focus-within:ring-2 focus-within:ring-brand-blue-500">
-            <span class="flex items-center min-w-0">
+          <label class="flex cursor-pointer items-center justify-between gap-2 rounded-lg px-1.5 py-1.5 transition-colors hover:bg-slate-50 focus-within:ring-2 focus-within:ring-brand-blue-500 dark:hover:bg-slate-800/70">
+            <span class="flex min-w-0 items-center">
               <input
                 type="checkbox"
                 name="category"
                 value={category}
-                class="h-4 w-4 text-brand-blue-600 focus:ring-2 focus:ring-brand-blue-500 focus:ring-offset-1 border-gray-300 dark:border-gray-600 rounded"
+                class="h-4 w-4 rounded border-slate-300 text-brand-blue-600 focus:ring-brand-blue-500 dark:border-slate-600"
               />
-              <span class="ml-2 text-sm text-gray-600 dark:text-gray-300 truncate">{category}</span>
+              <span class="ml-2 truncate text-sm text-slate-600 dark:text-slate-300">{category}</span>
             </span>
             {categoryCounts[category] != null && (
-              <span class="text-xs text-gray-400 dark:text-gray-500 tabular-nums">
+              <span class="tabular-nums text-xs text-slate-400 dark:text-slate-500">
                 {categoryCounts[category]}
               </span>
             )}
@@ -70,21 +63,21 @@ const {
   {
     showPricing && pricingOptions.length > 0 && (
       <div>
-        <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Pricing</h3>
+        <h3 class="mb-2.5 text-sm font-medium text-slate-800 dark:text-slate-200">Pricing</h3>
         <div class="space-y-1">
           {pricingOptions.map((price) => (
-            <label class="flex items-center justify-between gap-2 rounded-md px-1.5 py-1 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/40 cursor-pointer focus-within:ring-2 focus-within:ring-brand-blue-500">
-              <span class="flex items-center min-w-0">
+            <label class="flex cursor-pointer items-center justify-between gap-2 rounded-lg px-1.5 py-1.5 transition-colors hover:bg-slate-50 focus-within:ring-2 focus-within:ring-brand-blue-500 dark:hover:bg-slate-800/70">
+              <span class="flex min-w-0 items-center">
                 <input
                   type="checkbox"
                   name="pricing"
                   value={price}
-                  class="h-4 w-4 text-brand-blue-600 focus:ring-2 focus:ring-brand-blue-500 focus:ring-offset-1 border-gray-300 dark:border-gray-600 rounded"
+                  class="h-4 w-4 rounded border-slate-300 text-brand-blue-600 focus:ring-brand-blue-500 dark:border-slate-600"
                 />
-                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">{price}</span>
+                <span class="ml-2 text-sm text-slate-600 dark:text-slate-300">{price}</span>
               </span>
               {pricingCounts[price] != null && (
-                <span class="text-xs text-gray-400 dark:text-gray-500 tabular-nums">
+                <span class="tabular-nums text-xs text-slate-400 dark:text-slate-500">
                   {pricingCounts[price]}
                 </span>
               )}
@@ -98,21 +91,21 @@ const {
   {
     showAlternativeTo && alternativeTo.length > 0 && (
       <div>
-        <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Alternative To</h3>
-        <div class="max-h-48 overflow-y-auto space-y-1 pr-1">
+        <h3 class="mb-2.5 text-sm font-medium text-slate-800 dark:text-slate-200">Alternative to</h3>
+        <div class="max-h-48 space-y-1 overflow-y-auto pr-1">
           {alternativeTo.map((alt) => (
-            <label class="flex items-center justify-between gap-2 rounded-md px-1.5 py-1 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/40 cursor-pointer focus-within:ring-2 focus-within:ring-brand-blue-500">
-              <span class="flex items-center min-w-0">
+            <label class="flex cursor-pointer items-center justify-between gap-2 rounded-lg px-1.5 py-1.5 transition-colors hover:bg-slate-50 focus-within:ring-2 focus-within:ring-brand-blue-500 dark:hover:bg-slate-800/70">
+              <span class="flex min-w-0 items-center">
                 <input
                   type="checkbox"
                   name="alternativeTo"
                   value={alt}
-                  class="h-4 w-4 text-brand-blue-600 focus:ring-2 focus:ring-brand-blue-500 focus:ring-offset-1 border-gray-300 dark:border-gray-600 rounded"
+                  class="h-4 w-4 rounded border-slate-300 text-brand-blue-600 focus:ring-brand-blue-500 dark:border-slate-600"
                 />
-                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300 truncate">{alt}</span>
+                <span class="ml-2 truncate text-sm text-slate-600 dark:text-slate-300">{alt}</span>
               </span>
               {alternativeCounts[alt] != null && (
-                <span class="text-xs text-gray-400 dark:text-gray-500 tabular-nums">
+                <span class="tabular-nums text-xs text-slate-400 dark:text-slate-500">
                   {alternativeCounts[alt]}
                 </span>
               )}
@@ -172,7 +165,7 @@ const {
         const chip = document.createElement('button');
         chip.type = 'button';
         chip.className =
-          'inline-flex items-center gap-1 rounded-full bg-brand-blue-50 text-brand-blue-800 dark:bg-brand-blue-900/50 dark:text-brand-blue-100 px-2.5 py-1 text-xs font-medium';
+          'inline-flex items-center gap-1 rounded-full bg-brand-blue-50 px-2.5 py-1 text-xs font-medium text-brand-blue-800 dark:bg-brand-blue-900/50 dark:text-brand-blue-100';
         chip.dataset.removeName = name;
         chip.dataset.removeValue = value;
         chip.innerHTML = `${value}<span aria-hidden="true">×</span>`;

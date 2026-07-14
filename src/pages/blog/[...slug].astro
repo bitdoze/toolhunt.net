@@ -1,7 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { blogUrl, buildBlogPostingJsonLd, shuffleArray } from '../../lib/content';
+import BlogCard from '../../components/BlogCard.astro';
+import { buildBlogPostingJsonLd, shuffleArray } from '../../lib/content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -27,6 +28,11 @@ const postsToShow =
     : shuffleArray(allPosts.filter((p) => p.id !== post.id)).slice(0, 3);
 
 const jsonLd = buildBlogPostingJsonLd(post);
+const published = post.data.publishedDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
 ---
 
 <BaseLayout
@@ -38,83 +44,95 @@ const jsonLd = buildBlogPostingJsonLd(post);
   publishedTime={post.data.publishedDate.toISOString()}
   section="Blog"
 >
-  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    {
-      post.data.image && (
-        <img
-          src={post.data.image}
-          alt={post.data.title}
-          class="w-full aspect-video object-cover rounded-2xl mb-8"
-          width="1200"
-          height="675"
-          loading="eager"
-        />
-      )
-    }
-    <div class="flex gap-2 mb-4">
-      {
-        post.data.tags.map((tag: string) => (
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-brand-blue-100 dark:bg-brand-blue-800 text-brand-blue-800 dark:text-brand-blue-100">
-            {tag}
-          </span>
-        ))
-      }
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">
-      {post.data.title}
-    </h1>
-    <div class="flex items-center text-gray-600 dark:text-gray-400 mb-8">
-      <span>{post.data.author}</span>
-      <span class="mx-2">·</span>
-      <time datetime={post.data.publishedDate.toISOString()}>
-        {post.data.publishedDate.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })}
-      </time>
-    </div>
-    <div class="prose prose-lg dark:prose-invert max-w-none">
-      <Content />
-    </div>
+  <article class="th-container py-10 sm:py-12">
+    <div class="mx-auto max-w-3xl">
+      <nav class="mb-6 text-sm text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+        <ol class="flex flex-wrap items-center gap-1.5">
+          <li>
+            <a href="/blog/" class="transition-colors hover:text-slate-900 dark:hover:text-white">Blog</a>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li class="truncate text-slate-700 dark:text-slate-200">{post.data.title}</li>
+        </ol>
+      </nav>
 
-    <div class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-12">
-      <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Related Articles</h2>
-      <div class="grid gap-8 md:grid-cols-3">
-        {
-          postsToShow.map((relatedPost) => (
-            <a href={blogUrl(relatedPost)} class="group">
-              <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-100/50 dark:border-gray-700/50">
-                {relatedPost.data.image && (
-                  <img
-                    src={relatedPost.data.image}
-                    alt={relatedPost.data.title}
-                    class="w-full aspect-video object-cover"
-                    width="640"
-                    height="360"
-                    loading="lazy"
-                  />
-                )}
-                <div class="p-6">
-                  <div class="flex gap-2 mb-3">
-                    {relatedPost.data.tags.map((tag: string) => (
-                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-blue-100 dark:bg-brand-blue-800 text-brand-blue-800 dark:text-brand-blue-100">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-brand-blue-600 dark:group-hover:text-brand-blue-400">
-                    {relatedPost.data.title}
-                  </h3>
-                  <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
-                    {relatedPost.data.description}
-                  </p>
-                </div>
-              </article>
-            </a>
-          ))
-        }
+      <header class="mb-8">
+        <div class="mb-4 flex flex-wrap gap-2">
+          {
+            post.data.tags.map((tag: string) => (
+              <span class="th-badge th-badge-blue">{tag}</span>
+            ))
+          }
+        </div>
+
+        <h1 class="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem] lg:leading-tight dark:text-white">
+          {post.data.title}
+        </h1>
+
+        <p class="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-300">
+          {post.data.description}
+        </p>
+
+        <div class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-500 dark:text-slate-400">
+          <span class="font-medium text-slate-700 dark:text-slate-200">{post.data.author}</span>
+          <span aria-hidden="true">·</span>
+          <time datetime={post.data.publishedDate.toISOString()}>{published}</time>
+        </div>
+      </header>
+
+      {
+        post.data.image && (
+          <div class="th-card mb-10 overflow-hidden">
+            <img
+              src={post.data.image}
+              alt={post.data.title}
+              class="aspect-video w-full object-cover"
+              width="1200"
+              height="675"
+              loading="eager"
+            />
+          </div>
+        )
+      }
+
+      <div class="blog-prose prose prose-slate max-w-none dark:prose-invert prose-headings:scroll-mt-24 prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-brand-blue-600 prose-a:no-underline hover:prose-a:underline dark:prose-a:text-brand-blue-400 prose-img:rounded-xl prose-pre:rounded-xl prose-pre:border prose-pre:border-slate-200 dark:prose-pre:border-slate-700">
+        <Content />
+      </div>
+
+      <div class="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-slate-200 pt-8 dark:border-slate-800">
+        <a href="/blog/" class="th-btn th-btn-secondary">
+          ← All articles
+        </a>
+        <a href="/rss.xml" class="text-sm font-medium text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
+          Subscribe via RSS
+        </a>
       </div>
     </div>
+
+    {
+      postsToShow.length > 0 && (
+        <section class="mx-auto mt-16 max-w-6xl border-t border-slate-200 pt-12 dark:border-slate-800">
+          <div class="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <h2 class="th-section-title">Related articles</h2>
+              <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                More reads based on similar topics.
+              </p>
+            </div>
+            <a
+              href="/blog/"
+              class="hidden text-sm font-medium text-brand-blue-600 hover:text-brand-blue-700 sm:inline dark:text-brand-blue-400 dark:hover:text-brand-blue-300"
+            >
+              View all
+            </a>
+          </div>
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {postsToShow.map((relatedPost) => (
+              <BlogCard post={relatedPost} />
+            ))}
+          </div>
+        </section>
+      )
+    }
   </article>
 </BaseLayout>

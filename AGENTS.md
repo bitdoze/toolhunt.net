@@ -108,8 +108,6 @@ npm run build                  # production build
 npm run ci                     # content:check + check + build
 ```
 
-CI (`.github/workflows/ci.yml`) runs the same gate on PRs and `main`.
-
 Checklist for every content PR:
 
 1. Slug/content file exists in the right collection

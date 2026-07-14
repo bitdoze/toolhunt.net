@@ -2,15 +2,10 @@
   "name": "toolhunt-net",
   "compatibility_date": "2025-05-21",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@astrojs/cloudflare/entrypoints/server",
+  // Astro static + Cloudflare adapter emits assets under dist/client
   "assets": {
-    "directory": "./dist",
+    "directory": "./dist/client",
     "binding": "ASSETS"
-  },
-  "kv_namespaces": [
-    {
-      "binding": "SESSION",
-      "id": "00000000000000000000000000000000"
-    }
-  ]
+  }
 }
+

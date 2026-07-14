@@ -84,15 +84,17 @@ Node requirement: `>=22.12.0` (see `.nvmrc`).
 
 ## Deploy
 
-Configured for Cloudflare (static + Workers adapter). Build command:
+Configured for Cloudflare Pages/Workers (Astro static + `@astrojs/cloudflare`).
 
 ```bash
 npm run build
 ```
 
-Output is under `dist/`. Trailing slashes are always enabled.
+- Build command: `npm run build`
+- Output / assets: `dist/client`
+- Config: root `wrangler.jsonc` (do not commit `.wrangler/`; it is generated)
 
-GitHub Actions CI runs `content:check`, `astro check`, and `build` on PRs.
+Trailing slashes are always enabled. Validate locally with `npm run content:check && npm run check && npm run build`.
 
 ## Docs for agents/contributors
 
