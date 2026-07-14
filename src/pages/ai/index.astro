@@ -1,0 +1,28 @@
+---
+import SectionLayout from '../../layouts/SectionLayout.astro';
+import {
+  getAiTools,
+  getAlternativeTo,
+  getPricing,
+  uniqueSorted,
+} from '../../lib/content';
+
+const allTools = await getAiTools();
+const categories = uniqueSorted(allTools.map((tool) => tool.data.category));
+const alternativeTo = uniqueSorted(allTools.map((tool) => getAlternativeTo(tool)));
+const pricingOptions = uniqueSorted(allTools.map((tool) => getPricing(tool)));
+const showPricing = pricingOptions.length > 0;
+---
+
+<SectionLayout
+  title="AI Tools for Local and Self-Hosted Workflows"
+  description="Browse AI apps and infrastructure across Mac, self-hosted, and online catalogs: local LLMs, agents, dictation, image generation, and AI developer platforms."
+  tools={allTools}
+  categories={categories}
+  alternativeTo={alternativeTo}
+  showAlternativeTo={alternativeTo.length > 0}
+  pricingOptions={pricingOptions}
+  showPricing={showPricing}
+  itemsPerPage={50}
+  section="ai"
+/>

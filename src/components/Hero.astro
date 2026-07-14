@@ -5,13 +5,22 @@ import type { SearchIndexItem } from '../lib/content';
 interface Props {
   totalTools: number;
   shCount: number;
+  aiCount: number;
   toolsCount: number;
   macCount: number;
   alternativesCount: number;
   searchIndex: SearchIndexItem[];
 }
 
-const { totalTools, shCount, toolsCount, macCount, alternativesCount, searchIndex } = Astro.props;
+const {
+  totalTools,
+  shCount,
+  aiCount,
+  toolsCount,
+  macCount,
+  alternativesCount,
+  searchIndex,
+} = Astro.props;
 
 const collections = [
   {
@@ -20,6 +29,13 @@ const collections = [
     href: '/sh/',
     accent: 'bg-brand-blue-500',
     soft: 'bg-brand-blue-50 text-brand-blue-700 dark:bg-brand-blue-900/30 dark:text-brand-blue-100',
+  },
+  {
+    name: 'AI tools',
+    count: aiCount,
+    href: '/ai/',
+    accent: 'bg-rose-500',
+    soft: 'bg-rose-50 text-rose-700 dark:bg-rose-900/30 dark:text-rose-100',
   },
   {
     name: 'Online tools',
@@ -64,38 +80,37 @@ const collections = [
       <p class="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
         Search self-hosted apps, online tools, Mac apps, and alternatives in one clean catalog.
       </p>
+    </div>
 
-      <div class="mx-auto mt-8 w-full max-w-5xl text-left">
-        <div class="mx-auto max-w-xl">
-          <SearchBar
-            tools={searchIndex}
-            mode="global"
-            placeholder="Search n8n, Photopea, Raycast alternatives..."
-          />
-        </div>
-      </div>
+    <!-- Full-width search shell: input can stay narrow, results use the whole container -->
+    <div class="mt-8 w-full text-left">
+      <SearchBar
+        tools={searchIndex}
+        mode="global"
+        placeholder="Search n8n, Photopea, Raycast alternatives..."
+      />
+    </div>
 
-      <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {
-          collections.map((item) => (
-            <a
-              href={item.href}
-              class="th-card th-card-hover group relative overflow-hidden p-4 text-left"
-            >
-              <span class:list={['absolute left-0 top-0 h-full w-1', item.accent]}></span>
-              <p class="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                {item.name}
-              </p>
-              <p class="mt-2 text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
-                {item.count}
-              </p>
-              <p class:list={['mt-2 inline-flex rounded-full px-2 py-0.5 text-xs font-medium', item.soft]}>
-                Browse
-              </p>
-            </a>
-          ))
-        }
-      </div>
+    <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5" data-home-collections>
+      {
+        collections.map((item) => (
+          <a
+            href={item.href}
+            class="th-card th-card-hover group relative overflow-hidden p-4 text-left"
+          >
+            <span class:list={['absolute left-0 top-0 h-full w-1', item.accent]}></span>
+            <p class="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              {item.name}
+            </p>
+            <p class="mt-2 text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
+              {item.count}
+            </p>
+            <p class:list={['mt-2 inline-flex rounded-full px-2 py-0.5 text-xs font-medium', item.soft]}>
+              Browse
+            </p>
+          </a>
+        ))
+      }
     </div>
   </div>
 </section>

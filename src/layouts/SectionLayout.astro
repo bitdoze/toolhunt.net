@@ -12,6 +12,8 @@ import {
   type ToolEntry,
 } from '../lib/content';
 
+export type CatalogSection = ToolCollection | 'ai';
+
 interface Props {
   title: string;
   description: string;
@@ -22,7 +24,7 @@ interface Props {
   pricingOptions?: string[];
   showPricing?: boolean;
   itemsPerPage?: number;
-  section: ToolCollection;
+  section: CatalogSection;
   popularAlternatives?: Array<{ name: string; href: string; count: number }>;
 }
 
@@ -61,11 +63,12 @@ const pricingCounts = Object.fromEntries(
   ])
 );
 
-const sectionOgImages: Record<ToolCollection, string> = {
+const sectionOgImages: Record<CatalogSection, string> = {
   sh: '/images/logo.svg',
   tools: '/images/logo.svg',
   mac: '/images/logo.svg',
   alternatives: '/images/logo.svg',
+  ai: '/images/logo.svg',
 };
 
 const jsonLd = {

@@ -75,12 +75,14 @@ Node requirement: `>=22.12.0` (see `.nvmrc`).
 | Mac apps | `src/content/mac` | `/mac/` |
 | Alternatives | `src/content/alternatives` | `/alternatives/` |
 | Blog | `src/content/blog` | `/blog/` |
+| AI tools (aggregate) | AI categories across collections | `/ai/` |
 
 ## SEO / product routes
 
 - Tool OG cards: `/og/{collection}/{id}.svg`
 - Blog RSS: `/rss.xml`
 - Alternatives hubs: `/alternatives/to/{slug}/`
+- LLM catalog summary: `/llms.txt`
 
 ## Deploy
 

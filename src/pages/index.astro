@@ -5,19 +5,22 @@ import ToolGrid from '../components/ToolGrid.astro';
 import CategoryFilters from '../components/CategoryFilters.astro';
 import { getCollection } from 'astro:content';
 import {
+  getAiTools,
   sortByDateDesc,
   toSearchIndexItem,
   uniqueSorted,
   type ToolEntry,
 } from '../lib/content';
 
-const [shEntries, toolEntries, alternativeEntries, macEntries, blogEntries] = await Promise.all([
-  getCollection('sh'),
-  getCollection('tools'),
-  getCollection('alternatives'),
-  getCollection('mac'),
-  getCollection('blog'),
-]);
+const [shEntries, toolEntries, alternativeEntries, macEntries, blogEntries, aiEntries] =
+  await Promise.all([
+    getCollection('sh'),
+    getCollection('tools'),
+    getCollection('alternatives'),
+    getCollection('mac'),
+    getCollection('blog'),
+    getAiTools(),
+  ]);
 
 const allTools: ToolEntry[] = [...shEntries, ...toolEntries, ...alternativeEntries, ...macEntries];
 const searchIndex = allTools.map(toSearchIndexItem);
@@ -25,8 +28,10 @@ const searchIndex = allTools.map(toSearchIndexItem);
 const shCategories = uniqueSorted(shEntries.map((entry) => entry.data.category));
 const toolCategories = uniqueSorted(toolEntries.map((entry) => entry.data.category));
 const macCategories = uniqueSorted(macEntries.map((entry) => entry.data.category));
+const aiCategories = uniqueSorted(aiEntries.map((entry) => entry.data.category));
 
 const latestShEntries = sortByDateDesc(shEntries).slice(0, 6);
+const latestAiEntries = aiEntries.slice(0, 6);
 const latestToolEntries = sortByDateDesc(toolEntries).slice(0, 6);
 const latestAlternativeEntries = sortByDateDesc(alternativeEntries).slice(0, 6);
 const latestMacEntries = sortByDateDesc(macEntries).slice(0, 6);
@@ -66,22 +71,28 @@ const rails = [
     accent: 'bg-brand-blue-500',
   },
   {
+    title: 'Latest AI tools',
+    href: '/ai/',
+    tools: latestAiEntries,
+    accent: 'bg-rose-500',
+  },
+  {
     title: 'Latest online tools',
     href: '/tools/',
     tools: latestToolEntries,
     accent: 'bg-brand-green-500',
   },
   {
-    title: 'Latest alternatives',
-    href: '/alternatives/',
-    tools: latestAlternativeEntries,
-    accent: 'bg-brand-purple-500',
-  },
-  {
     title: 'Latest Mac apps',
     href: '/mac/',
     tools: latestMacEntries,
     accent: 'bg-brand-indigo-500',
+  },
+  {
+    title: 'Latest alternatives',
+    href: '/alternatives/',
+    tools: latestAlternativeEntries,
+    accent: 'bg-brand-purple-500',
   },
 ] as const;
 ---
@@ -95,6 +106,7 @@ const rails = [
   <Hero
     totalTools={totalTools}
     shCount={shEntries.length}
+    aiCount={aiEntries.length}
     toolsCount={toolEntries.length}
     macCount={macEntries.length}
     alternativesCount={alternativeEntries.length}
@@ -113,6 +125,7 @@ const rails = [
       </div>
       <CategoryFilters
         shCategories={shCategories}
+        aiCategories={aiCategories}
         toolCategories={toolCategories}
         macCategories={macCategories}
         selectedCategories={[]}

@@ -97,6 +97,20 @@ export async function getAllTools(): Promise<ToolEntry[]> {
   return [...sh, ...tools, ...alternatives, ...mac];
 }
 
+/** Categories treated as AI tools for the aggregate /ai/ section. */
+export function isAiCategory(category: string): boolean {
+  return category === 'AI' || category.startsWith('AI ');
+}
+
+export function isAiTool(entry: ToolEntry): boolean {
+  return isAiCategory(entry.data.category);
+}
+
+export async function getAiTools(): Promise<ToolEntry[]> {
+  const tools = await getAllTools();
+  return sortByDateDesc(tools.filter(isAiTool));
+}
+
 export async function getToolsByCategory(
   collection: ToolCollection,
   category: string

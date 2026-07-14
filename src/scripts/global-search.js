@@ -24,6 +24,7 @@ function initGlobalSearch(root) {
   const clearResultsBtn = root.querySelector('[data-global-clear]');
   const emptyResetBtn = root.querySelector('[data-global-reset]');
   const browseSections = document.querySelector('[data-home-browse]');
+  const collectionCards = document.querySelector('[data-home-collections]');
 
   if (
     !(form instanceof HTMLFormElement) ||
@@ -58,6 +59,9 @@ function initGlobalSearch(root) {
     input.setAttribute('aria-expanded', activeSearch ? 'true' : 'false');
     if (browseSections instanceof HTMLElement) {
       browseSections.hidden = activeSearch;
+    }
+    if (collectionCards instanceof HTMLElement) {
+      collectionCards.hidden = activeSearch;
     }
   }
 
@@ -106,45 +110,69 @@ function initGlobalSearch(root) {
     a.setAttribute('role', 'option');
     a.setAttribute('aria-selected', 'false');
     a.className =
-      'th-card th-card-hover block p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500';
+      'th-card th-card-hover group relative flex h-full min-h-[11.5rem] flex-col overflow-hidden p-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500';
 
-    const row = document.createElement('div');
-    row.className = 'flex items-start gap-4';
+    if (tool.pricing) {
+      const pricingClass =
+        tool.pricing === 'Free'
+          ? 'th-badge th-badge-green'
+          : tool.pricing === 'Paid'
+            ? 'th-badge th-badge-blue'
+            : 'th-badge th-badge-purple';
+      const pricing = badge(tool.pricing, `${pricingClass} absolute right-3 top-3 z-10`);
+      a.append(pricing);
+    }
+
+    const header = document.createElement('div');
+    header.className = 'flex items-center gap-4 pr-16';
+
+    const logoWrap = document.createElement('div');
+    logoWrap.className =
+      'flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-2 dark:border-slate-700 dark:bg-slate-800/80';
 
     const img = document.createElement('img');
     img.src = tool.logo;
     img.alt = `${tool.title} logo`;
-    img.width = 48;
-    img.height = 48;
-    img.className =
-      'h-12 w-12 shrink-0 rounded-lg border border-slate-200 bg-slate-50 object-contain p-1.5 dark:border-slate-700 dark:bg-slate-800';
+    img.width = 40;
+    img.height = 40;
+    img.className = 'h-10 w-10 object-contain';
     img.loading = 'lazy';
     img.decoding = 'async';
+    logoWrap.append(img);
 
-    const body = document.createElement('div');
-    body.className = 'min-w-0 flex-1';
-
-    const title = document.createElement('h3');
-    title.className = 'truncate text-base font-semibold text-slate-900 dark:text-white';
-    title.textContent = tool.title;
-
-    const desc = document.createElement('p');
-    desc.className = 'mt-1 line-clamp-2 text-sm text-slate-500 dark:text-slate-400';
-    desc.textContent = tool.description;
+    const meta = document.createElement('div');
+    meta.className = 'min-w-0 flex-1';
 
     const badges = document.createElement('div');
-    badges.className = 'mt-2 flex flex-wrap gap-2';
+    badges.className = 'mb-1.5 flex flex-wrap items-center gap-1.5';
     badges.appendChild(badge(collectionLabel(tool.collection), 'th-badge th-badge-neutral'));
     if (tool.category) {
       badges.appendChild(badge(tool.category, 'th-badge th-badge-blue'));
     }
+
+    const title = document.createElement('h3');
+    title.className =
+      'line-clamp-2 text-lg font-semibold leading-snug tracking-tight text-slate-900 transition-colors group-hover:text-brand-blue-600 dark:text-white dark:group-hover:text-brand-blue-400';
+    title.textContent = tool.title;
+
+    meta.append(badges, title);
+    header.append(logoWrap, meta);
+
+    const desc = document.createElement('p');
+    desc.className =
+      'mt-4 line-clamp-3 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-300';
+    desc.textContent = tool.description;
+
+    a.append(header, desc);
+
     if (tool.alternativeTo) {
-      badges.appendChild(badge(`Alt to ${tool.alternativeTo}`, 'th-badge th-badge-purple'));
+      const alt = document.createElement('p');
+      alt.className =
+        'mt-4 border-t border-slate-100 pt-3 text-xs font-medium text-slate-500 dark:border-slate-800 dark:text-slate-400';
+      alt.textContent = `Alternative to ${tool.alternativeTo}`;
+      a.append(alt);
     }
 
-    body.append(title, desc, badges);
-    row.append(img, body);
-    a.append(row);
     return a;
   }
 

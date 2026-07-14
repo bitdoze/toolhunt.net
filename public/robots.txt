@@ -4,3 +4,6 @@ Allow: /
 
 # Sitemap location
 Sitemap: https://toolhunt.net/sitemap-index.xml
+
+# LLM catalog summary
+# https://toolhunt.net/llms.txt

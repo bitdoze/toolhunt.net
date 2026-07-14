@@ -1,12 +1,18 @@
 ---
 interface Props {
   shCategories: string[];
+  aiCategories?: string[];
   toolCategories: string[];
   macCategories: string[];
   selectedCategories?: string[];
 }
 
-const { shCategories, toolCategories, macCategories } = Astro.props;
+const {
+  shCategories,
+  aiCategories = [],
+  toolCategories,
+  macCategories,
+} = Astro.props;
 
 const sections = [
   {
@@ -16,6 +22,14 @@ const sections = [
     accent: 'bg-brand-blue-500',
     chip:
       'bg-slate-100 text-slate-700 hover:bg-brand-blue-50 hover:text-brand-blue-800 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-brand-blue-900/40 dark:hover:text-brand-blue-100',
+  },
+  {
+    title: 'AI tools',
+    href: '/ai/',
+    categories: aiCategories,
+    accent: 'bg-rose-500',
+    chip:
+      'bg-slate-100 text-slate-700 hover:bg-rose-50 hover:text-rose-800 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-rose-900/40 dark:hover:text-rose-100',
   },
   {
     title: 'Online tools',
@@ -37,7 +51,7 @@ const sections = [
 ---
 
 <div class="th-card overflow-hidden">
-  <div class="grid grid-cols-1 md:grid-cols-3 md:divide-x md:divide-slate-200 dark:md:divide-slate-800">
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 md:divide-x md:divide-slate-200 dark:md:divide-slate-800">
     {
       sections.map((section) => (
         <div class="p-5 sm:p-6">
@@ -54,17 +68,23 @@ const sections = [
             </a>
           </div>
           <div class="flex flex-wrap gap-2">
-            {section.categories.slice(0, 8).map((category) => (
-              <a
-                href={`${section.href}?category=${encodeURIComponent(category)}`}
-                class:list={[
-                  'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500',
-                  section.chip,
-                ]}
-              >
-                {category}
-              </a>
-            ))}
+            {(section.categories.length > 0 ? section.categories.slice(0, 8) : ['Browse all']).map(
+              (category) => (
+                <a
+                  href={
+                    section.categories.length > 0
+                      ? `${section.href}?category=${encodeURIComponent(category)}`
+                      : section.href
+                  }
+                  class:list={[
+                    'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500',
+                    section.chip,
+                  ]}
+                >
+                  {category}
+                </a>
+              )
+            )}
           </div>
         </div>
       ))

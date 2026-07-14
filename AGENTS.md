@@ -13,6 +13,7 @@ How to add and maintain content entries so updates stay consistent.
 - Dynamic OG cards: `/og/{collection}/{id}.svg`
 - Blog RSS: `/rss.xml`
 - Alternatives SEO pages: `/alternatives/to/{slug}/`
+- LLM catalog: `/llms.txt`
 
 ## Collections and paths
 
@@ -23,6 +24,12 @@ How to add and maintain content entries so updates stay consistent.
 | `mac` | `src/content/mac/*.md` | `public/images/mac/*` | `/mac/{id}/` |
 | `alternatives` | `src/content/alternatives/*.md` | `public/images/alternatives/*` | `/alternatives/{id}/` |
 | `blog` | `src/content/blog/*.{md,mdx}` | `public/images/blog/*` | `/blog/{id}/` |
+
+Cross-collection pages:
+
+| Page | Source | URL |
+| --- | --- | --- |
+| AI tools | tools with category `AI`, `AI Development`, `AI Infrastructure`, etc. | `/ai/` |
 
 ## Scaffold a new entry
 
