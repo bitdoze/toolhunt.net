@@ -9,7 +9,7 @@ Site: [https://toolhunt.net](https://toolhunt.net)
 - Astro 7 (static output)
 - Tailwind CSS 4
 - Content Layer collections (`src/content.config.ts`)
-- Cloudflare adapter (`@astrojs/cloudflare`)
+- Cloudflare Pages (static assets)
 - Client-side search (Fuse.js) and catalog filters
 
 ## Project structure
@@ -84,15 +84,16 @@ Node requirement: `>=22.12.0` (see `.nvmrc`).
 
 ## Deploy
 
-Configured for Cloudflare Pages/Workers (Astro static + `@astrojs/cloudflare`).
+Static site for Cloudflare Pages (no Workers/wrangler required).
 
 ```bash
 npm run build
 ```
 
+Pages settings:
 - Build command: `npm run build`
-- Output / assets: `dist/client`
-- Config: root `wrangler.jsonc` (do not commit `.wrangler/`; it is generated)
+- Build output directory: `dist`
+- Node version: `22` (see `.nvmrc`)
 
 Trailing slashes are always enabled. Validate locally with `npm run content:check && npm run check && npm run build`.
 
