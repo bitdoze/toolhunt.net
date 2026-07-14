@@ -50,3 +50,7 @@ Screenshots shouldn’t slow you down or skimp on precision—meet **Shottr**, a
 - macOS 11 (Big Sur) or higher
 - 4GB RAM minimum
 - Works on Intel and Apple Silicon Macs
+
+## Full Setup Guide
+
+For the full review and setup notes, read: [Shottr Mac Screenshot Tool](https://www.bitdoze.com/shottr-mac-screenshot-tool/).

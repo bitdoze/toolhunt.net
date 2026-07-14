@@ -4,7 +4,7 @@ publishedDate: 2026-02-25
 logo: "/images/sh/dockhand-logo.png"
 uiImage: "/images/sh/dockhand-ui.png"
 description: "Dockhand is a self-hosted Docker management tool with built-in security checks, update workflows, and a dashboard designed for production-minded container operations."
-youtubeId: ""
+youtubeId: "Ew0pn9Djf-0"
 keyFeatures: [
   "Container lifecycle management",
   "Security scanning",

@@ -49,5 +49,4 @@ Chatto is designed for simple self-hosting. Download a release binary or follow 
 
 ## Full Setup Guide
 
-Official product site and docs: [Chatto](https://chatto.run/) · [Documentation](https://docs.chatto.run) · [Source](https://github.com/chattocorp/chatto).
-A BitDoze walkthrough will be linked here once published.
+For the full self-host walkthrough, read: [Chatto Self-Hosted Guide](https://www.bitdoze.com/chatto-self-hosted/).

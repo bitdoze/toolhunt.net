@@ -106,4 +106,6 @@ services:
 
 Docmost is perfect for teams that want a powerful, self-hosted documentation solution without the complexity of traditional enterprise tools. Whether you're a small startup or a larger organization, Docmost provides the flexibility and features you need to keep your team's knowledge organized and accessible.
 
-Start building your team's knowledge base today with Docmost - the open-source solution for modern documentation needs.
+## Full Setup Guide
+
+For the complete Docker Compose install, read: [Docmost Docker Install](https://www.bitdoze.com/docmost-docker-install/).

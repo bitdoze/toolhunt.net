@@ -60,5 +60,4 @@ API defaults to `http://localhost:8888` and UI to `http://localhost:9999`.
 
 ## Full Setup Guide
 
-Official docs and source: [Hindsight docs](https://hindsight.vectorize.io/) · [GitHub](https://github.com/vectorize-io/hindsight) · [Cloud](https://ui.hindsight.vectorize.io/signup).
-A BitDoze walkthrough will be linked here once published.
+For the complete Docker deployment walkthrough, read: [Hindsight Docker Deploy Guide](https://www.bitdoze.com/hindsight-docker-deploy/).

@@ -51,3 +51,7 @@ Umami is a lightweight, open-source web analytics solution designed with privacy
 - Docker support for easy deployment
 - One-click deploy to Vercel, Railway, or Heroku
 - PostgreSQL or MySQL database support
+
+## Full Setup Guide
+
+For the complete Docker install walkthrough, read: [Umami Analytics Install](https://www.bitdoze.com/umami-analytics-install/).

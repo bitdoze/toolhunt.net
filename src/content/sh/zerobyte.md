@@ -4,7 +4,7 @@ publishedDate: 2026-02-25
 logo: "/images/sh/zerobyte-logo.png"
 uiImage: "/images/sh/zerobyte-ui.png"
 description: "Zerobyte is a self-hosted graphical interface for restic backups, helping you manage backup jobs, retention, and restore workflows from the browser."
-youtubeId: ""
+youtubeId: "menR-JtmgLI"
 keyFeatures: [
   "Restic backup management",
   "Web-based backup UI",

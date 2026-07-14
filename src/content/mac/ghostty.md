@@ -52,3 +52,7 @@ Say goodbye to sluggish, clunky terminals and hello to **Ghostty**, a free termi
 - Linux with GTK4 support
 - 4GB RAM minimum (8GB recommended for heavy use)
 - Works on Intel and Apple Silicon Macs
+
+## Full Setup Guide
+
+For the complete Mac setup walkthrough, read: [Ghostty Terminal Guide](https://www.bitdoze.com/ghostty-terminal/).

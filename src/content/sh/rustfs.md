@@ -4,7 +4,7 @@ publishedDate: 2026-02-25
 logo: "/images/sh/rustfs-logo.png"
 uiImage: "/images/sh/rustfs-ui.png"
 description: "RustFS is a high-performance, S3-compatible object storage system built in Rust for scalable self-hosted storage workloads."
-youtubeId: ""
+youtubeId: "pNY7NlPuFyM"
 keyFeatures: [
   "S3-compatible API",
   "Distributed storage architecture",

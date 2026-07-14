@@ -4,6 +4,7 @@ publishedDate: 2026-07-14
 logo: "/images/mac/voicebox-logo.webp"
 uiImage: "/images/mac/voicebox-ui.webp"
 description: "Voicebox is a free, open-source desktop AI voice studio for local voice cloning, multi-engine TTS, system-wide dictation, and agent voice I/O without cloud lock-in."
+youtubeId: "EfwYU1dPbxo"
 keyFeatures: [
   "Local voice cloning from short samples",
   "Seven TTS engines on-device",

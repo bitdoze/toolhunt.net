@@ -55,3 +55,7 @@ Getting started with Memos is straightforward:
 Whether you're a student taking quick notes, a professional organizing thoughts, or someone who wants to keep their digital memories private, Memos provides the perfect balance of simplicity and functionality.
 
 Join thousands of users who have chosen Memos as their privacy-focused, open-source note-taking solution. Start creating your notes, your way, today.
+
+## Full Setup Guide
+
+For the complete Docker Compose install, read: [Memos Install Guide](https://www.bitdoze.com/memos-install/).

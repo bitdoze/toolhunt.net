@@ -98,3 +98,7 @@ services:
 ```
 
 LangFlow represents a significant step forward in democratizing AI development, making it possible for anyone to create powerful AI applications regardless of their technical background. Its open-source nature and active community ensure continuous improvement and innovation in the no-code AI development space.
+
+## Full Setup Guide
+
+For the complete Docker Compose install with SSL, read: [LangFlow Docker Install](https://www.bitdoze.com/langflow-docker-install/).

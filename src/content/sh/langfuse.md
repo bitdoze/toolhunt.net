@@ -85,7 +85,7 @@ services:
       - langfuse-db
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@langfuse-db:5432/${POSTGRES_DB}?sslmode=disable
-      NEXTAUTH_URL: https://longfuse.bitdoze.com
+      NEXTAUTH_URL: https://langfuse.example.com
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
       SALT: ${SALT}
       LANGFUSE_CSP_ENFORCE_HTTPS: true
@@ -94,5 +94,8 @@ services:
       AUTH_DISABLE_SIGNUP: ${AUTH_DISABLE_SIGNUP}
 ```
 
-
 Langfuse is more than just a monitoring tool; it's a complete platform for understanding and optimizing your LLM applications. Its open-source nature and specialized features make it an essential tool for any team working with AI and language models in production.
+
+## Full Setup Guide
+
+For the complete self-hosted install, read: [Langfuse Docker Install](https://www.bitdoze.com/langfuse-docker-install/).

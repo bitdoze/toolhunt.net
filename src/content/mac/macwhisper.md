@@ -1,4 +1,3 @@
-
 ---
 title: "MacWhisper - Free Local Audio Transcription for Mac"
 publishedDate: 2025-02-10

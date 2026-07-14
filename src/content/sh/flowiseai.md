@@ -104,3 +104,7 @@ services:
 ```
 
 Flowise represents the future of AI development - where creating powerful AI applications is accessible to everyone, regardless of their technical background.
+
+## Full Setup Guide
+
+For the complete Docker Compose install, read: [FlowiseAI Install Guide](https://www.bitdoze.com/flowiseai-install/).

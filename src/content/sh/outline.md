@@ -133,3 +133,7 @@ Outline takes security seriously with:
 Whether you're a small startup or a large enterprise, Outline provides the tools you need to keep your team's knowledge organized, accessible, and up-to-date. Say goodbye to scattered documentation and hello to an organized, searchable knowledge base that grows with your team.
 
 Join thousands of teams who have transformed their documentation process with Outline - where knowledge sharing meets modern collaboration.
+
+## Full Setup Guide
+
+For the complete Docker install walkthrough, read: [Outline Install Guide](https://www.bitdoze.com/outline-install/).

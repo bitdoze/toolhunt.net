@@ -44,3 +44,7 @@ Plausible Analytics is a modern, privacy-focused web analytics tool that emphasi
 To get started with Plausible Analytics, visit their [official website](https://plausible.io) and follow the simple setup instructions. Whether you're a small business owner, a developer, or a content creator, Plausible Analytics provides the tools you need to understand your audience without compromising their privacy.
 
 Plausible Analytics is more than just an analytics tool; it's a commitment to user privacy and a modern approach to web analytics.
+
+## Full Setup Guide
+
+For the one-click self-host walkthrough, read: [Install Plausible Analytics](https://www.bitdoze.com/install-plausible-analytics/).

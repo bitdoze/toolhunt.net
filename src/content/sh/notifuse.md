@@ -4,7 +4,7 @@ publishedDate: 2026-02-25
 logo: "/images/sh/notifuse-logo.png"
 uiImage: "/images/sh/notifuse-ui.png"
 description: "Notifuse is a self-hosted newsletter and email workflow platform for building subscriber lists, campaigns, and automated notifications on your own infrastructure."
-youtubeId: ""
+youtubeId: "kzULOnAuS0o"
 keyFeatures: [
   "Newsletter campaign management",
   "Subscriber segmentation",

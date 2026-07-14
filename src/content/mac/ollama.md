@@ -51,3 +51,7 @@ Want to harness the power of AI language models without sending your data to the
 - 8GB RAM minimum (16GB recommended for bigger models)
 - Works on Intel and Apple Silicon Macs
 - Also on Windows, Linux
+
+## Full Setup Guide
+
+For a full Ollama + Open WebUI Docker walkthrough, read: [Ollama Docker Install](https://www.bitdoze.com/ollama-docker-install/).

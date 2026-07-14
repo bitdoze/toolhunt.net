@@ -93,3 +93,7 @@ services:
 To begin using LiteLLM, visit their [official website](https://litellm.ai) and follow the setup instructions. Whether you're building a simple chatbot or a complex AI application, LiteLLM provides the tools and flexibility needed to manage your LLM interactions effectively.
 
 LiteLLM simplifies the complexity of working with multiple LLMs, making it an essential tool for developers and organizations building AI-powered applications. Its combination of features, flexibility, and enterprise-ready capabilities makes it a powerful choice for LLM integration and management.
+
+## Full Setup Guide
+
+For the complete Docker Compose install, read: [LiteLLM Docker Install](https://www.bitdoze.com/litellm-docker-install/).

@@ -4,7 +4,7 @@ publishedDate: 2026-02-25
 logo: "/images/sh/termix-logo.png"
 uiImage: "/images/sh/termix-ui.png"
 description: "Termix is a self-hosted platform for managing SSH access, terminal sessions, and server operations from a centralized browser-based interface."
-youtubeId: ""
+youtubeId: "FtVMs7ba4QQ"
 keyFeatures: [
   "Centralized SSH management",
   "Browser terminal access",

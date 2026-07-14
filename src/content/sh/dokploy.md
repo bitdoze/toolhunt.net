@@ -4,7 +4,7 @@ publishedDate: 2026-02-25
 logo: "/images/sh/dokploy-logo.png"
 uiImage: "/images/sh/dokploy-ui.png"
 description: "Dokploy is an open-source deployment platform for Docker apps with projects, domains, environment variables, and workflows that simplify self-hosted app operations."
-youtubeId: ""
+youtubeId: "EaOvNN-RJgI"
 keyFeatures: [
   "Project-based deployment model",
   "Compose and container services",

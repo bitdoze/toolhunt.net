@@ -4,7 +4,7 @@ publishedDate: 2026-02-25
 logo: "/images/sh/convex-logo.png"
 uiImage: "/images/sh/convex-ui.png"
 description: "Convex provides a reactive backend platform with database, server functions, and real-time sync, and can be self-hosted for full infrastructure control."
-youtubeId: ""
+youtubeId: "BoBrq0G1gdU"
 keyFeatures: [
   "Reactive backend model",
   "Built-in database",

@@ -4,6 +4,7 @@ publishedDate: 2026-07-14
 logo: "/images/mac/fluidvoice-logo.png"
 uiImage: "/images/mac/fluidvoice-ui.webp"
 description: "A free, open-source Mac dictation app with on-device speech models and optional local AI enhancement for private, system-wide voice typing."
+youtubeId: "IFuT-BsdHT4"
 keyFeatures: [
   "On-device speech-to-text",
   "Fluid Intelligence local AI",
@@ -54,3 +55,7 @@ Need to type faster without sending every word to the cloud? **FluidVoice** is a
 - Apple Silicon recommended; Intel supported via Whisper
 - Microphone + accessibility permissions
 - ~1 GB disk for a speech model; ~3.5 GB optional for Fluid Intelligence
+
+## Full Setup Guide
+
+For the full Mac dictation walkthrough, read: [FluidVoice Mac Dictation Guide](https://www.bitdoze.com/fluidvoice-mac-dictation/).
