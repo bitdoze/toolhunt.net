@@ -78,3 +78,28 @@
   --color-brand-pink-800: #9d174d;
   --color-brand-pink-900: #831843;
 }
+
+/* Accessibility helpers */
+:focus-visible {
+  outline: 2px solid var(--th-color-brand-blue);
+  outline-offset: 2px;
+}
+
+/* Reduce layout work for long catalogs */
+[data-tool-item],
+[data-tool-grid-item] {
+  content-visibility: auto;
+  contain-intrinsic-size: 300px;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

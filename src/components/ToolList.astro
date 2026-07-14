@@ -21,11 +21,11 @@ const allTools = [...shTools, ...onlineTools, ...macTools]
   .filter(tool => {
     const searchTerms = toolNames.map(term => term.toLowerCase());
     const toolTitle = tool.data.title.toLowerCase();
-    const toolSlug = tool.slug.toLowerCase();
+    const toolSlug = tool.id.toLowerCase();
     return searchTerms.some(term => 
       toolTitle.includes(term) || 
       toolSlug === term ||
-      tool.data.tags?.some(tag => tag.toLowerCase().includes(term))
+      (tool.data as { tags?: string[] }).tags?.some(tag => tag.toLowerCase().includes(term))
     );
   });
 ---

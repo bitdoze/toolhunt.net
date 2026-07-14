@@ -1,50 +1,50 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-
-type ToolEntry = CollectionEntry<'sh'> | CollectionEntry<'tools'> | CollectionEntry<'alternatives'> | CollectionEntry<'mac'>;
+import type { ToolEntry } from '../lib/content';
+import { getAlternativeTo, getCheckItUrl, getPricing, toolUrl } from '../lib/content';
+import ToolImage from './ToolImage.astro';
 
 interface Props {
   entry: ToolEntry;
   showFullDetails?: boolean;
+  priority?: boolean;
 }
 
-const { entry, showFullDetails = false } = Astro.props;
+const { entry, showFullDetails = false, priority = false } = Astro.props;
 const { title, description, logo, category } = entry.data;
-const pricing = 'pricing' in entry.data ? entry.data.pricing : null;
+const pricing = getPricing(entry);
+const alternativeTo = getAlternativeTo(entry);
+const checkItUrl = getCheckItUrl(entry);
+const href = toolUrl(entry);
 
-// Determine collection type and specific properties
-const isShApp = 'alternativeTo' in entry.data && 'checkItUrl' in entry.data;
-const isTool = !('alternativeTo' in entry.data) && 'checkItUrl' in entry.data;
-const isAlternative = 'alternativeTo' in entry.data && !('checkItUrl' in entry.data);
-
-// Get specific properties safely
-const alternativeTo = isShApp || isAlternative ? (entry.data as any).alternativeTo : null;
-const checkItUrl = isShApp || isTool ? (entry.data as any).checkItUrl : null;
-
+const pricingClass =
+  pricing === 'Free'
+    ? 'bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-800 dark:from-emerald-900/90 dark:to-emerald-800/90 dark:text-emerald-100'
+    : pricing === 'Paid'
+      ? 'bg-gradient-to-r from-brand-blue-100 to-brand-blue-200 text-brand-blue-800 dark:from-brand-blue-900/90 dark:to-brand-blue-800/90 dark:text-brand-blue-100'
+      : 'bg-gradient-to-r from-brand-purple-100 to-brand-purple-200 text-brand-purple-800 dark:from-brand-purple-900/90 dark:to-brand-purple-800/90 dark:text-brand-purple-100';
 ---
 
 <article class={`group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-transparent transition-all duration-300 ${showFullDetails ? '' : 'hover:shadow-2xl hover:-translate-y-1 hover:border-brand-blue-200/70 dark:hover:border-brand-blue-700/60'}`}>
   {pricing && (
-    <div class="absolute top-2 right-2 px-3 py-1.5 text-xs font-medium rounded-full shadow-sm backdrop-blur-sm transition-all duration-300
-      {pricing === 'Free' ? 'bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-800 dark:from-emerald-900/90 dark:to-emerald-800/90 dark:text-emerald-100' :
-       pricing === 'Paid' ? 'bg-gradient-to-r from-brand-blue-100 to-brand-blue-200 text-brand-blue-800 dark:from-brand-blue-900/90 dark:to-brand-blue-800/90 dark:text-brand-blue-100' :
-       'bg-gradient-to-r from-brand-purple-100 to-brand-purple-200 text-brand-purple-800 dark:from-brand-purple-900/90 dark:to-brand-purple-800/90 dark:text-brand-purple-100'}
-      z-10">
+    <div class={`absolute top-2 right-2 px-3 py-1.5 text-xs font-medium rounded-full shadow-sm backdrop-blur-sm transition-all duration-300 ${pricingClass} z-10`}>
       {pricing}
     </div>
   )}
 
   <div class="p-6">
-    <!-- Header -->
     <div class="flex items-start gap-4 mb-4">
-        <img
-          src={`${logo}`}
-          alt={`${title} logo`}
-          class="w-16 h-16 object-contain rounded-lg bg-gray-50 dark:bg-gray-700 p-2 transition-transform duration-300 group-hover:scale-105"
-        />
+      <ToolImage
+        src={logo}
+        alt={`${title} logo`}
+        width={64}
+        height={64}
+        class="w-16 h-16 object-contain rounded-lg bg-gray-50 dark:bg-gray-700 p-2 transition-transform duration-300 group-hover:scale-105"
+        loading={priority ? 'eager' : 'lazy'}
+        fetchpriority={priority ? 'high' : 'auto'}
+      />
       <div class="flex-1 min-w-0">
         <h3 class="text-xl font-semibold truncate">
-          <a href={`/${entry.collection}/${entry.slug}/`} class="text-gray-900 dark:text-white hover:text-brand-blue-600 dark:hover:text-brand-blue-400 transition-colors duration-200">
+          <a href={href} class="text-gray-900 dark:text-white hover:text-brand-blue-600 dark:hover:text-brand-blue-400 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500 rounded">
             {title}
           </a>
         </h3>
@@ -61,22 +61,20 @@ const checkItUrl = isShApp || isTool ? (entry.data as any).checkItUrl : null;
       </div>
     </div>
 
-    <!-- Description -->
     <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
       {description}
     </p>
 
-    <!-- Footer -->
     {checkItUrl && (
       <div class="flex items-center justify-end mt-4">
         <a
-          href={`${checkItUrl}`}
+          href={checkItUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-brand-blue-600 hover:bg-brand-blue-700 rounded-lg transition-all duration-200 hover:scale-[1.03] hover:shadow-md"
+          class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-brand-blue-600 hover:bg-brand-blue-700 rounded-lg transition-all duration-200 hover:scale-[1.03] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-blue-500"
         >
           Check it
-          <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>
         </a>
@@ -89,17 +87,9 @@ const checkItUrl = isShApp || isTool ? (entry.data as any).checkItUrl : null;
       <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
         <h4 class="font-medium text-gray-900 dark:text-white mb-4">Key Features</h4>
         <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {entry.data.features?.map((feature: string) => (
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-brand-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-              </svg>
-              <span class="text-gray-700 dark:text-gray-300 text-sm">{feature}</span>
-            </li>
-          ))}
-          {entry.data.keyFeatures.map((feature: string) => (
+          {entry.data.keyFeatures.map((feature) => (
             <li class="flex items-start text-sm text-gray-600 dark:text-gray-300">
-              <svg class="w-5 h-5 text-brand-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-brand-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
               {feature}

@@ -69,6 +69,7 @@ function initializeTheme() {
 }
 
 initializeTheme();
+document.addEventListener("astro:page-load", initializeTheme);
 document.addEventListener("astro:after-swap", initializeTheme);
 
 mediaQuery.addEventListener("change", (event) => {

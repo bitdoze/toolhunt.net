@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ToolCard from '../../../components/ToolCard.astro';
+import {
+  alternativeToUrl,
+  getAlternativeGroups,
+  type AlternativeGroup,
+} from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const groups = await getAlternativeGroups();
+  return groups.map((group) => ({
+    params: { slug: group.slug },
+    props: { group },
+  }));
+}
+
+interface Props {
+  group: AlternativeGroup;
+}
+
+const { group } = Astro.props;
+const title = `Best Alternatives to ${group.name}`;
+const description = `Discover open-source and free alternatives to ${group.name}. Compare ${group.tools.length} tools curated on ToolHunt.`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: title,
+  description,
+  url: new URL(alternativeToUrl(group.name), Astro.site).toString(),
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: group.tools.length,
+    itemListElement: group.tools.map((tool, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: tool.data.title,
+      url: new URL(`/${tool.collection}/${tool.id}/`, Astro.site).toString(),
+    })),
+  },
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd} section="Alternatives">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <nav class="mb-6 text-sm text-gray-500 dark:text-gray-400" aria-label="Breadcrumb">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href="/" class="hover:text-brand-blue-600">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a href="/alternatives/" class="hover:text-brand-blue-600">Alternatives</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-gray-900 dark:text-white">{group.name}</li>
+      </ol>
+    </nav>
+
+    <header class="mb-10 max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-wide text-brand-blue-600 dark:text-brand-blue-400">
+        Alternatives
+      </p>
+      <h1 class="mt-2 text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
+        Best alternatives to {group.name}
+      </h1>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
+        {description}
+      </p>
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400" aria-live="polite">
+        {group.tools.length} matching tool{group.tools.length === 1 ? '' : 's'}
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {group.tools.map((tool) => (
+        <ToolCard entry={tool} />
+      ))}
+    </div>
+
+    <div class="mt-12 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 bg-white/70 dark:bg-gray-800/60">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Looking for more?</h2>
+      <p class="mt-2 text-gray-600 dark:text-gray-300">
+        Browse all self-hosted apps, online tools, and Mac apps, or submit a tool we missed.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <a href="/sh/" class="inline-flex px-4 py-2 rounded-lg bg-brand-blue-600 text-white text-sm font-medium hover:bg-brand-blue-700">Self-hosted Apps</a>
+        <a href="/tools/" class="inline-flex px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600">Online Tools</a>
+        <a href="/mac/" class="inline-flex px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600">Mac Apps</a>
+        <a href="/submit/" class="inline-flex px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600">Submit a tool</a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

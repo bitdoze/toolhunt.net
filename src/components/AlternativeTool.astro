@@ -1,28 +1,22 @@
 ---
-import { getCollection } from 'astro:content';
+import ToolImage from './ToolImage.astro';
+import {
+  getCheckItUrl,
+  getCollectionTools,
+  toolUrl,
+  type ToolCollection,
+} from '../lib/content';
 
 interface Props {
   alternative: string;
-  section: 'sh' | 'tools' | 'mac';
+  section: Extract<ToolCollection, 'sh' | 'tools' | 'mac'>;
 }
 
 const { alternative, section } = Astro.props;
-
-const getToolsBySection = async (section: string) => {
-  switch (section) {
-    case 'sh':
-      return await getCollection('sh');
-    case 'tools':
-      return await getCollection('tools');
-    case 'mac':
-      return await getCollection('mac');
-    default:
-      return [];
-  }
-};
-
-const tools = await getToolsBySection(section);
-const matchingTools = tools.filter(tool => tool.data.alternativeTo === alternative);
+const tools = await getCollectionTools(section);
+const matchingTools = tools.filter(
+  (tool) => 'alternativeTo' in tool.data && tool.data.alternativeTo === alternative
+);
 ---
 
 {matchingTools.length > 0 && (
@@ -31,29 +25,27 @@ const matchingTools = tools.filter(tool => tool.data.alternativeTo === alternati
       Best Alternatives to {alternative}
     </h2>
     <div class="grid gap-4">
-      {matchingTools.map((tool) => (
+      {matchingTools.map((tool) => {
+        const checkItUrl = getCheckItUrl(tool);
+        const href = toolUrl(tool);
+        return (
         <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl border border-gray-100/50 dark:border-gray-700/50 backdrop-blur-sm">
           <div class="p-10">
             <div class="flex flex-col sm:flex-row items-start gap-6 mb-6">
               <a
-                href={`/${section}/${tool.slug}/`}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={href}
                 class="group relative flex-shrink-0 flex items-center justify-center w-16 h-16 mx-auto sm:mx-0 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 hover:shadow-lg transition-all duration-300"
               >
-                <img
+                <ToolImage
                   src={tool.data.logo}
                   alt={tool.data.title}
+                  width={48}
+                  height={48}
                   class="w-12 h-12 object-contain group-hover:scale-110 transition-transform duration-300"
                 />
               </a>
               <div class="flex-grow min-w-0 text-center sm:text-left">
-                <a
-                  href={`/${section}/${tool.slug}/`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-block group"
-                >
+                <a href={href} class="inline-block group">
                   <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-brand-blue-600 dark:group-hover:text-brand-blue-400 transition-colors tracking-tight">
                     {tool.data.title}
                   </h3>
@@ -66,9 +58,11 @@ const matchingTools = tools.filter(tool => tool.data.alternativeTo === alternati
 
             {tool.data.uiImage && (
               <div class="mb-6 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 p-1">
-                <img
+                <ToolImage
                   src={tool.data.uiImage}
                   alt={`${tool.data.title} interface`}
+                  width={1200}
+                  height={675}
                   class="w-full h-auto max-h-[450px] object-contain rounded-xl hover:scale-[1.02] transition-transform duration-500 ease-out"
                 />
               </div>
@@ -82,7 +76,7 @@ const matchingTools = tools.filter(tool => tool.data.alternativeTo === alternati
                 <div class="grid sm:grid-cols-2 gap-4">
                   {tool.data.keyFeatures.map((feature: string) => (
                     <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-700/50">
-                      <svg class="w-5 h-5 text-brand-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg class="w-5 h-5 text-brand-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                       </svg>
                       <span class="text-gray-700 dark:text-gray-200">{feature}</span>
@@ -94,23 +88,23 @@ const matchingTools = tools.filter(tool => tool.data.alternativeTo === alternati
 
             <div class="flex flex-wrap gap-4">
               <a
-                href={`/${section}/${tool.slug}/`}
+                href={href}
                 class="inline-flex items-center px-8 py-4 bg-brand-blue-600 hover:bg-brand-blue-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 text-lg"
               >
                 <span>Learn More</span>
-                <svg class="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
               </a>
-              {tool.data.checkItUrl && (
+              {checkItUrl && (
                 <a
-                  href={tool.data.checkItUrl}
+                  href={checkItUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold rounded-2xl border border-gray-200 dark:border-gray-600 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 text-lg"
                 >
                   <span>Visit Website</span>
-                  <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </a>
@@ -118,7 +112,7 @@ const matchingTools = tools.filter(tool => tool.data.alternativeTo === alternati
             </div>
           </div>
         </div>
-      ))}
+      )})}
     </div>
   </div>
 )}

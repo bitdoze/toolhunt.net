@@ -1,108 +1,236 @@
 ---
-export const prerender = false
 interface Props {
   categories: string[];
   alternativeTo?: string[];
   pricingOptions?: string[];
   showAlternativeTo?: boolean;
   showPricing?: boolean;
+  categoryCounts?: Record<string, number>;
+  alternativeCounts?: Record<string, number>;
+  pricingCounts?: Record<string, number>;
 }
 
-const { 
-  categories, 
-  alternativeTo = [], 
+const {
+  categories,
+  alternativeTo = [],
   pricingOptions = [],
   showAlternativeTo = false,
-  showPricing = false 
+  showPricing = false,
+  categoryCounts = {},
+  alternativeCounts = {},
+  pricingCounts = {},
 } = Astro.props;
 ---
 
-<form method="get" class="space-y-6 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white/70 dark:bg-gray-800/60 p-4 backdrop-blur-sm shadow-sm">
-  <!-- Categories Filter -->
+<form
+  data-catalog-filters
+  class="space-y-5 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white/80 dark:bg-gray-800/70 p-4 backdrop-blur-sm shadow-sm"
+>
+  <div class="flex items-center justify-between gap-2">
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+      Filters
+    </h2>
+    <button
+      type="button"
+      data-clear-filters
+      class="text-xs font-medium text-brand-blue-600 hover:text-brand-blue-700 dark:text-brand-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500 rounded"
+    >
+      Clear all
+    </button>
+  </div>
+
+  <div data-active-filters class="hidden flex-wrap gap-2"></div>
+
   <div>
     <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Categories</h3>
-    <div class="space-y-2">
-      {categories.map((category) => (
-        <label class="flex items-center rounded-md px-1 py-0.5 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/40">
-          <input
-            type="checkbox"
-            name="category"
-            value={category}
-            class="h-4 w-4 text-brand-blue-600 focus:ring-brand-blue-500 border-gray-300 dark:border-gray-600 rounded"
-          />
-          <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">{category}</span>
-        </label>
-      ))}
+    <div class="max-h-56 overflow-y-auto space-y-1 pr-1">
+      {
+        categories.map((category) => (
+          <label class="flex items-center justify-between gap-2 rounded-md px-1.5 py-1 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/40 cursor-pointer focus-within:ring-2 focus-within:ring-brand-blue-500">
+            <span class="flex items-center min-w-0">
+              <input
+                type="checkbox"
+                name="category"
+                value={category}
+                class="h-4 w-4 text-brand-blue-600 focus:ring-2 focus:ring-brand-blue-500 focus:ring-offset-1 border-gray-300 dark:border-gray-600 rounded"
+              />
+              <span class="ml-2 text-sm text-gray-600 dark:text-gray-300 truncate">{category}</span>
+            </span>
+            {categoryCounts[category] != null && (
+              <span class="text-xs text-gray-400 dark:text-gray-500 tabular-nums">
+                {categoryCounts[category]}
+              </span>
+            )}
+          </label>
+        ))
+      }
     </div>
   </div>
 
-  {showPricing && pricingOptions.length > 0 && (
-    <div>
-      <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Pricing</h3>
-      <div class="space-y-2">
-        {pricingOptions.map((price) => (
-          <label class="flex items-center rounded-md px-1 py-0.5 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/40">
-            <input
-              type="checkbox"
-              name="pricing"
-              value={price}
-              class="h-4 w-4 text-brand-blue-600 focus:ring-brand-blue-500 border-gray-300 dark:border-gray-600 rounded"
-            />
-            <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">{price}</span>
-          </label>
-        ))}
+  {
+    showPricing && pricingOptions.length > 0 && (
+      <div>
+        <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Pricing</h3>
+        <div class="space-y-1">
+          {pricingOptions.map((price) => (
+            <label class="flex items-center justify-between gap-2 rounded-md px-1.5 py-1 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/40 cursor-pointer focus-within:ring-2 focus-within:ring-brand-blue-500">
+              <span class="flex items-center min-w-0">
+                <input
+                  type="checkbox"
+                  name="pricing"
+                  value={price}
+                  class="h-4 w-4 text-brand-blue-600 focus:ring-2 focus:ring-brand-blue-500 focus:ring-offset-1 border-gray-300 dark:border-gray-600 rounded"
+                />
+                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">{price}</span>
+              </span>
+              {pricingCounts[price] != null && (
+                <span class="text-xs text-gray-400 dark:text-gray-500 tabular-nums">
+                  {pricingCounts[price]}
+                </span>
+              )}
+            </label>
+          ))}
+        </div>
       </div>
-    </div>
-  )}
+    )
+  }
 
-  {showAlternativeTo && alternativeTo.length > 0 && (
-    <div>
-      <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Alternative To</h3>
-      <div class="space-y-2">
-        {alternativeTo.map((alt) => (
-          <label class="flex items-center rounded-md px-1 py-0.5 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/40">
-            <input
-              type="checkbox"
-              name="alternativeTo"
-              value={alt}
-              class="h-4 w-4 text-brand-blue-600 focus:ring-brand-blue-500 border-gray-300 dark:border-gray-600 rounded"
-            />
-            <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">{alt}</span>
-          </label>
-        ))}
+  {
+    showAlternativeTo && alternativeTo.length > 0 && (
+      <div>
+        <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Alternative To</h3>
+        <div class="max-h-48 overflow-y-auto space-y-1 pr-1">
+          {alternativeTo.map((alt) => (
+            <label class="flex items-center justify-between gap-2 rounded-md px-1.5 py-1 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/40 cursor-pointer focus-within:ring-2 focus-within:ring-brand-blue-500">
+              <span class="flex items-center min-w-0">
+                <input
+                  type="checkbox"
+                  name="alternativeTo"
+                  value={alt}
+                  class="h-4 w-4 text-brand-blue-600 focus:ring-2 focus:ring-brand-blue-500 focus:ring-offset-1 border-gray-300 dark:border-gray-600 rounded"
+                />
+                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300 truncate">{alt}</span>
+              </span>
+              {alternativeCounts[alt] != null && (
+                <span class="text-xs text-gray-400 dark:text-gray-500 tabular-nums">
+                  {alternativeCounts[alt]}
+                </span>
+              )}
+            </label>
+          ))}
+        </div>
       </div>
-    </div>
-  )}
-
-  <button type="submit" class="w-full px-4 py-2 bg-brand-blue-600 text-white rounded-md hover:bg-brand-blue-700 transition-all duration-200 hover:scale-[1.01] hover:shadow-md">
-    Apply Filters
-  </button>
+    )
+  }
 </form>
 
 <script>
-  function initializeFilters() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryParams = urlParams.getAll('category');
-    const alternativeToParams = urlParams.getAll('alternativeTo');
-    const pricingParams = urlParams.getAll('pricing');
+  type FilterName = 'category' | 'pricing' | 'alternativeTo';
 
-    // Initialize checkboxes based on URL parameters
-    document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox) => {
-      if (checkbox.name === 'category' && categoryParams.includes(checkbox.value)) {
-        checkbox.checked = true;
-      }
-      if (checkbox.name === 'alternativeTo' && alternativeToParams.includes(checkbox.value)) {
-        checkbox.checked = true;
-      }
-      if (checkbox.name === 'pricing' && pricingParams.includes(checkbox.value)) {
-        checkbox.checked = true;
-      }
+  function checkedValues(form: HTMLFormElement, name: FilterName): string[] {
+    return Array.from(
+      form.querySelectorAll<HTMLInputElement>(`input[name="${name}"]:checked`)
+    ).map((input) => input.value);
+  }
+
+  function syncFromUrl(form: HTMLFormElement) {
+    const params = new URLSearchParams(window.location.search);
+    const selected: Record<FilterName, string[]> = {
+      category: params.getAll('category'),
+      alternativeTo: params.getAll('alternativeTo'),
+      pricing: params.getAll('pricing'),
+    };
+
+    form.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox) => {
+      const key = checkbox.name as FilterName;
+      const list = selected[key] || [];
+      checkbox.checked = list.includes(checkbox.value);
     });
   }
 
-  // Initialize filters when the script loads
-  initializeFilters();
+  function renderActiveChips(form: HTMLFormElement) {
+    const host = form.querySelector<HTMLElement>('[data-active-filters]');
+    if (!host) return;
 
-  // Re-initialize filters when the page transitions
-  document.addEventListener('astro:page-load', initializeFilters);
+    const chips: Array<{ name: FilterName; value: string }> = [];
+    for (const name of ['category', 'pricing', 'alternativeTo'] as FilterName[]) {
+      for (const value of checkedValues(form, name)) {
+        chips.push({ name, value });
+      }
+    }
+
+    if (chips.length === 0) {
+      host.classList.add('hidden');
+      host.replaceChildren();
+      return;
+    }
+
+    host.classList.remove('hidden');
+    host.classList.add('flex');
+    host.replaceChildren(
+      ...chips.map(({ name, value }) => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className =
+          'inline-flex items-center gap-1 rounded-full bg-brand-blue-50 text-brand-blue-800 dark:bg-brand-blue-900/50 dark:text-brand-blue-100 px-2.5 py-1 text-xs font-medium';
+        chip.dataset.removeName = name;
+        chip.dataset.removeValue = value;
+        chip.innerHTML = `${value}<span aria-hidden="true">×</span>`;
+        chip.setAttribute('aria-label', `Remove ${value} filter`);
+        return chip;
+      })
+    );
+  }
+
+  function emitUpdate(resetPage = true) {
+    document.dispatchEvent(
+      new CustomEvent('toolhunt:catalog-update', {
+        detail: { resetPage, source: 'filters' },
+      })
+    );
+  }
+
+  function initFilters(form: Element) {
+    if (!(form instanceof HTMLFormElement) || form.dataset.bound === 'true') return;
+    form.dataset.bound = 'true';
+
+    syncFromUrl(form);
+    renderActiveChips(form);
+
+    form.addEventListener('change', () => {
+      renderActiveChips(form);
+      emitUpdate(true);
+    });
+
+    form.querySelector('[data-clear-filters]')?.addEventListener('click', () => {
+      form.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+      renderActiveChips(form);
+      emitUpdate(true);
+    });
+
+    form.querySelector('[data-active-filters]')?.addEventListener('click', (event: Event) => {
+      const target = (event.target as HTMLElement | null)?.closest(
+        'button[data-remove-name]'
+      ) as HTMLButtonElement | null;
+      if (!target) return;
+      const name = target.dataset.removeName;
+      const value = target.dataset.removeValue;
+      if (!name || !value) return;
+      const checkbox = form.querySelector<HTMLInputElement>(
+        `input[type="checkbox"][name="${name}"][value="${CSS.escape(value)}"]`
+      );
+      if (checkbox) checkbox.checked = false;
+      renderActiveChips(form);
+      emitUpdate(true);
+    });
+  }
+
+  function boot() {
+    document.querySelectorAll('[data-catalog-filters]').forEach(initFilters);
+  }
+
+  boot();
+  document.addEventListener('astro:page-load', boot);
 </script>

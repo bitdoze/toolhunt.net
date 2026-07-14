@@ -1,72 +1,98 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { blogUrl, buildBlogPostingJsonLd, shuffleArray } from '../../lib/content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map(post => ({
-    params: { slug: post.slug },
+  return posts.map((post) => ({
+    params: { slug: post.id },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content } = await render(post);
+
+const allPosts = await getCollection('blog');
+const relatedPosts = shuffleArray(
+  allPosts
+    .filter((p) => p.id !== post.id)
+    .filter((p) => p.data.tags.some((tag) => post.data.tags.includes(tag)))
+).slice(0, 3);
+
+const postsToShow =
+  relatedPosts.length > 0
+    ? relatedPosts
+    : shuffleArray(allPosts.filter((p) => p.id !== post.id)).slice(0, 3);
+
+const jsonLd = buildBlogPostingJsonLd(post);
 ---
 
-<BaseLayout title={`${post.data.title} - ToolHunt Blog`} description={post.data.description}>
+<BaseLayout
+  title={`${post.data.title} - ToolHunt Blog`}
+  description={post.data.description}
+  image={post.data.image || '/og-image.svg'}
+  type="article"
+  jsonLd={jsonLd}
+  publishedTime={post.data.publishedDate.toISOString()}
+  section="Blog"
+>
   <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    {post.data.image && (
-      <img
-        src={post.data.image}
-        alt={post.data.title}
-        class="w-full aspect-video object-cover rounded-2xl mb-8"
-      />
-    )}
+    {
+      post.data.image && (
+        <img
+          src={post.data.image}
+          alt={post.data.title}
+          class="w-full aspect-video object-cover rounded-2xl mb-8"
+          width="1200"
+          height="675"
+          loading="eager"
+        />
+      )
+    }
     <div class="flex gap-2 mb-4">
-      {post.data.tags.map((tag: string) => (
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-brand-blue-100 dark:bg-brand-blue-800 text-brand-blue-800 dark:text-brand-blue-100">
-          {tag}
-        </span>
-      ))}
+      {
+        post.data.tags.map((tag: string) => (
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-brand-blue-100 dark:bg-brand-blue-800 text-brand-blue-800 dark:text-brand-blue-100">
+            {tag}
+          </span>
+        ))
+      }
     </div>
     <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">
       {post.data.title}
     </h1>
     <div class="flex items-center text-gray-600 dark:text-gray-400 mb-8">
       <span>{post.data.author}</span>
+      <span class="mx-2">·</span>
+      <time datetime={post.data.publishedDate.toISOString()}>
+        {post.data.publishedDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+      </time>
     </div>
     <div class="prose prose-lg dark:prose-invert max-w-none">
       <Content />
     </div>
 
-    {/* Related Articles Section */}
     <div class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-12">
       <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Related Articles</h2>
       <div class="grid gap-8 md:grid-cols-3">
-        {(async () => {
-          const allPosts = await getCollection('blog');
-          const relatedPosts = allPosts
-            .filter(p => p.slug !== post.slug) // Exclude current post
-            .filter(p => p.data.tags.some(tag => post.data.tags.includes(tag))) // Posts with matching tags
-            .sort(() => Math.random() - 0.5) // Randomize the order
-            .slice(0, 3); // Take up to 3 posts
-
-          // If no related posts found, get random posts
-          const postsToShow = relatedPosts.length > 0 ? relatedPosts : 
-            allPosts
-              .filter(p => p.slug !== post.slug)
-              .sort(() => Math.random() - 0.5)
-              .slice(0, 3);
-
-          return postsToShow.map(relatedPost => (
-            <a href={`/blog/${relatedPost.slug}`} class="group">
+        {
+          postsToShow.map((relatedPost) => (
+            <a href={blogUrl(relatedPost)} class="group">
               <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-100/50 dark:border-gray-700/50">
                 {relatedPost.data.image && (
                   <img
                     src={relatedPost.data.image}
                     alt={relatedPost.data.title}
                     class="w-full aspect-video object-cover"
+                    width="640"
+                    height="360"
+                    loading="lazy"
                   />
                 )}
                 <div class="p-6">
@@ -86,8 +112,8 @@ const { Content } = await post.render();
                 </div>
               </article>
             </a>
-          ));
-        })()}
+          ))
+        }
       </div>
     </div>
   </article>

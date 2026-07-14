@@ -1,47 +1,100 @@
-# Astro Starter Kit: Minimal
+# ToolHunt
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Catalog of self-hosted apps, online tools, Mac apps, and alternatives.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+Site: [https://toolhunt.net](https://toolhunt.net)
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Stack
 
-## 🚀 Project Structure
+- Astro 7 (static output)
+- Tailwind CSS 4
+- Content Layer collections (`src/content.config.ts`)
+- Cloudflare adapter (`@astrojs/cloudflare`)
+- Client-side search (Fuse.js) and catalog filters
 
-Inside of your Astro project, you'll see the following folders and files:
+## Project structure
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+  components/       UI components (cards, filters, search)
+  content/          Markdown/MDX entries by collection
+  content.config.ts Content Layer schemas + loaders
+  layouts/          Base, section, and detail layouts
+  lib/content.ts    Shared content helpers
+  pages/            Routes
+  scripts/          Theme + navigation client scripts
+public/
+  images/           Logos and UI screenshots
+  _headers          Cloudflare security/cache headers
+scripts/
+  content-check.mjs Validate frontmatter + asset paths
+  new-entry.mjs     Scaffold a new content entry
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Commands
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+| Command | Action |
+| --- | --- |
+| `npm install` | Install dependencies |
+| `npm run dev` | Local dev server |
+| `npm run build` | Production build to `dist/` |
+| `npm run preview` | Preview production build |
+| `npm run check` | Astro type/content checks |
+| `npm run content:check` | Validate frontmatter, assets, categories, URLs |
+| `npm run content:check:remote` | Same + live `checkItUrl` reachability |
+| `npm run images:optimize` | Compress oversized screenshots/logos |
+| `npm run ci` | content:check + astro check + build |
+| `npm run new:sh -- <slug>` | Scaffold a self-hosted entry |
+| `npm run new:mac -- <slug>` | Scaffold a Mac app entry |
+| `npm run new:tools -- <slug>` | Scaffold an online tool entry |
+| `npm run new:entry -- <collection> <slug>` | Scaffold any collection |
 
-Any static assets, like images, can be placed in the `public/` directory.
+Node requirement: `>=22.12.0` (see `.nvmrc`).
 
-## 🧞 Commands
+## Content workflow
 
-All commands are run from the root of the project, from a terminal:
+1. Scaffold:
+   ```bash
+   npm run new:sh -- my-tool --title "My Tool" --category "Automation"
+   ```
+2. Replace placeholder images in `public/images/<collection>/`.
+3. Fill frontmatter and body (see `AGENTS.md`).
+4. Validate and build:
+   ```bash
+   npm run content:check
+   npm run check
+   npm run build
+   ```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Collections
 
-## 👀 Want to learn more?
+| Collection | Path | URL prefix |
+| --- | --- | --- |
+| Self-hosted | `src/content/sh` | `/sh/` |
+| Online tools | `src/content/tools` | `/tools/` |
+| Mac apps | `src/content/mac` | `/mac/` |
+| Alternatives | `src/content/alternatives` | `/alternatives/` |
+| Blog | `src/content/blog` | `/blog/` |
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## SEO / product routes
+
+- Tool OG cards: `/og/{collection}/{id}.svg`
+- Blog RSS: `/rss.xml`
+- Alternatives hubs: `/alternatives/to/{slug}/`
+
+## Deploy
+
+Configured for Cloudflare (static + Workers adapter). Build command:
+
+```bash
+npm run build
+```
+
+Output is under `dist/`. Trailing slashes are always enabled.
+
+GitHub Actions CI runs `content:check`, `astro check`, and `build` on PRs.
+
+## Docs for agents/contributors
+
+Content authoring rules live in [`AGENTS.md`](./AGENTS.md).
+Category taxonomy lives in [`src/data/categories.ts`](./src/data/categories.ts).

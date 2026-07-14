@@ -1,204 +1,419 @@
 ---
-const { placeholder = "Search tools...", tools = [] } = Astro.props;
-const searchQuery = Astro.url.searchParams.get('q') || '';
-const hasClientSearch = tools.length > 0;
+interface SearchTool {
+  id: string;
+  collection: string;
+  title: string;
+  description: string;
+  category: string;
+  logo: string;
+  alternativeTo?: string;
+  keyFeatures?: string[];
+  pricing?: string;
+}
 
-const fuseOptions = {
-  keys: [
-    'data.title',
-    'data.description',
-    'data.category',
-    'data.alternativeTo',
-    'data.keyFeatures',
-    'body',
-    'data.pricing',
-    'data.tags',
-    'data.requirements',
-    'data.features',
-    'slug'
-  ],
-  threshold: 0.3,
-  includeScore: true,
-  useExtendedSearch: true,
-  ignoreLocation: true,
-  fieldNormWeight: 1,
-};
+interface Props {
+  placeholder?: string;
+  tools?: SearchTool[];
+  mode?: 'global' | 'local';
+}
+
+const {
+  placeholder = 'Search tools...',
+  tools = [],
+  mode = tools.length > 0 ? 'global' : 'local',
+} = Astro.props;
+
+const searchQuery = Astro.url.searchParams.get('q') || '';
+const isGlobal = mode === 'global' && tools.length > 0;
+const searchId = isGlobal ? 'global-search' : 'catalog-search';
+const listboxId = `${searchId}-listbox`;
 ---
 
-<div class="search-container">
-  <form method="get" class="relative max-w-lg w-full" id="searchForm">
-    <label for="search" class="sr-only">Search</label>
+<div class={`search-container ${isGlobal ? 'search-global' : 'search-local'}`} data-search-mode={isGlobal ? 'global' : 'local'}>
+  <form method="get" class="relative w-full" data-search-form role="search">
+    <label for={searchId} class="sr-only">Search</label>
     <div class="relative">
       <div class="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
         </svg>
       </div>
       <input
         type="search"
         name="q"
-        id="search"
+        id={searchId}
         value={searchQuery}
-        class="block w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 dark:focus:text-white focus:placeholder-gray-400 focus:ring-1 focus:ring-brand-blue-500 focus:border-brand-blue-500 sm:text-sm"
+        data-search-input
+        class="block w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg py-2.5 pl-10 pr-10 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 dark:focus:text-white focus:placeholder-gray-400 focus:ring-2 focus:ring-brand-blue-500 focus:border-brand-blue-500"
         placeholder={placeholder}
         autocomplete="off"
+        enterkeyhint="search"
+        role={isGlobal ? 'combobox' : undefined}
+        aria-autocomplete={isGlobal ? 'list' : undefined}
+        aria-controls={isGlobal ? listboxId : undefined}
+        aria-expanded={isGlobal ? 'false' : undefined}
+        aria-haspopup={isGlobal ? 'listbox' : undefined}
       />
+      <button
+        type="button"
+        data-search-clear
+        class={`absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500 rounded ${searchQuery ? '' : 'hidden'}`}
+        aria-label="Clear search"
+      >
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
   </form>
 
-  {hasClientSearch && (
-    <div id="search-results" class="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+  {isGlobal && (
+    <div class="mt-4" data-global-results hidden>
+      <div class="flex items-center justify-between mb-3">
+        <p class="text-sm text-gray-500 dark:text-gray-400" data-global-count aria-live="polite" aria-atomic="true"></p>
+        <button
+          type="button"
+          data-global-clear
+          class="text-sm font-medium text-brand-blue-600 hover:text-brand-blue-700 dark:text-brand-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500 rounded"
+        >
+          Clear search
+        </button>
+      </div>
+      <div
+        class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        data-global-grid
+        id={listboxId}
+        role="listbox"
+        aria-label="Search results"
+      ></div>
+      <p class="hidden text-center text-gray-500 dark:text-gray-400 py-10" data-global-empty>
+        No tools matched your search. Try a different keyword.
+      </p>
+      <p class="sr-only" data-search-hint>Use arrow keys to move, Enter to open, Escape to clear.</p>
+    </div>
   )}
 </div>
 
-<script define:vars={{ tools, fuseOptions, hasClientSearch }}>
-  async function initializeSearch() {
-    const searchForm = document.getElementById('searchForm');
-    const searchInput = document.getElementById('search');
-    const searchResults = document.getElementById('search-results');
+{isGlobal && (
+  <script define:vars={{ tools }}>
+    function initGlobalSearch(root) {
+      if (!root || root.dataset.bound === 'true') return;
+      root.dataset.bound = 'true';
 
-    if (!searchForm || !searchInput) return;
-    if (searchForm.dataset.searchInitialized === 'true') return;
-    searchForm.dataset.searchInitialized = 'true';
+      const form = root.querySelector('[data-search-form]');
+      const input = root.querySelector('[data-search-input]');
+      const clearBtn = root.querySelector('[data-search-clear]');
+      const results = root.querySelector('[data-global-results]');
+      const grid = root.querySelector('[data-global-grid]');
+      const countEl = root.querySelector('[data-global-count]');
+      const emptyEl = root.querySelector('[data-global-empty]');
+      const clearResultsBtn = root.querySelector('[data-global-clear]');
+      const browseSections = document.querySelector('[data-home-browse]');
 
-    // When there is no provided client dataset, keep native GET form behavior.
-    if (!hasClientSearch || !searchResults) return;
+      if (!form || !input || !results || !grid || !countEl || !emptyEl) return;
 
-    const { default: Fuse } = await import('fuse.js');
-    const fuse = new Fuse(tools, fuseOptions);
-    let searchTimeout;
+      let fuse = null;
+      let timer = null;
+      let activeIndex = -1;
+      let currentMatches = [];
 
-    function updateUrl(query) {
-      const currentUrl = new URL(window.location.href);
-      const params = new URLSearchParams(currentUrl.search);
-      if (query) {
-        params.set('q', query);
+      function setBrowsing(activeSearch) {
+        results.hidden = !activeSearch;
+        input.setAttribute('aria-expanded', activeSearch ? 'true' : 'false');
+        if (browseSections) browseSections.hidden = activeSearch;
+      }
+
+      function updateUrl(query) {
+        const url = new URL(window.location.href);
+        if (query) url.searchParams.set('q', query);
+        else url.searchParams.delete('q');
+        window.history.replaceState({}, '', url);
+      }
+
+      function badge(text, className) {
+        const el = document.createElement('span');
+        el.className = className;
+        el.textContent = text;
+        return el;
+      }
+
+      function setActive(index) {
+        const cards = Array.from(grid.querySelectorAll('[data-result-card]'));
+        activeIndex = index;
+        cards.forEach((card, i) => {
+          const isActive = i === activeIndex;
+          card.classList.toggle('ring-2', isActive);
+          card.classList.toggle('ring-brand-blue-500', isActive);
+          card.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          if (isActive) {
+            card.scrollIntoView({ block: 'nearest' });
+            input.setAttribute('aria-activedescendant', card.id);
+          }
+        });
+        if (activeIndex < 0) input.removeAttribute('aria-activedescendant');
+      }
+
+      function card(tool, index) {
+        const a = document.createElement('a');
+        a.href = `/${tool.collection}/${tool.id}/`;
+        a.id = `search-result-${index}`;
+        a.dataset.resultCard = 'true';
+        a.setAttribute('role', 'option');
+        a.setAttribute('aria-selected', 'false');
+        a.className =
+          'block p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-0.5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500';
+
+        const row = document.createElement('div');
+        row.className = 'flex items-start gap-4';
+
+        const img = document.createElement('img');
+        img.src = tool.logo;
+        img.alt = `${tool.title} logo`;
+        img.width = 48;
+        img.height = 48;
+        img.className = 'w-12 h-12 object-contain rounded-lg bg-gray-50 dark:bg-gray-700 p-1.5 shrink-0';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+
+        const body = document.createElement('div');
+        body.className = 'min-w-0 flex-1';
+
+        const title = document.createElement('h3');
+        title.className = 'text-base font-semibold text-gray-900 dark:text-white truncate';
+        title.textContent = tool.title;
+
+        const desc = document.createElement('p');
+        desc.className = 'mt-1 text-sm text-gray-500 dark:text-gray-400 line-clamp-2';
+        desc.textContent = tool.description;
+
+        const badges = document.createElement('div');
+        badges.className = 'mt-2 flex flex-wrap gap-2';
+        badges.appendChild(
+          badge(
+            tool.collection === 'sh'
+              ? 'Self-hosted'
+              : tool.collection === 'mac'
+                ? 'Mac'
+                : tool.collection === 'tools'
+                  ? 'Online'
+                  : 'Alternative',
+            'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200'
+          )
+        );
+        if (tool.category) {
+          badges.appendChild(
+            badge(
+              tool.category,
+              'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-brand-blue-100 text-brand-blue-800 dark:bg-brand-blue-900 dark:text-brand-blue-100'
+            )
+          );
+        }
+        if (tool.alternativeTo) {
+          badges.appendChild(
+            badge(
+              `Alt to ${tool.alternativeTo}`,
+              'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-brand-purple-100 text-brand-purple-800 dark:bg-brand-purple-900 dark:text-brand-purple-100'
+            )
+          );
+        }
+
+        body.append(title, desc, badges);
+        row.append(img, body);
+        a.append(row);
+        return a;
+      }
+
+      function clearSearch() {
+        input.value = '';
+        render('');
+        input.focus();
+      }
+
+      function render(query) {
+        const q = query.trim();
+        clearBtn?.classList.toggle('hidden', !q);
+        activeIndex = -1;
+        input.removeAttribute('aria-activedescendant');
+
+        if (!q) {
+          setBrowsing(false);
+          currentMatches = [];
+          grid.replaceChildren();
+          emptyEl.classList.add('hidden');
+          countEl.textContent = '';
+          updateUrl('');
+          return;
+        }
+
+        currentMatches = fuse.search(q).map((r) => r.item);
+        setBrowsing(true);
+        countEl.textContent =
+          currentMatches.length === 1 ? '1 tool found' : `${currentMatches.length} tools found`;
+        emptyEl.classList.toggle('hidden', currentMatches.length > 0);
+        grid.replaceChildren(...currentMatches.map((tool, index) => card(tool, index)));
+        updateUrl(q);
+      }
+
+      async function ensureFuse() {
+        if (fuse) return fuse;
+        const { default: Fuse } = await import('fuse.js');
+        fuse = new Fuse(tools, {
+          keys: [
+            { name: 'title', weight: 0.45 },
+            { name: 'description', weight: 0.2 },
+            { name: 'category', weight: 0.15 },
+            { name: 'alternativeTo', weight: 0.1 },
+            { name: 'keyFeatures', weight: 0.1 },
+          ],
+          threshold: 0.35,
+          ignoreLocation: true,
+          minMatchCharLength: 2,
+        });
+        return fuse;
+      }
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        await ensureFuse();
+        if (activeIndex >= 0 && currentMatches[activeIndex]) {
+          window.location.href = `/${currentMatches[activeIndex].collection}/${currentMatches[activeIndex].id}/`;
+          return;
+        }
+        render(input.value);
+      });
+
+      input.addEventListener('input', async () => {
+        clearTimeout(timer);
+        const value = input.value;
+        clearBtn?.classList.toggle('hidden', !value.trim());
+        timer = setTimeout(async () => {
+          await ensureFuse();
+          render(value);
+        }, 200);
+      });
+
+      input.addEventListener('keydown', async (event) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          clearSearch();
+          return;
+        }
+
+        if (!input.value.trim()) return;
+        await ensureFuse();
+        if (!currentMatches.length && input.value.trim()) {
+          render(input.value);
+        }
+
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          if (!currentMatches.length) return;
+          setActive(activeIndex < currentMatches.length - 1 ? activeIndex + 1 : 0);
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          if (!currentMatches.length) return;
+          setActive(activeIndex > 0 ? activeIndex - 1 : currentMatches.length - 1);
+        } else if (event.key === 'Enter' && activeIndex >= 0 && currentMatches[activeIndex]) {
+          event.preventDefault();
+          window.location.href = `/${currentMatches[activeIndex].collection}/${currentMatches[activeIndex].id}/`;
+        } else if (event.key === 'Home' && currentMatches.length) {
+          event.preventDefault();
+          setActive(0);
+        } else if (event.key === 'End' && currentMatches.length) {
+          event.preventDefault();
+          setActive(currentMatches.length - 1);
+        }
+      });
+
+      clearBtn?.addEventListener('click', clearSearch);
+      clearResultsBtn?.addEventListener('click', clearSearch);
+
+      if (input.value.trim()) {
+        ensureFuse().then(() => render(input.value));
       } else {
-        params.delete('q');
+        setBrowsing(false);
       }
-      const queryString = params.toString();
-      window.history.replaceState({}, '', `${currentUrl.pathname}${queryString ? `?${queryString}` : ''}`);
     }
 
-    function createBadge(text, className) {
-      const badge = document.createElement('span');
-      badge.className = className;
-      badge.textContent = text;
-      return badge;
+    function boot() {
+      document.querySelectorAll('.search-global').forEach(initGlobalSearch);
     }
 
-    function createResultCard(tool) {
-      const card = document.createElement('a');
-      card.href = `/${tool.collection}/${tool.slug}/`;
-      card.className = 'block p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-shadow';
+    boot();
+    document.addEventListener('astro:page-load', boot);
+  </script>
+)}
 
-      const row = document.createElement('div');
-      row.className = 'flex items-center space-x-4';
+{!isGlobal && (
+  <script>
+    function initLocalSearch(root: Element) {
+      if (!(root instanceof HTMLElement) || root.dataset.bound === 'true') return;
+      root.dataset.bound = 'true';
 
-      const logo = document.createElement('img');
-      logo.src = tool.data.logo;
-      logo.alt = tool.data.title;
-      logo.className = 'w-12 h-12 object-contain';
+      const form = root.querySelector<HTMLFormElement>('[data-search-form]');
+      const searchInput = root.querySelector<HTMLInputElement>('[data-search-input]');
+      const clearBtn = root.querySelector<HTMLButtonElement>('[data-search-clear]');
+      if (!form || !searchInput) return;
 
-      const content = document.createElement('div');
-      content.className = 'flex-1';
+      const input = searchInput;
+      let timer: ReturnType<typeof setTimeout> | undefined;
 
-      const title = document.createElement('h3');
-      title.className = 'text-lg font-medium text-gray-900 dark:text-white';
-      title.textContent = tool.data.title;
+      function syncClear() {
+        clearBtn?.classList.toggle('hidden', !input.value.trim());
+      }
 
-      const description = document.createElement('p');
-      description.className = 'text-sm text-gray-500 dark:text-gray-400';
-      description.textContent = tool.data.description;
-
-      const badges = document.createElement('div');
-      badges.className = 'mt-2 flex flex-wrap gap-2';
-
-      if (tool.data.category) {
-        badges.appendChild(
-          createBadge(
-            tool.data.category,
-            'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-blue-100 text-brand-blue-800 dark:bg-brand-blue-900 dark:text-brand-blue-200'
-          )
+      function emitCatalogUpdate(resetPage = true) {
+        document.dispatchEvent(
+          new CustomEvent('toolhunt:catalog-update', {
+            detail: {
+              q: input.value.trim(),
+              resetPage,
+              source: 'search',
+            },
+          })
         );
       }
 
-      if (tool.data.alternativeTo) {
-        badges.appendChild(
-          createBadge(
-            `Alternative to ${tool.data.alternativeTo}`,
-            'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-green-100 text-brand-green-800 dark:bg-brand-green-900 dark:text-brand-green-200'
-          )
-        );
-      }
+      form.addEventListener('submit', (event: Event) => {
+        event.preventDefault();
+        emitCatalogUpdate(true);
+      });
 
-      content.appendChild(title);
-      content.appendChild(description);
-      content.appendChild(badges);
-      row.appendChild(logo);
-      row.appendChild(content);
-      card.appendChild(row);
+      input.addEventListener('input', () => {
+        syncClear();
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => emitCatalogUpdate(true), 180);
+      });
 
-      return card;
+      input.addEventListener('search', () => {
+        syncClear();
+        emitCatalogUpdate(true);
+      });
+
+      input.addEventListener('keydown', (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          input.value = '';
+          syncClear();
+          emitCatalogUpdate(true);
+        }
+      });
+
+      clearBtn?.addEventListener('click', () => {
+        input.value = '';
+        syncClear();
+        emitCatalogUpdate(true);
+        input.focus();
+      });
+
+      syncClear();
     }
 
-    function displayResults(results) {
-      const fragment = document.createDocumentFragment();
-      for (const tool of results) {
-        fragment.appendChild(createResultCard(tool));
-      }
-      searchResults.replaceChildren(fragment);
+    function bootLocal() {
+      document.querySelectorAll('.search-local').forEach(initLocalSearch);
     }
 
-    function performSearch() {
-      const query = searchInput.value.trim();
-      const results = query ? fuse.search(query).map((result) => result.item) : tools;
-      displayResults(results);
-      updateUrl(query);
-    }
-
-    searchForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      performSearch();
-    });
-
-    searchInput.addEventListener('search', () => {
-      clearTimeout(searchTimeout);
-      performSearch();
-    });
-
-    searchInput.addEventListener('input', () => {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(performSearch, 300);
-    });
-
-    const initialQuery = new URLSearchParams(window.location.search).get('q');
-    if (initialQuery) {
-      searchInput.value = initialQuery;
-      performSearch();
-    } else {
-      displayResults(tools);
-    }
-  }
-
-  const globalScope = window;
-  if (globalScope.__toolhuntSearchInit) {
-    document.removeEventListener('astro:page-load', globalScope.__toolhuntSearchInit);
-  }
-  globalScope.__toolhuntSearchInit = initializeSearch;
-
-  initializeSearch();
-  document.addEventListener('astro:page-load', globalScope.__toolhuntSearchInit);
-</script>
-
-<style>
-  .search-container {
-    position: relative;
-    width: 100%;
-  }
-
-  #search-results {
-    width: 100%;
-    z-index: 10;
-  }
-</style>
+    bootLocal();
+    document.addEventListener('astro:page-load', bootLocal);
+  </script>
+)}

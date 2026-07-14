@@ -1,128 +1,177 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 
 interface Props {
-    title: string;
-    description: string;
-    image?: string;
-    type?: "website";
-    jsonLd?: Record<string, unknown>;
-    noindex?: boolean;
+  title: string;
+  description: string;
+  image?: string;
+  type?: "website" | "article";
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  noindex?: boolean;
+  publishedTime?: string;
+  section?: string;
 }
 
 const {
-    title,
-    description,
-    image = "/og-image.png",
-    type = "website",
-    jsonLd,
-    noindex = false,
+  title,
+  description,
+  image = "/og-image.svg",
+  type = "website",
+  jsonLd,
+  noindex = false,
+  publishedTime,
+  section,
 } = Astro.props;
 
+const siteName = "ToolHunt";
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImageURL = new URL(image, Astro.site);
 const pageJsonLd = jsonLd ?? {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "ToolHunt",
-    url: "https://toolhunt.net",
-    description:
-        "Discover and compare self-hosted applications, online tools, and their alternatives.",
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteName,
+  url: "https://toolhunt.net/",
+  description:
+    "Discover and compare self-hosted applications, online tools, and their alternatives.",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://toolhunt.net/?q={search_term_string}",
+    "query-input": "required name=search_term_string",
+  },
 };
+const jsonLdBlocks = Array.isArray(pageJsonLd) ? pageJsonLd : [pageJsonLd];
 ---
 
 <!doctype html>
 <html lang="en" class="scroll-smooth">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script is:inline>
-            (() => {
-                try {
-                    const stored = localStorage.getItem("color-theme");
-                    const prefersDark = window.matchMedia(
-                        "(prefers-color-scheme: dark)",
-                    ).matches;
-                    const isDark = stored ? stored === "dark" : prefersDark;
-                    document.documentElement.classList.toggle("dark", isDark);
-                    document.documentElement.style.colorScheme = isDark
-                        ? "dark"
-                        : "light";
-                } catch {}
-            })();
-        </script>
-        <title>{title} | toolhunt.net</title>
-        <meta name="description" content={description} />
-        {noindex && <meta name="robots" content="noindex,follow" />}
-        <meta name="generator" content={Astro.generator} />
-        <link rel="sitemap" href="/sitemap-index.xml" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem("color-theme");
+          const prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
+          const isDark = stored ? stored === "dark" : prefersDark;
+          document.documentElement.classList.toggle("dark", isDark);
+          document.documentElement.style.colorScheme = isDark
+            ? "dark"
+            : "light";
+        } catch {}
+      })();
+    </script>
+    <title>{title} | toolhunt.net</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,follow" />}
+    <meta name="generator" content={Astro.generator} />
+    {section && <meta name="section" content={section} />}
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="ToolHunt Blog RSS"
+      href="/rss.xml"
+    />
+    <link rel="canonical" href={canonicalURL} />
 
-        <!-- Canonical URL -->
-        <link rel="canonical" href={canonicalURL} />
+    <!-- OpenGraph -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:site_name" content={siteName} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {section && <meta property="article:section" content={section} />}
 
-        <!-- OpenGraph -->
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={canonicalURL} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={socialImageURL} />
-        <meta property="og:site_name" content="ToolHunt" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
 
-        <!-- Twitter -->
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={canonicalURL} />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={socialImageURL} />
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/favicon128.ico" />
 
-        <!-- Favicon -->
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="icon" href="/favicon.ico" sizes="32x32" />
-        <link rel="apple-touch-icon" href="/favicon120.ico" />
+    {jsonLdBlocks.map((block) => (
+      <script type="application/ld+json" set:html={JSON.stringify(block)} />
+    ))}
 
-        <script
-            type="application/ld+json"
-            set:html={JSON.stringify(pageJsonLd)}
-        />
+    <ClientRouter />
 
-        <!-- Privacy-friendly analytics by Plausible -->
-        <script
-            defer
-            async
-            src="https://an3.bitdoze.com/js/pa-63QdBSP2tN2M0MZAQbrQ9.js"
-        ></script>
-        <script defer>
-            ((window.plausible =
-                window.plausible ||
-                function () {
-                    (plausible.q = plausible.q || []).push(arguments);
-                }),
-                (plausible.init =
-                    plausible.init ||
-                    function (i) {
-                        plausible.o = i || {};
-                    }));
-            plausible.init();
-        </script>
+    <!-- Privacy-friendly analytics by Plausible (deferred until interaction/idle) -->
+    <script is:inline>
+      (() => {
+        const PLAUSIBLE_SRC =
+          "https://an3.bitdoze.com/js/pa-63QdBSP2tN2M0MZAQbrQ9.js";
+        let loaded = false;
 
-        <script
-            defer
-            data-project="67af683e97d306c7138ac9bb"
-            src="https://cdn.jsdelivr.net/gh/litlyx/litlyx-js/browser/litlyx.js"
-        ></script>
-    </head>
-    <body
-        class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col"
+        function bootPlausible() {
+          if (loaded) return;
+          loaded = true;
+          const s = document.createElement("script");
+          s.defer = true;
+          s.async = true;
+          s.src = PLAUSIBLE_SRC;
+          document.head.appendChild(s);
+          window.plausible =
+            window.plausible ||
+            function () {
+              (window.plausible.q = window.plausible.q || []).push(arguments);
+            };
+          window.plausible.init =
+            window.plausible.init ||
+            function (i) {
+              window.plausible.o = i || {};
+            };
+          window.plausible.init();
+        }
+
+        const events = ["pointerdown", "keydown", "scroll", "touchstart"];
+        const onInteract = () => {
+          bootPlausible();
+          for (const event of events) {
+            window.removeEventListener(event, onInteract, { capture: true });
+          }
+        };
+        for (const event of events) {
+          window.addEventListener(event, onInteract, {
+            once: true,
+            passive: true,
+            capture: true,
+          });
+        }
+        if ("requestIdleCallback" in window) {
+          requestIdleCallback(bootPlausible, { timeout: 4000 });
+        } else {
+          setTimeout(bootPlausible, 4000);
+        }
+      })();
+    </script>
+  </head>
+  <body
+    class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col"
+  >
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[100] focus:rounded-lg focus:bg-brand-blue-600 focus:px-4 focus:py-2 focus:text-white focus:shadow-lg"
     >
-        <Header />
+      Skip to content
+    </a>
+    <Header />
 
-        <!-- Main content with padding for fixed header -->
-        <main class="grow pt-16">
-            <slot />
-        </main>
+    <main id="main-content" class="grow pt-16" tabindex="-1">
+      <slot />
+    </main>
 
-        <Footer />
-    </body>
+    <Footer />
+  </body>
 </html>

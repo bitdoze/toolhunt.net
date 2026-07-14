@@ -2,14 +2,15 @@
 import BaseLayout from './BaseLayout.astro';
 import SearchBar from '../components/SearchBar.astro';
 import Filters from '../components/Filters.astro';
-import ToolGrid from '../components/ToolGrid.astro';
-import type { CollectionEntry } from 'astro:content';
-
-type ToolEntry =
-  | CollectionEntry<'sh'>
-  | CollectionEntry<'tools'>
-  | CollectionEntry<'alternatives'>
-  | CollectionEntry<'mac'>;
+import ToolCard from '../components/ToolCard.astro';
+import {
+  getAlternativeTo,
+  getCheckItUrl,
+  getPricing,
+  toolUrl,
+  type ToolCollection,
+  type ToolEntry,
+} from '../lib/content';
 
 interface Props {
   title: string;
@@ -20,9 +21,9 @@ interface Props {
   showAlternativeTo?: boolean;
   pricingOptions?: string[];
   showPricing?: boolean;
-  currentPage: number;
-  totalPages: number;
-  section: 'sh' | 'tools' | 'alternatives' | 'mac';
+  itemsPerPage?: number;
+  section: ToolCollection;
+  popularAlternatives?: Array<{ name: string; href: string; count: number }>;
 }
 
 const {
@@ -34,58 +35,69 @@ const {
   showAlternativeTo = false,
   pricingOptions = [],
   showPricing = false,
-  currentPage,
-  totalPages,
-  section
+  itemsPerPage = 50,
+  section,
+  popularAlternatives = [],
 } = Astro.props;
 
-// Calculate pagination variables
-const hasPrevPage = currentPage > 1;
-const hasNextPage = totalPages > currentPage;
+const categoryCounts = Object.fromEntries(
+  categories.map((category) => [
+    category,
+    tools.filter((tool) => tool.data.category === category).length,
+  ])
+);
 
-// Generate page list
-const pageList = Array.from({ length: totalPages }, (_, index) => index + 1);
+const alternativeCounts = Object.fromEntries(
+  alternativeTo.map((alt) => [
+    alt,
+    tools.filter((tool) => getAlternativeTo(tool) === alt).length,
+  ])
+);
 
-function buildPageHref(targetPage: number) {
-  const params = new URLSearchParams(Astro.url.search);
-  if (targetPage <= 1) {
-    params.delete('page');
-  } else {
-    params.set('page', String(targetPage));
-  }
+const pricingCounts = Object.fromEntries(
+  pricingOptions.map((price) => [
+    price,
+    tools.filter((tool) => getPricing(tool) === price).length,
+  ])
+);
 
-  const query = params.toString();
-  return query ? `${Astro.url.pathname}?${query}` : Astro.url.pathname;
-}
+const sectionOgImages: Record<ToolCollection, string> = {
+  sh: '/images/logo.svg',
+  tools: '/images/logo.svg',
+  mac: '/images/logo.svg',
+  alternatives: '/images/logo.svg',
+};
 
-// Prepare JSON-LD data for collection page
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   name: title,
-  description: description,
-  url: Astro.url.toString(),
+  description,
+  url: new URL(`/${section}/`, Astro.site).toString(),
   numberOfItems: tools.length,
-  itemListElement: tools.map((tool, index) => ({
-    '@type': 'ListItem',
-    position: index + 1,
-    item: {
-      '@type': 'SoftwareApplication',
-      name: tool.data.title,
-      description: tool.data.description,
-      image: tool.data.logo,
-      applicationCategory: tool.data.category,
-      ...(('checkItUrl' in tool.data) && { downloadUrl: tool.data.checkItUrl }),
-      ...(('alternativeTo' in tool.data) && {
-        sameAs: [
-          `https://toolhunt.net/search?alternativeTo=${encodeURIComponent(tool.data.alternativeTo)}`
-        ]
-      })
-    }
-  }))
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: tools.length,
+    itemListElement: tools.slice(0, 50).map((tool, index) => {
+      const checkItUrl = getCheckItUrl(tool);
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        url: new URL(toolUrl(tool), Astro.site).toString(),
+        item: {
+          '@type': 'SoftwareApplication',
+          name: tool.data.title,
+          description: tool.data.description,
+          image: new URL(tool.data.logo, Astro.site).toString(),
+          applicationCategory: tool.data.category,
+          url: new URL(toolUrl(tool), Astro.site).toString(),
+          ...(checkItUrl ? { sameAs: [checkItUrl] } : {}),
+        },
+      };
+    }),
+  },
 };
 
-// Prepare meta description with category information
 const metaDescription = `${description} Browse ${tools.length} tools across ${categories.length} categories${
   showAlternativeTo ? ` and find alternatives to popular services` : ''
 }.`;
@@ -95,142 +107,359 @@ const metaDescription = `${description} Browse ${tools.length} tools across ${ca
   title={title}
   description={metaDescription}
   jsonLd={jsonLd}
-  noindex={currentPage > 1}
+  image={sectionOgImages[section]}
+  section={title}
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" data-catalog-root>
     <div class="flex flex-col lg:flex-row lg:space-x-8">
-      <!-- Sidebar with filters -->
-      <div class="lg:w-64 flex-shrink-0 mb-8 lg:mb-0">
+      <div class="lg:w-72 flex-shrink-0 mb-8 lg:mb-0">
         <div class="sticky top-24 space-y-6">
-          <SearchBar />
+          <SearchBar mode="local" placeholder={`Search ${title.toLowerCase()}...`} />
           <Filters
             categories={categories}
             alternativeTo={alternativeTo}
             pricingOptions={pricingOptions}
             showAlternativeTo={showAlternativeTo}
             showPricing={showPricing}
+            categoryCounts={categoryCounts}
+            alternativeCounts={alternativeCounts}
+            pricingCounts={pricingCounts}
           />
         </div>
       </div>
 
-      <!-- Main content -->
-      <div class="flex-1">
+      <div class="flex-1 min-w-0">
         <div class="mb-6">
           <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{title}</h1>
           <p class="mt-2 text-gray-600 dark:text-gray-300">{description}</p>
+          <p
+            id="results-count"
+            class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+            data-results-count
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            Showing {tools.length} tools
+          </p>
         </div>
 
-        <!-- Tools grid -->
-        <div class="mb-8">
-          <ToolGrid tools={tools} />
+        {
+          popularAlternatives.length > 0 && (
+            <section class="mb-8 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/70 dark:bg-gray-800/50 p-5">
+              <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                Popular alternatives-to pages
+              </h2>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {popularAlternatives.map((item) => (
+                  <a
+                    href={item.href}
+                    class="inline-flex items-center rounded-full bg-brand-purple-50 text-brand-purple-800 dark:bg-brand-purple-900/40 dark:text-brand-purple-100 px-3 py-1 text-xs font-medium hover:bg-brand-purple-100 dark:hover:bg-brand-purple-900/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple-500"
+                  >
+                    {item.name}
+                    <span class="ml-1.5 text-brand-purple-500 dark:text-brand-purple-300">{item.count}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )
+        }
+
+        <div
+          id="tools-grid"
+          class="mb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          data-tools-grid
+        >
+          {
+            tools.map((tool, index) => {
+              const pricing = getPricing(tool) || '';
+              const alt = getAlternativeTo(tool) || '';
+              const features = tool.data.keyFeatures?.join(' ') || '';
+              const searchText = [
+                tool.data.title,
+                tool.data.description,
+                tool.data.category,
+                alt,
+                pricing,
+                features,
+                tool.id,
+              ]
+                .filter(Boolean)
+                .join(' ')
+                .toLowerCase();
+
+              return (
+                <div
+                  class="tool-item h-full"
+                  data-tool-item
+                  data-search={searchText}
+                  data-category={tool.data.category}
+                  data-alternative-to={alt}
+                  data-pricing={pricing}
+                >
+                  <ToolCard entry={tool} priority={index < 3} />
+                </div>
+              );
+            })
+          }
         </div>
 
-        <!-- Pagination -->
-        {totalPages > 1 && (
-          <nav class="mb-4 flex justify-center space-x-2 text-center" aria-label="Pagination">
-            {/* previous */}
-            {hasPrevPage ? (
-              <a
-                href={buildPageHref(currentPage - 1)}
-                class="border border-primary hover:bg-primary hover:text-white rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center transition duration-200"
-              >
-                <span class="sr-only">Previous</span>
-                <svg
-                  class="h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            ) : (
-              <span class="border border-gray-400 opacity-40 rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center pointer-events-none">
-                <span class="sr-only">Previous</span>
-                <svg
-                  class="h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </span>
-            )}
+        <div
+          id="catalog-empty"
+          class="hidden rounded-2xl border border-dashed border-gray-300 dark:border-gray-600 px-6 py-16 text-center"
+          data-catalog-empty
+        >
+          <p class="text-lg font-medium text-gray-900 dark:text-white">No matching tools</p>
+          <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Try clearing filters or using a shorter search term.
+          </p>
+          <button
+            type="button"
+            data-reset-catalog
+            class="mt-5 inline-flex items-center px-4 py-2 rounded-lg bg-brand-blue-600 text-white text-sm font-medium hover:bg-brand-blue-700"
+          >
+            Reset filters
+          </button>
+        </div>
 
-            {/* page index */}
-            {pageList.map((pagination) =>
-              pagination === currentPage ? (
-                <span
-                  aria-current="page"
-                  class={`border border-primary bg-primary rounded-md h-10 w-10 leading-[35px] font-semibold text-brand-blue-500 dark:text-white`}
-                >
-                  {pagination}
-                </span>
-              ) : (
-                <a
-                  href={buildPageHref(pagination)}
-                  aria-current="page"
-                  class={`border border-primary hover:bg-primary hover:text-brand-blue-500 rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center transition duration-200`}
-                >
-                  {pagination}
-                </a>
-              )
-            )}
-
-            {/* next page */}
-            {hasNextPage ? (
-              <a
-                href={buildPageHref(currentPage + 1)}
-                class="border border-primary hover:bg-primary hover:text-white rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center transition duration-200"
-              >
-                <span class="sr-only">Next</span>
-                <svg
-                  class="h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            ) : (
-              <span class="border border-gray-400 opacity-40 rounded-md h-10 w-10 leading-[36px] font-semibold text-dark flex items-center justify-center pointer-events-none">
-                <span class="sr-only">Next</span>
-                <svg
-                  class="h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </span>
-            )}
-          </nav>
-        )}
-
+        <nav
+          id="pagination"
+          class="mb-4 hidden justify-center flex-wrap gap-2 text-center"
+          aria-label="Pagination"
+          data-pagination
+        ></nav>
       </div>
     </div>
   </div>
 </BaseLayout>
+
+<script define:vars={{ itemsPerPage, section, totalTools: tools.length }}>
+  function getState() {
+    const params = new URLSearchParams(window.location.search);
+    const searchInput = document.querySelector('[data-search-input]');
+    const filterForm = document.querySelector('[data-catalog-filters]');
+
+    const categories = filterForm
+      ? Array.from(filterForm.querySelectorAll('input[name="category"]:checked')).map((el) => el.value)
+      : params.getAll('category');
+    const alternatives = filterForm
+      ? Array.from(filterForm.querySelectorAll('input[name="alternativeTo"]:checked')).map(
+          (el) => el.value
+        )
+      : params.getAll('alternativeTo');
+    const pricing = filterForm
+      ? Array.from(filterForm.querySelectorAll('input[name="pricing"]:checked')).map((el) => el.value)
+      : params.getAll('pricing');
+
+    const q = (searchInput?.value || params.get('q') || '').toLowerCase().trim();
+    const page = Math.max(1, parseInt(params.get('page') || '1', 10) || 1);
+
+    return { q, categories, alternatives, pricing, page };
+  }
+
+  function matches(item, state) {
+    if (state.q) {
+      const haystack = item.dataset.search || '';
+      if (!haystack.includes(state.q)) return false;
+    }
+    if (state.categories.length > 0 && !state.categories.includes(item.dataset.category || '')) {
+      return false;
+    }
+    if (
+      state.alternatives.length > 0 &&
+      !state.alternatives.includes(item.dataset.alternativeTo || '')
+    ) {
+      return false;
+    }
+    if (state.pricing.length > 0 && !state.pricing.includes(item.dataset.pricing || '')) {
+      return false;
+    }
+    return true;
+  }
+
+  function writeUrl(state) {
+    const params = new URLSearchParams();
+    if (state.q) params.set('q', state.q);
+    for (const value of state.categories) params.append('category', value);
+    for (const value of state.alternatives) params.append('alternativeTo', value);
+    for (const value of state.pricing) params.append('pricing', value);
+    if (state.page > 1) params.set('page', String(state.page));
+
+    const query = params.toString();
+    const next = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState({}, '', next);
+  }
+
+  function pageHref(page) {
+    const state = getState();
+    state.page = page;
+    const params = new URLSearchParams();
+    if (state.q) params.set('q', state.q);
+    for (const value of state.categories) params.append('category', value);
+    for (const value of state.alternatives) params.append('alternativeTo', value);
+    for (const value of state.pricing) params.append('pricing', value);
+    if (page > 1) params.set('page', String(page));
+    const query = params.toString();
+    return query ? `${window.location.pathname}?${query}` : window.location.pathname;
+  }
+
+  function renderPagination(currentPage, totalPages) {
+    const nav = document.querySelector('[data-pagination]');
+    if (!nav) return;
+
+    if (totalPages <= 1) {
+      nav.classList.add('hidden');
+      nav.classList.remove('flex');
+      nav.replaceChildren();
+      return;
+    }
+
+    nav.classList.remove('hidden');
+    nav.classList.add('flex');
+
+    const btn =
+      'border border-brand-blue-500/40 hover:bg-brand-blue-600 hover:text-white rounded-md min-w-10 h-10 px-2 leading-[36px] font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-center transition duration-200';
+    const active =
+      'border border-brand-blue-600 bg-brand-blue-600 rounded-md min-w-10 h-10 px-2 leading-[36px] font-semibold text-white flex items-center justify-center';
+
+    const parts = [];
+    if (currentPage > 1) {
+      parts.push(
+        `<a href="${pageHref(currentPage - 1)}" data-page="${currentPage - 1}" class="${btn}" aria-label="Previous">‹</a>`
+      );
+    }
+
+    const windowSize = 7;
+    let start = Math.max(1, currentPage - Math.floor(windowSize / 2));
+    let end = Math.min(totalPages, start + windowSize - 1);
+    start = Math.max(1, end - windowSize + 1);
+
+    if (start > 1) {
+      parts.push(`<a href="${pageHref(1)}" data-page="1" class="${btn}">1</a>`);
+      if (start > 2) parts.push(`<span class="px-1 text-gray-400">…</span>`);
+    }
+
+    for (let page = start; page <= end; page++) {
+      if (page === currentPage) {
+        parts.push(`<span aria-current="page" class="${active}">${page}</span>`);
+      } else {
+        parts.push(`<a href="${pageHref(page)}" data-page="${page}" class="${btn}">${page}</a>`);
+      }
+    }
+
+    if (end < totalPages) {
+      if (end < totalPages - 1) parts.push(`<span class="px-1 text-gray-400">…</span>`);
+      parts.push(
+        `<a href="${pageHref(totalPages)}" data-page="${totalPages}" class="${btn}">${totalPages}</a>`
+      );
+    }
+
+    if (currentPage < totalPages) {
+      parts.push(
+        `<a href="${pageHref(currentPage + 1)}" data-page="${currentPage + 1}" class="${btn}" aria-label="Next">›</a>`
+      );
+    }
+
+    nav.innerHTML = parts.join('');
+  }
+
+  function applyCatalog(options = {}) {
+    const root = document.querySelector('[data-catalog-root]');
+    if (!root) return;
+
+    const grid = root.querySelector('[data-tools-grid]');
+    const countEl = root.querySelector('[data-results-count]');
+    const emptyEl = root.querySelector('[data-catalog-empty]');
+    if (!grid) return;
+
+    const items = Array.from(grid.querySelectorAll('[data-tool-item]'));
+    const state = getState();
+    if (options.resetPage) state.page = 1;
+
+    const matched = items.filter((item) => matches(item, state));
+    const totalPages = Math.max(1, Math.ceil(matched.length / itemsPerPage) || 1);
+    state.page = Math.min(Math.max(1, state.page), totalPages);
+
+    const start = (state.page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const visible = new Set(matched.slice(start, end));
+
+    for (const item of items) {
+      item.classList.toggle('hidden', !visible.has(item));
+    }
+
+    if (countEl) {
+      if (matched.length === 0) {
+        countEl.textContent = 'No tools match your filters';
+      } else if (matched.length === totalTools && !state.q && state.categories.length === 0 && state.alternatives.length === 0 && state.pricing.length === 0) {
+        countEl.textContent = `Showing ${matched.length} ${section} tools`;
+      } else {
+        const shown = Math.min(itemsPerPage, matched.length - start);
+        countEl.textContent = `Showing ${shown} of ${matched.length} matching tools`;
+      }
+    }
+
+    if (emptyEl) {
+      emptyEl.classList.toggle('hidden', matched.length > 0);
+      grid.classList.toggle('hidden', matched.length === 0);
+    }
+
+    renderPagination(state.page, totalPages);
+    writeUrl(state);
+  }
+
+  function onCatalogUpdate(event) {
+    applyCatalog({ resetPage: Boolean(event?.detail?.resetPage) });
+  }
+
+  function onPaginationClick(event) {
+    const link = event.target.closest('[data-pagination] a[data-page]');
+    if (!link) return;
+    event.preventDefault();
+    const page = parseInt(link.dataset.page || '1', 10) || 1;
+    const params = new URLSearchParams(window.location.search);
+    if (page <= 1) params.delete('page');
+    else params.set('page', String(page));
+    const query = params.toString();
+    window.history.replaceState(
+      {},
+      '',
+      query ? `${window.location.pathname}?${query}` : window.location.pathname
+    );
+    applyCatalog({ resetPage: false });
+    document.querySelector('[data-tools-grid]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function resetAll() {
+    const form = document.querySelector('[data-catalog-filters]');
+    const searchInput = document.querySelector('[data-search-input]');
+    form?.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+    if (searchInput) searchInput.value = '';
+    document.querySelector('[data-search-clear]')?.classList.add('hidden');
+    document.querySelector('[data-active-filters]')?.classList.add('hidden');
+    document.querySelector('[data-active-filters]')?.replaceChildren();
+    applyCatalog({ resetPage: true });
+  }
+
+  function onResetClick(event) {
+    if (event.target.closest('[data-reset-catalog]')) {
+      resetAll();
+    }
+  }
+
+  function bootCatalog() {
+    if (!document.querySelector('[data-catalog-root]')) return;
+    applyCatalog({ resetPage: false });
+  }
+
+  if (!window.__toolhuntCatalogBound) {
+    window.__toolhuntCatalogBound = true;
+    document.addEventListener('toolhunt:catalog-update', onCatalogUpdate);
+    document.addEventListener('click', onPaginationClick);
+    document.addEventListener('click', onResetClick);
+  }
+
+  bootCatalog();
+  document.addEventListener('astro:page-load', bootCatalog);
+</script>

@@ -1,155 +1,174 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
 import ToolCard from "../components/ToolCard.astro";
-import { type CollectionEntry, getCollection } from "astro:content";
-
-type ContentType =
-  | CollectionEntry<"sh">
-  | CollectionEntry<"tools">
-  | CollectionEntry<"alternatives">
-  | CollectionEntry<"mac">;
+import ToolImage from "../components/ToolImage.astro";
+import {
+  alternativeToUrl,
+  buildSoftwareApplicationJsonLd,
+  getAllTools,
+  getAlternativeTo,
+  getCheckItUrl,
+  getCollectionTools,
+  getRelatedTools,
+  ogImageUrl,
+  type ToolEntry,
+} from "../lib/content";
 
 interface Props {
-  entry: ContentType;
+  entry: ToolEntry;
 }
 
 const { entry } = Astro.props;
-const { title, description, uiImage, logo, publishedDate, category } = entry.data;
-
-// Determine if entry has checkItUrl and alternativeTo
-const hasCheckItUrl = "checkItUrl" in entry.data;
-const checkItUrl = hasCheckItUrl ? (entry.data as any).checkItUrl : null;
-
-const hasAlternativeTo = "alternativeTo" in entry.data;
-const alternativeTo = hasAlternativeTo ? (entry.data as any).alternativeTo : null;
-
-// Get related tools from all collections
-const [shTools, onlineTools, alternativeTools, macTools] = await Promise.all([
-  getCollection("sh"),
-  getCollection("tools"),
-  getCollection("alternatives"),
-  getCollection("mac"),
+const { title, description, uiImage, category } = entry.data;
+const checkItUrl = getCheckItUrl(entry);
+const alternativeTo = getAlternativeTo(entry);
+const [pool, allTools] = await Promise.all([
+  getCollectionTools(entry.collection),
+  getAllTools(),
 ]);
-
-// Helper function to shuffle array
-function shuffleArray(array: any[]) {
-  return array.sort(() => Math.random() - 0.5);
-}
-
-// Get related tools with priority
-function getRelatedTools() {
-  const currentCollection = entry.collection;
-  let collectionTools;
-  
-  switch (currentCollection) {
-    case 'sh':
-      collectionTools = shTools;
-      break;
-    case 'tools':
-      collectionTools = onlineTools;
-      break;
-    case 'alternatives':
-      collectionTools = alternativeTools;
-      break;
-    case 'mac':
-      collectionTools = macTools;
-      break;
-    default:
-      return [];
-  }
-
-  // First, get items from same category in same collection
-  const sameCategory = collectionTools.filter(tool => 
-    tool.data.category === category && tool.id !== entry.id
-  );
-
-  // Then, get other items from same collection
-  const otherSameCollection = collectionTools.filter(tool => 
-    tool.data.category !== category && tool.id !== entry.id
-  );
-
-  // Combine and limit to 3 items
-  return [...shuffleArray(sameCategory), ...shuffleArray(otherSameCollection)].slice(0, 3);
-}
-
-const relatedTools = getRelatedTools();
-
-// Add pricing check for Mac apps
-const pricing = 'pricing' in entry.data ? entry.data.pricing : null;
-
-// Prepare social image URL (use UI image if available, fallback to logo)
-const socialImage = uiImage || logo;
+const relatedTools = getRelatedTools(entry, pool, 6, allTools);
+const sameAlternativeTools = alternativeTo
+  ? relatedTools.filter((tool) => getAlternativeTo(tool) === alternativeTo)
+  : [];
+const categoryRelated = relatedTools.filter(
+  (tool) => !sameAlternativeTools.some((alt) => alt.id === tool.id && alt.collection === tool.collection)
+);
+const socialImage = ogImageUrl(entry);
+const jsonLd = buildSoftwareApplicationJsonLd(entry);
+const collectionOgDefaults: Record<string, string> = {
+  sh: "Self-hosted Apps",
+  tools: "Online Tools",
+  mac: "Mac Apps",
+  alternatives: "Alternatives",
+};
 ---
 
-<BaseLayout title={title} description={description} image={socialImage}>
-  <main>
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Tool Card -->
-      <div class="mb-8">
-        <ToolCard entry={entry} showFullDetails={true} />
-      </div>
-
-      <!-- UI Preview -->
-      <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-          Interface Preview
-        </h2>
-        <img
-          src={uiImage}
-          alt={`${title} user interface`}
-          class="w-full rounded-lg shadow-lg"
-          width="800"
-          height="400"
-          loading="lazy"
-        />
-      </div>
-
-      <!-- YouTube Video -->
-      {
-        entry.data.youtubeId && (
-          <div class="mb-8">
-            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-              Video Overview
-            </h2>
-            <div class="relative pb-[56.25%] h-0 rounded-lg overflow-hidden shadow-lg">
-              <iframe
-                src={`https://www.youtube.com/embed/${entry.data.youtubeId}`}
-                title={`${title} video overview`}
-                class="absolute top-0 left-0 w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              />
-            </div>
-          </div>
-        )
-      }
-
-      <!-- Content -->
-      <article class="prose dark:prose-invert max-w-none">
-        <slot />
-      </article>
+<BaseLayout
+  title={title}
+  description={description}
+  image={socialImage}
+  type="article"
+  jsonLd={jsonLd}
+  publishedTime={entry.data.publishedDate.toISOString()}
+  section={collectionOgDefaults[entry.collection] || entry.collection}
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8">
+      <ToolCard entry={entry} showFullDetails={true} />
     </div>
 
-    <!-- More Tools Section - Wider width -->
     {
-      relatedTools.length > 0 && (
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <section class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-8">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-              More {entry.collection === 'mac' ? 'Mac' : ''} {category} Tools
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {relatedTools.map((tool) => (
-                <ToolCard entry={tool} />
-              ))}
-            </div>
-          </section>
+      alternativeTo && (
+        <div class="mb-8 rounded-xl border border-brand-purple-200 dark:border-brand-purple-800 bg-brand-purple-50/70 dark:bg-brand-purple-900/20 px-4 py-3">
+          <p class="text-sm text-gray-700 dark:text-gray-200">
+            Looking for more options like this?{' '}
+            <a
+              href={alternativeToUrl(alternativeTo)}
+              class="font-semibold text-brand-purple-700 dark:text-brand-purple-300 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple-500 rounded"
+            >
+              Browse all alternatives to {alternativeTo}
+            </a>
+          </p>
         </div>
       )
     }
 
-    <!-- Related Tools -->
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+        Interface Preview
+      </h2>
+      <ToolImage
+        src={uiImage}
+        alt={`${title} user interface`}
+        class="w-full rounded-lg shadow-lg"
+        width={1200}
+        height={675}
+        loading="lazy"
+      />
     </div>
-  </main>
+
+    {
+      entry.data.youtubeId && (
+        <div class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+            Video Overview
+          </h2>
+          <div class="relative pb-[56.25%] h-0 rounded-lg overflow-hidden shadow-lg">
+            <iframe
+              src={`https://www.youtube.com/embed/${entry.data.youtubeId}`}
+              title={`${title} video overview`}
+              class="absolute top-0 left-0 w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            />
+          </div>
+        </div>
+      )
+    }
+
+    <article class="prose dark:prose-invert max-w-none">
+      <slot />
+    </article>
+
+    {
+      checkItUrl && (
+        <div class="mt-10">
+          <a
+            href={checkItUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center px-5 py-3 rounded-xl bg-brand-blue-600 text-white font-medium hover:bg-brand-blue-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-blue-500"
+          >
+            Visit official site
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </a>
+        </div>
+      )
+    }
+  </div>
+
+  {
+    sameAlternativeTools.length > 0 && alternativeTo && (
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-8">
+          <div class="flex items-end justify-between gap-4 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+              More alternatives to {alternativeTo}
+            </h2>
+            <a
+              href={alternativeToUrl(alternativeTo)}
+              class="text-sm font-medium text-brand-blue-600 hover:text-brand-blue-700 dark:text-brand-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500 rounded"
+            >
+              View all
+            </a>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sameAlternativeTools.slice(0, 3).map((tool) => (
+              <ToolCard entry={tool} />
+            ))}
+          </div>
+        </section>
+      </div>
+    )
+  }
+
+  {
+    categoryRelated.length > 0 && (
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-8 mb-12">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            More {entry.collection === "mac" ? "Mac" : ""} {category} Tools
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categoryRelated.slice(0, 3).map((tool) => (
+              <ToolCard entry={tool} />
+            ))}
+          </div>
+        </section>
+      </div>
+    )
+  }
 </BaseLayout>
