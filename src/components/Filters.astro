@@ -195,13 +195,7 @@ const {
       emitUpdate(true);
     });
 
-    form.querySelector('[data-clear-filters]')?.addEventListener('click', () => {
-      form.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox) => {
-        checkbox.checked = false;
-      });
-      renderActiveChips(form);
-      emitUpdate(true);
-    });
+    // Full reset (search + filters) is handled by SectionLayout via [data-clear-filters].
 
     form.querySelector('[data-active-filters]')?.addEventListener('click', (event: Event) => {
       const target = (event.target as HTMLElement | null)?.closest(

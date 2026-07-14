@@ -433,7 +433,10 @@ const metaDescription = `${description} Browse ${tools.length} tools across ${ca
     form?.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
       checkbox.checked = false;
     });
-    if (searchInput) searchInput.value = '';
+    if (searchInput) {
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
     document.querySelector('[data-search-clear]')?.classList.add('hidden');
     document.querySelector('[data-active-filters]')?.classList.add('hidden');
     document.querySelector('[data-active-filters]')?.replaceChildren();
@@ -441,7 +444,11 @@ const metaDescription = `${description} Browse ${tools.length} tools across ${ca
   }
 
   function onResetClick(event) {
-    if (event.target.closest('[data-reset-catalog]')) {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    // Empty-state "Reset filters" and sidebar "Clear all" share the same full reset.
+    if (target.closest('[data-reset-catalog], [data-clear-filters]')) {
+      event.preventDefault();
       resetAll();
     }
   }

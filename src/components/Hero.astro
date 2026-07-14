@@ -65,12 +65,14 @@ const collections = [
         Search self-hosted apps, online tools, Mac apps, and alternatives in one clean catalog.
       </p>
 
-      <div class="mx-auto mt-8 max-w-xl text-left">
-        <SearchBar
-          tools={searchIndex}
-          mode="global"
-          placeholder="Search n8n, Photopea, Raycast alternatives..."
-        />
+      <div class="mx-auto mt-8 w-full max-w-5xl text-left">
+        <div class="mx-auto max-w-xl">
+          <SearchBar
+            tools={searchIndex}
+            mode="global"
+            placeholder="Search n8n, Photopea, Raycast alternatives..."
+          />
+        </div>
       </div>
 
       <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
