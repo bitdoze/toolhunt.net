@@ -47,8 +47,8 @@ const listboxId = `${searchId}-listbox`;
   >
     <label for={searchId} class="sr-only">Search</label>
     <div class="relative">
-      <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-        <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+        <svg class="h-5 w-5 text-slate-400 dark:text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
         </svg>
       </div>
@@ -58,7 +58,7 @@ const listboxId = `${searchId}-listbox`;
         id={searchId}
         value={searchQuery}
         data-search-input
-        class="block w-full rounded-xl border border-slate-300 bg-white py-3 pl-10 pr-10 text-base text-slate-900 placeholder-slate-500 shadow-sm focus:border-brand-blue-500 focus:outline-none focus:ring-2 focus:ring-brand-blue-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder-slate-400"
+        class="block w-full rounded-2xl border border-slate-200/90 bg-white py-3.5 pl-11 pr-12 text-base text-slate-900 placeholder-slate-400 shadow-xs transition-all focus:border-brand-blue-500 focus:outline-none focus:ring-4 focus:ring-brand-blue-500/15 dark:border-slate-800 dark:bg-slate-900/90 dark:text-white dark:placeholder-slate-500 dark:focus:border-brand-blue-400 dark:focus:ring-brand-blue-400/20"
         placeholder={placeholder}
         autocomplete="off"
         enterkeyhint="search"
@@ -68,10 +68,15 @@ const listboxId = `${searchId}-listbox`;
         aria-expanded={isGlobal ? 'false' : undefined}
         aria-haspopup={isGlobal ? 'listbox' : undefined}
       />
+      <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+        <kbd class="hidden sm:inline-flex items-center rounded-md border border-slate-200 bg-slate-100 px-2 py-0.5 font-mono text-xs font-medium text-slate-500 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-400">
+          /
+        </kbd>
+      </div>
       <button
         type="button"
         data-search-clear
-        class={`absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500 rounded dark:hover:text-slate-200 ${searchQuery ? '' : 'hidden'}`}
+        class={`absolute inset-y-0 right-10 flex items-center pr-2 text-slate-400 hover:text-slate-600 focus-visible:outline-none rounded dark:hover:text-slate-200 ${searchQuery ? '' : 'hidden'}`}
         aria-label="Clear search"
       >
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

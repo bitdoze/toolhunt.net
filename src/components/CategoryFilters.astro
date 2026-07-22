@@ -19,55 +19,55 @@ const sections = [
     title: 'Self-hosted',
     href: '/sh/',
     categories: shCategories,
-    accent: 'bg-brand-blue-500',
+    dot: 'bg-brand-blue-500',
     chip:
-      'bg-slate-100 text-slate-700 hover:bg-brand-blue-50 hover:text-brand-blue-800 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-brand-blue-900/40 dark:hover:text-brand-blue-100',
+      'border border-brand-blue-200/80 bg-brand-blue-50/60 text-brand-blue-800 hover:border-brand-blue-300 hover:bg-brand-blue-100/80 dark:border-brand-blue-900/60 dark:bg-brand-blue-950/50 dark:text-brand-blue-200 dark:hover:border-brand-blue-800 dark:hover:bg-brand-blue-900/60',
   },
   {
     title: 'AI tools',
     href: '/ai/',
     categories: aiCategories,
-    accent: 'bg-rose-500',
+    dot: 'bg-rose-500',
     chip:
-      'bg-slate-100 text-slate-700 hover:bg-rose-50 hover:text-rose-800 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-rose-900/40 dark:hover:text-rose-100',
+      'border border-rose-200/80 bg-rose-50/60 text-rose-800 hover:border-rose-300 hover:bg-rose-100/80 dark:border-rose-900/60 dark:bg-rose-950/50 dark:text-rose-200 dark:hover:border-rose-800 dark:hover:bg-rose-900/60',
   },
   {
     title: 'Online tools',
     href: '/tools/',
     categories: toolCategories,
-    accent: 'bg-brand-green-500',
+    dot: 'bg-emerald-500',
     chip:
-      'bg-slate-100 text-slate-700 hover:bg-brand-green-50 hover:text-brand-green-800 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-brand-green-900/40 dark:hover:text-brand-green-100',
+      'border border-emerald-200/80 bg-emerald-50/60 text-emerald-800 hover:border-emerald-300 hover:bg-emerald-100/80 dark:border-emerald-900/60 dark:bg-emerald-950/50 dark:text-emerald-200 dark:hover:border-emerald-800 dark:hover:bg-emerald-900/60',
   },
   {
     title: 'Mac apps',
     href: '/mac/',
     categories: macCategories,
-    accent: 'bg-brand-purple-500',
+    dot: 'bg-brand-purple-500',
     chip:
-      'bg-slate-100 text-slate-700 hover:bg-brand-purple-50 hover:text-brand-purple-800 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-brand-purple-900/40 dark:hover:text-brand-purple-100',
+      'border border-brand-purple-200/80 bg-brand-purple-50/60 text-brand-purple-800 hover:border-brand-purple-300 hover:bg-brand-purple-100/80 dark:border-brand-purple-900/60 dark:bg-brand-purple-950/50 dark:text-brand-purple-200 dark:hover:border-brand-purple-800 dark:hover:bg-brand-purple-900/60',
   },
 ] as const;
 ---
 
 <div class="th-card overflow-hidden">
-  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 md:divide-x md:divide-slate-200 dark:md:divide-slate-800">
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-200/80 dark:divide-slate-800">
     {
       sections.map((section) => (
         <div class="p-5 sm:p-6">
           <div class="mb-4 flex items-center justify-between gap-3">
-            <h3 class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-200">
-              <span class:list={['h-2 w-2 rounded-full', section.accent]}></span>
+            <h3 class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
+              <span class:list={['h-2 w-2 rounded-full', section.dot]}></span>
               {section.title}
             </h3>
             <a
               href={section.href}
-              class="text-sm font-medium text-slate-500 transition-colors hover:text-brand-blue-600 dark:text-slate-400 dark:hover:text-brand-blue-400"
+              class="text-xs font-semibold text-brand-blue-600 transition-colors hover:text-brand-blue-700 dark:text-brand-blue-400"
             >
-              View all
+              View section →
             </a>
           </div>
-          <div class="flex flex-wrap gap-2">
+          <div class="flex flex-wrap gap-1.5">
             {(section.categories.length > 0 ? section.categories.slice(0, 8) : ['Browse all']).map(
               (category) => (
                 <a
@@ -77,7 +77,7 @@ const sections = [
                       : section.href
                   }
                   class:list={[
-                    'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500',
+                    'inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500',
                     section.chip,
                   ]}
                 >
@@ -91,3 +91,4 @@ const sections = [
     }
   </div>
 </div>
+

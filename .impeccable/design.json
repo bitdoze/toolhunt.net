@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-22T08:17:30Z",
+  "title": "Design System: ToolHunt",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Observatory Blue",
+        "canonical": "oklch(55% 0.22 255)",
+        "tonalRamp": ["#eff6ff", "#dbeafe", "#bfdbfe", "#93c5fd", "#60a5fa", "#3b82f6", "#2563eb", "#1d4ed8"]
+      },
+      "brand-green": {
+        "role": "secondary",
+        "displayName": "Self-Hosted Green",
+        "canonical": "oklch(60% 0.18 145)",
+        "tonalRamp": ["#f0fdf4", "#dcfce7", "#bbf7d0", "#86efac", "#4ade80", "#22c55e", "#16a34a", "#15803d"]
+      },
+      "brand-purple": {
+        "role": "secondary",
+        "displayName": "Mac Utility Purple",
+        "canonical": "oklch(55% 0.25 300)",
+        "tonalRamp": ["#faf5ff", "#f3e8ff", "#e9d5ff", "#d8b4fe", "#c084fc", "#a855f7", "#9333ea", "#7e22ce"]
+      },
+      "dark-surface": {
+        "role": "neutral",
+        "displayName": "Dark Slate Surface",
+        "canonical": "oklch(20% 0.03 250)",
+        "tonalRamp": ["#f8fafc", "#f1f5f9", "#e2e8f0", "#cbd5e1", "#94a3b8", "#64748b", "#334155", "#0f172a"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines and main catalog banners." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles and category headers." },
+      "title": { "displayName": "Title", "purpose": "Tool card headings and modal titles." },
+      "body": { "displayName": "Body", "purpose": "Tool descriptions and setup instructions." },
+      "label": { "displayName": "Label", "purpose": "Category chips, pricing tags, and filter pills." }
+    },
+    "shadows": [
+      {
+        "name": "card-rest",
+        "value": "0 1px 2px rgb(15 23 42 / 0.05), 0 8px 24px rgb(15 23 42 / 0.04)",
+        "purpose": "Subtle depth for tool grid cards at rest."
+      },
+      {
+        "name": "card-hover",
+        "value": "0 1px 2px rgb(15 23 42 / 0.06), 0 14px 32px rgb(15 23 42 / 0.08)",
+        "purpose": "Interactive lift on tool card hover."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Smooth transition for card hover, border color shifts, and button states."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main call-to-action for external links and primary user flows.",
+      "html": "<button class=\"ds-btn-primary\">Visit Website <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"></path><polyline points=\"15 3 21 3 21 9\"></polyline><line x1=\"10\" y1=\"14\" x2=\"21\" y2=\"3\"></line></svg></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background-color: #2563eb; color: #ffffff; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 12px; border: none; cursor: pointer; transition: background-color 0.2s ease, transform 0.2s ease; } .ds-btn-primary:hover { background-color: #1d4ed8; transform: translateY(-1px); } .ds-btn-primary:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Secondary action for setup guides, documentation, and alternate views.",
+      "html": "<button class=\"ds-btn-secondary\">Setup Guide</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; background-color: #ffffff; color: #334155; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 12px; border: 1px solid #e2e8f0; cursor: pointer; transition: background-color 0.2s ease, border-color 0.2s ease; } .ds-btn-secondary:hover { background-color: #f8fafc; border-color: #cbd5e1; }"
+    },
+    {
+      "name": "Tool Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Catalog item card showing tool icon, title, description, and tags.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-header\"><div class=\"ds-card-icon\">TH</div><div><h3 class=\"ds-card-title\">Uptime Kuma</h3><span class=\"ds-badge ds-badge-green\">Self-Hosted</span></div></div><p class=\"ds-card-desc\">A fancy self-hosted monitoring tool featuring real-time status pages, notification hooks, and ping monitoring.</p></div>",
+      "css": ".ds-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; box-shadow: 0 1px 2px rgb(15 23 42 / 0.05), 0 8px 24px rgb(15 23 42 / 0.04); transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; } .ds-card:hover { transform: translateY(-2px); box-shadow: 0 1px 2px rgb(15 23 42 / 0.06), 0 14px 32px rgb(15 23 42 / 0.08); border-color: #93c5fd; } .ds-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; } .ds-card-icon { width: 40px; height: 40px; border-radius: 10px; background: #eff6ff; color: #2563eb; font-weight: 700; display: flex; align-items: center; justify-content: center; } .ds-card-title { font-size: 18px; font-weight: 600; color: #0f172a; margin: 0; } .ds-card-desc { font-size: 14px; line-height: 1.5; color: #64748b; margin: 0; } .ds-badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 600; } .ds-badge-green { background: #f0fdf4; color: #166534; }"
+    },
+    {
+      "name": "Category Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Interactive pill filter button for catalog categories.",
+      "html": "<button class=\"ds-chip ds-chip-active\">All Tools (120)</button><button class=\"ds-chip\">Self-Hosted</button>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; padding: 6px 14px; border-radius: 9999px; font-size: 13px; font-weight: 500; border: 1px solid #e2e8f0; background: #ffffff; color: #475569; cursor: pointer; transition: all 0.2s ease; } .ds-chip:hover { border-color: #cbd5e1; background: #f8fafc; } .ds-chip-active { background: #2563eb; color: #ffffff; border-color: #2563eb; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Precision Observatory",
+    "overview": "ToolHunt's design system delivers crisp visual contrast, sharp typographic hierarchy, and fast technical surfaces optimized for rapid software discovery. Built for developers, sysadmins, and self-hosters scanning through catalogs of apps, the UI prioritizes clarity, search efficiency, and direct utility over decorative fluff.",
+    "keyCharacteristics": [
+      "High Information Density: Structured content grid cards designed for fast scanning.",
+      "Crisp Technical Contrast: Distinct light and dark modes with dedicated slate borders.",
+      "Purposeful Micro-Interactions: Subtle translateY(-2px) elevation lifts and border highlights.",
+      "Zero-Slop Restraint: Rejects heavy side-stripes, text gradients, over-rounding, and sketchy SVG illustrations."
+    ],
+    "rules": [
+      { "name": "The Single Voice Rule", "body": "The primary blue accent carries interactive authority. Never mix multiple accent colors within a single button group or primary CTA.", "section": "colors" },
+      { "name": "The True Neutral Rule", "body": "Background neutrals use pure slate and deep navy hues. Warm cream/sand tints and low-contrast washed grays are strictly forbidden.", "section": "colors" },
+      { "name": "The Display Letter-Spacing Floor Rule", "body": "Display headlines must never fall below -0.03em letter-spacing.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "All cards and container panels are flat with structural 1px borders at rest. Shadows function purely as interactive feedback.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do maintain strict body text contrast (>=4.5:1) against both light and dark backgrounds.",
+      "Do enforce 16px corner radius max for cards and 12px for buttons.",
+      "Do use text-wrap: balance on headings and cap line lengths at 65–75ch for prose readability.",
+      "Do keep display letter-spacing at or above -0.03em."
+    ],
+    "donts": [
+      "Don't use border-left or border-right greater than 1px as a colored accent stripe on cards or callouts.",
+      "Don't use gradient text (background-clip: text) or decorative background grid overlays.",
+      "Don't use warm cream, sand, or parchment body backgrounds (--paper, --cream, --sand).",
+      "Don't over-round container cards with 24px, 32px, or 40px corner radii."
+    ]
+  }
+}

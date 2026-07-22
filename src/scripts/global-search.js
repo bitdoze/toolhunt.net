@@ -264,6 +264,18 @@ function initGlobalSearch(root) {
   } else {
     setBrowsing(false);
   }
+
+  // Global hotkey handler: '/' or 'Cmd/Ctrl+K' focuses search
+  window.addEventListener('keydown', (event) => {
+    const isEditing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(
+      (event.target instanceof HTMLElement && event.target.tagName) || ''
+    );
+    if ((event.key === '/' && !isEditing) || ((event.metaKey || event.ctrlKey) && event.key === 'k')) {
+      event.preventDefault();
+      input.focus();
+      input.select();
+    }
+  });
 }
 
 function boot() {
@@ -272,3 +284,4 @@ function boot() {
 
 boot();
 document.addEventListener('astro:page-load', boot);
+

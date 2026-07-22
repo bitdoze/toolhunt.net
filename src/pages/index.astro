@@ -68,31 +68,36 @@ const rails = [
     title: 'Latest self-hosted apps',
     href: '/sh/',
     tools: latestShEntries,
-    accent: 'bg-brand-blue-500',
+    tag: 'Self-Hosted',
+    badgeClass: 'bg-brand-blue-50 text-brand-blue-700 dark:bg-brand-blue-950/60 dark:text-brand-blue-300',
   },
   {
     title: 'Latest AI tools',
     href: '/ai/',
     tools: latestAiEntries,
-    accent: 'bg-rose-500',
+    tag: 'AI',
+    badgeClass: 'bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300',
   },
   {
     title: 'Latest online tools',
     href: '/tools/',
     tools: latestToolEntries,
-    accent: 'bg-brand-green-500',
+    tag: 'Online',
+    badgeClass: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300',
   },
   {
     title: 'Latest Mac apps',
     href: '/mac/',
     tools: latestMacEntries,
-    accent: 'bg-brand-indigo-500',
+    tag: 'Mac App',
+    badgeClass: 'bg-brand-purple-50 text-brand-purple-700 dark:bg-brand-purple-950/60 dark:text-brand-purple-300',
   },
   {
     title: 'Latest alternatives',
     href: '/alternatives/',
     tools: latestAlternativeEntries,
-    accent: 'bg-brand-purple-500',
+    tag: 'Alternative',
+    badgeClass: 'bg-brand-indigo-50 text-brand-indigo-700 dark:bg-brand-indigo-950/60 dark:text-brand-indigo-300',
   },
 ] as const;
 ---
@@ -114,7 +119,7 @@ const rails = [
   />
 
   <div class="th-container py-12 sm:py-14" data-home-browse>
-    <section class="mb-12">
+    <section class="mb-14">
       <div class="mb-5 flex items-end justify-between gap-4">
         <div>
           <h2 class="th-section-title">Browse by category</h2>
@@ -134,13 +139,17 @@ const rails = [
 
     {
       rails.map((rail) => (
-        <section class="relative mb-14 pl-4 sm:pl-5">
-          <span class:list={['absolute left-0 top-1 h-8 w-1 rounded-full', rail.accent]}></span>
+        <section class="mb-14">
           <div class="mb-5 flex items-center justify-between gap-4">
-            <h2 class="th-section-title">{rail.title}</h2>
+            <div class="flex items-center gap-3">
+              <span class:list={['inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold', rail.badgeClass]}>
+                {rail.tag}
+              </span>
+              <h2 class="th-section-title">{rail.title}</h2>
+            </div>
             <a href={rail.href} class="th-btn th-btn-secondary">
               View all
-              <span aria-hidden="true">→</span>
+              <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
             </a>
           </div>
           <ToolGrid tools={rail.tools} />
@@ -148,10 +157,14 @@ const rails = [
       ))
     }
 
-    <section class="relative mb-14 pl-4 sm:pl-5">
-      <span class="absolute left-0 top-1 h-8 w-1 rounded-full bg-rose-500"></span>
+    <section class="mb-14">
       <div class="mb-5 flex items-center justify-between gap-4">
-        <h2 class="th-section-title">Latest from the blog</h2>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-semibold text-rose-700 dark:bg-rose-950/60 dark:text-rose-300">
+            Blog
+          </span>
+          <h2 class="th-section-title">Latest articles & setup guides</h2>
+        </div>
         <a href="/blog/" class="th-btn th-btn-secondary">
           View all
           <span aria-hidden="true">→</span>
@@ -172,7 +185,7 @@ const rails = [
                 />
               )}
               <div class="p-5">
-                <h3 class="text-lg font-semibold tracking-tight text-slate-900 dark:text-white">
+                <h3 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
                   <a href={`/blog/${post.id}/`} class="hover:text-brand-blue-600 dark:hover:text-brand-blue-400">
                     {post.data.title}
                   </a>
@@ -187,12 +200,12 @@ const rails = [
       </div>
     </section>
 
-    <section class="th-card px-6 py-10 text-center sm:px-10">
-      <h2 class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
+    <section class="th-card overflow-hidden px-6 py-10 text-center sm:px-10">
+      <h2 class="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white" style="text-wrap: balance;">
         Ready to explore the full catalog?
       </h2>
       <p class="mx-auto mt-3 max-w-xl text-slate-600 dark:text-slate-300">
-        Start with self-hosted apps or browse online tools and Mac software.
+        Start with self-hosted apps or browse online tools, Mac software, and alternatives.
       </p>
       <div class="mt-6 flex flex-wrap justify-center gap-3">
         <a href="/sh/" class="th-btn th-btn-primary px-5 py-2.5">Browse self-hosted apps</a>
@@ -202,3 +215,4 @@ const rails = [
     </section>
   </div>
 </BaseLayout>
+

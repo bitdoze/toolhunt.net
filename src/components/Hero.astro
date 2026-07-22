@@ -27,62 +27,62 @@ const collections = [
     name: 'Self-hosted',
     count: shCount,
     href: '/sh/',
-    accent: 'bg-brand-blue-500',
-    soft: 'bg-brand-blue-50 text-brand-blue-700 dark:bg-brand-blue-900/30 dark:text-brand-blue-100',
+    badge: 'bg-brand-blue-50 text-brand-blue-700 dark:bg-brand-blue-950/60 dark:text-brand-blue-300 dark:border-brand-blue-800/40',
+    iconBg: 'bg-brand-blue-500/10 text-brand-blue-600 dark:bg-brand-blue-400/10 dark:text-brand-blue-400',
   },
   {
     name: 'AI tools',
     count: aiCount,
     href: '/ai/',
-    accent: 'bg-rose-500',
-    soft: 'bg-rose-50 text-rose-700 dark:bg-rose-900/30 dark:text-rose-100',
+    badge: 'bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800/40',
+    iconBg: 'bg-rose-500/10 text-rose-600 dark:bg-rose-400/10 dark:text-rose-400',
   },
   {
     name: 'Online tools',
     count: toolsCount,
     href: '/tools/',
-    accent: 'bg-brand-green-500',
-    soft: 'bg-brand-green-50 text-brand-green-700 dark:bg-brand-green-900/30 dark:text-brand-green-100',
+    badge: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800/40',
+    iconBg: 'bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400',
   },
   {
     name: 'Mac apps',
     count: macCount,
     href: '/mac/',
-    accent: 'bg-brand-purple-500',
-    soft: 'bg-brand-purple-50 text-brand-purple-700 dark:bg-brand-purple-900/30 dark:text-brand-purple-100',
+    badge: 'bg-brand-purple-50 text-brand-purple-700 dark:bg-brand-purple-950/60 dark:text-brand-purple-300 dark:border-brand-purple-800/40',
+    iconBg: 'bg-brand-purple-500/10 text-brand-purple-600 dark:bg-brand-purple-400/10 dark:text-brand-purple-400',
   },
   {
     name: 'Alternatives',
     count: alternativesCount,
     href: '/alternatives/',
-    accent: 'bg-brand-indigo-500',
-    soft: 'bg-brand-indigo-50 text-brand-indigo-700 dark:bg-brand-indigo-900/30 dark:text-brand-indigo-100',
+    badge: 'bg-brand-indigo-50 text-brand-indigo-700 dark:bg-brand-indigo-950/60 dark:text-brand-indigo-300 dark:border-brand-indigo-800/40',
+    iconBg: 'bg-brand-indigo-500/10 text-brand-indigo-600 dark:bg-brand-indigo-400/10 dark:text-brand-indigo-400',
   },
 ] as const;
 ---
 
 <section class="relative overflow-hidden border-b border-slate-200/80 dark:border-slate-800">
   <div class="pointer-events-none absolute inset-0 -z-10">
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.12),transparent_55%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.18),transparent_55%)]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.08),transparent_60%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.15),transparent_60%)]"></div>
   </div>
 
-  <div class="th-container py-14 sm:py-18 lg:py-20">
+  <div class="th-container py-14 sm:py-16 lg:py-20">
     <div class="mx-auto max-w-3xl text-center">
-      <p class="mb-4 inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-300">
-        {totalTools}+ curated tools
-      </p>
+      <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1 text-xs font-medium text-slate-700 shadow-xs dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+        <span class="inline-block h-2 w-2 rounded-full bg-brand-blue-500 animate-pulse"></span>
+        <span>{totalTools}+ curated software tools</span>
+      </div>
 
-      <h1 class="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl dark:text-white">
+      <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl dark:text-white" style="text-wrap: balance;">
         Find the right tool
         <span class="block text-brand-blue-600 dark:text-brand-blue-400">for your workflow</span>
       </h1>
 
       <p class="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
-        Search self-hosted apps, online tools, Mac apps, and alternatives in one clean catalog.
+        Search self-hosted apps, online utilities, Mac applications, and privacy-first software alternatives with setup guides.
       </p>
     </div>
 
-    <!-- Full-width search shell: input can stay narrow, results use the whole container -->
     <div class="mt-8 w-full text-left">
       <SearchBar
         tools={searchIndex}
@@ -91,26 +91,31 @@ const collections = [
       />
     </div>
 
-    <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5" data-home-collections>
+    <div class="mt-8 grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-5" data-home-collections>
       {
         collections.map((item) => (
           <a
             href={item.href}
-            class="th-card th-card-hover group relative overflow-hidden p-4 text-left"
+            class="th-card th-card-hover group relative flex flex-col justify-between p-4 transition-all"
           >
-            <span class:list={['absolute left-0 top-0 h-full w-1', item.accent]}></span>
-            <p class="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
-              {item.name}
-            </p>
-            <p class="mt-2 text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
-              {item.count}
-            </p>
-            <p class:list={['mt-2 inline-flex rounded-full px-2 py-0.5 text-xs font-medium', item.soft]}>
-              Browse
-            </p>
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  {item.name}
+                </span>
+                <span class:list={['inline-flex items-center justify-center rounded-lg px-2 py-0.5 text-xs font-bold border border-transparent', item.badge]}>
+                  {item.count}
+                </span>
+              </div>
+            </div>
+            <div class="mt-4 flex items-center justify-between text-xs font-semibold text-brand-blue-600 dark:text-brand-blue-400">
+              <span>Browse section</span>
+              <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
+            </div>
           </a>
         ))
       }
     </div>
   </div>
 </section>
+

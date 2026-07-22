@@ -39,29 +39,29 @@ const pricingClass =
 >
   {
     pricing && (
-      <div class={`${pricingClass} absolute right-3 top-3 z-10`}>{pricing}</div>
+      <div class={`${pricingClass} absolute right-3.5 top-3.5 z-10 font-semibold shadow-2xs`}>{pricing}</div>
     )
   }
 
   <div class="flex flex-1 flex-col p-5">
     <div class="mb-4 flex items-start gap-3.5">
-      <div class="rounded-xl border border-slate-200 bg-slate-50 p-2 dark:border-slate-700 dark:bg-slate-800/80">
+      <div class="rounded-xl border border-slate-200/90 bg-slate-50/80 p-2.5 dark:border-slate-700/80 dark:bg-slate-800/80">
         <ToolImage
           src={logo}
           alt={`${title} logo`}
           width={48}
           height={48}
-          class="h-12 w-12 object-contain"
+          class="h-11 w-11 object-contain"
           loading={priority ? 'eager' : 'lazy'}
           fetchpriority={priority ? 'high' : 'auto'}
         />
       </div>
-      <div class="min-w-0 flex-1">
+      <div class="min-w-0 flex-1 pr-12">
         <div class="mb-1.5 flex flex-wrap items-center gap-1.5">
-          <span class="th-badge th-badge-neutral">{collection}</span>
-          <span class="th-badge th-badge-blue">{category}</span>
+          <span class="th-badge th-badge-neutral text-xs font-medium">{collection}</span>
+          <span class="th-badge th-badge-blue text-xs font-medium">{category}</span>
         </div>
-        <h3 class="text-lg font-semibold leading-snug tracking-tight text-slate-900 dark:text-white">
+        <h3 class="text-lg font-bold leading-snug tracking-tight text-slate-900 dark:text-white">
           {
             showFullDetails ? (
               title
@@ -86,7 +86,7 @@ const pricingClass =
 
     {
       alternativeTo && (
-        <p class="mb-4 text-xs font-medium text-brand-purple-700 dark:text-brand-purple-300">
+        <p class="mb-4 text-xs font-semibold text-brand-purple-700 dark:text-brand-purple-300">
           Alternative to {alternativeTo}
         </p>
       )
@@ -100,7 +100,7 @@ const pricingClass =
             {entry.data.keyFeatures.map((feature) => (
               <li class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
                 <svg
-                  class="mt-0.5 h-4 w-4 shrink-0 text-brand-green-500"
+                  class="mt-0.5 h-4 w-4 shrink-0 text-emerald-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -109,7 +109,7 @@ const pricingClass =
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="2"
+                    stroke-width="2.5"
                     d="M5 13l4 4L19 7"
                   />
                 </svg>
@@ -121,22 +121,25 @@ const pricingClass =
             <div class="mt-5 flex flex-wrap gap-2">
               <a href={checkItUrl} target="_blank" rel="noopener noreferrer" class="th-btn th-btn-primary relative z-10">
                 Visit official site
+                <svg class="ml-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
               </a>
             </div>
           )}
         </div>
       ) : (
-        <div class="mt-auto flex items-center justify-between gap-3 border-t border-slate-100 pt-4 dark:border-slate-800">
-          <span class="text-sm font-medium text-brand-blue-600 transition-colors group-hover:text-brand-blue-700 dark:text-brand-blue-400">
+        <div class="mt-auto flex items-center justify-between gap-3 border-t border-slate-100 pt-3.5 dark:border-slate-800/80">
+          <span class="text-sm font-semibold text-brand-blue-600 transition-colors group-hover:text-brand-blue-700 dark:text-brand-blue-400">
             View details
-            <span aria-hidden="true"> →</span>
+            <span aria-hidden="true" class="inline-block transition-transform group-hover:translate-x-1"> →</span>
           </span>
           {checkItUrl && (
             <a
               href={checkItUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="th-btn th-btn-ghost relative z-10 px-2.5 py-1.5 text-xs"
+              class="th-btn th-btn-ghost relative z-10 px-2.5 py-1 text-xs font-semibold"
               aria-label={`Visit ${title} website`}
             >
               Visit site
@@ -147,3 +150,4 @@ const pricingClass =
     }
   </div>
 </article>
+
